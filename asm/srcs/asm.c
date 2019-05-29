@@ -51,7 +51,6 @@ int main(int argc, char const *argv[])
 			
 			ft_strdel(&line);
 		}
-		
 	}
 	if (res < 0)
 	{
