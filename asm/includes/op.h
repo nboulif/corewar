@@ -71,13 +71,15 @@ typedef struct					s_header
 typedef struct					s_op
 {
 	char						*name;
-	int							argc;
-	int							argv;
-	int							op_code;
-	int							cycle;
+	unsigned int				argc;
+	t_arg_type					argv[3];
+	unsigned char				op_code;
+	unsigned int				cycle;
 	char						*description;
-	int							codage_octal;
-	int							dir_size; // 2 if 1 else 4
+	unsigned char				codage_octal;
+	unsigned char				dir_size; // 2 if 1 else 4
 }								t_op;
+
+extern t_op 					g_op_tab[17];
 
 #endif
