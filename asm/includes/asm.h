@@ -29,7 +29,9 @@ typedef struct	s_op_ch t_op_ch;
 typedef struct	s_op_ch
 {
 	int			index;
+	char		**params;
 	t_op		*op;
+	t_op_ch		*prev;
 	t_op_ch		*next;
 }				t_op_ch;
 
@@ -38,7 +40,8 @@ typedef struct	s_inst
 	char		*name;
 	int			index;
 	int			address;
-	t_op_ch		ops;
+	t_op_ch		*ops;
+	t_inst		*prev;
 	t_inst		*next;
 }				t_inst;
 
@@ -46,8 +49,15 @@ typedef struct	s_asm
 {
 	char		*name;
 	char		*comment;
+	int			extend;
 
 	t_inst		*insts;
+
+
+	int			octal_index;
+	
+	int			fd_input;
+	int			fd_output;
 
 }				t_asm;
 
