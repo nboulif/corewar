@@ -65,14 +65,14 @@ t_inst *		define_instruction(t_asm *u, t_inst *cur_inst, char *word)
 	{
 		ft_strdel(&cur_inst->name);
 		cur_inst->name = ft_strdup(word);
-		cur_inst->index = u->octal_index++;
+		cur_inst->index = u->octal_index;
 		return (cur_inst);
 	}
 	else
 	{
 		cur_inst->next = (t_inst*)malloc(sizeof(t_inst));
 		cur_inst->next->name = ft_strdup(word);
-		cur_inst->next->index = u->octal_index++;
+		cur_inst->next->index = u->octal_index;
 		cur_inst->next->address = 0;
 		cur_inst->next->ops = NULL;
 		cur_inst->next->prev = cur_inst;
@@ -136,6 +136,7 @@ int		check_line(t_asm *u, t_inst *cur_inst, t_op_ch *cur_op_ch, char *line)
 		line++;
 		if (!(cur_inst = define_instruction(u, cur_inst, word)))
 			return (0);
+		
 		cur_op_ch = NULL;
 		if (!(word = retrieve_next_world(&line)))
 			return (check_line(u, cur_inst, NULL, line));
@@ -144,6 +145,9 @@ int		check_line(t_asm *u, t_inst *cur_inst, t_op_ch *cur_op_ch, char *line)
 
 	if (!(cur_op_ch = define_operation(cur_inst, cur_op_ch, op)))
 		return (-1);
+
+	// u->octal_index;	
+
 	line = zap_space_tab(line);
 	cur_op_ch->params = ft_strsplit(line, ',');
 
@@ -241,6 +245,64 @@ int		parse_file(t_asm *u)
 	return (1);
 }
 
+void 	final_parse(t_asm *u)
+{
+	t_inst		*cur_inst;
+	t_op_ch		*cur_op_ch;
+	int			i;
+	int 		byte;
+
+
+	cur_inst = u->insts;
+	while (cur_inst)
+	{
+		if (cur_inst->ops)
+			cur_inst->index = u->octal_index;
+		
+		cur_op_ch = cur_inst->ops;
+		while (cur_op_ch)
+		{
+			cur_op_ch->index = u->octal_index++;
+			if (cur_op_ch->op->codage_octal)
+				u->octal_index++;
+						
+			i = -1;
+
+			cur_op_ch->param_codage = 0;
+			while (cur_op_ch->params[++i])
+			{
+				cur_op_ch->params[i] = zap_space_tab(cur_op_ch->params[i]);
+
+				if (cur_op_ch->params[i][0] == 'r')
+				{
+					cur_op_ch->param_codage |=  1 << (2 * (3 - i));
+					
+					u->octal_index++;
+
+				}
+				else if (ft_isdigit(cur_op_ch->params[i][0]))
+				{
+					cur_op_ch->param_codage |=  3 << (2 * (3 - i));
+					u->octal_index += 2;
+				}
+				else if (cur_op_ch->params[i][0] == DIRECT_CHAR)
+				{
+					cur_op_ch->param_codage |= 2 << (2 * (3 - i));
+
+					u->octal_index += cur_op_ch->op->dir_size ? 2 : 4;
+				}
+				else
+				{
+					u->octal_index++;
+					byte = 254;
+				}
+			}
+			cur_op_ch = cur_op_ch->next;
+		}
+		cur_inst = cur_inst->next;
+	}
+}
+
 void 	print_program(t_asm *u)
 {
 	t_inst		*cur_inst;
@@ -253,6 +315,8 @@ void 	print_program(t_asm *u)
 	while (cur_inst)
 	{
 		ft_putendl("---INSTRUCTION---");
+		ft_putnbr(cur_inst->index);
+		ft_putstr("  ");
 		ft_putendl(cur_inst->name);
 		
 		cur_op_ch = cur_inst->ops;
@@ -260,18 +324,28 @@ void 	print_program(t_asm *u)
 		while (cur_op_ch)
 		{
 			ft_putendl("---OPERATION---");
+			ft_putnbr(cur_op_ch->index);
+			ft_putstr("  ");
 			ft_putendl(cur_op_ch->op->name);
 
 			write(u->fd_output, &cur_op_ch->op->op_code, 1);
-
+			if (cur_op_ch->op->codage_octal)
+				write(u->fd_output, &cur_op_ch->param_codage, 1);
+			
 			i = -1;
 			ft_putendl("---PARAMS---");
 			while (cur_op_ch->params[++i])
 			{
+				cur_op_ch->params[i] = zap_space_tab(cur_op_ch->params[i]);
+
 				if (cur_op_ch->params[i][0] == 'r')
 				{
 					byte = ft_atoi(cur_op_ch->params[i] + 1);
 					write(u->fd_output, &byte, 1);
+
+
+					ft_putnbr(byte);
+					ft_putstr("  ");
 				}
 				else if (ft_isdigit(cur_op_ch->params[i][0]))
 				{
@@ -279,14 +353,129 @@ void 	print_program(t_asm *u)
 					write(u->fd_output, &byte, 1);
 					byte = ft_atoi(cur_op_ch->params[i] + 1);
 					write(u->fd_output, &byte, 1);
+
+
+					ft_putnbr(byte);
+					ft_putstr("  ");
 				}
-				else if (cur_op_ch->params[i][0] == LABEL_CHAR || 
-						 cur_op_ch->params[i][1] == LABEL_CHAR)
+				else if (cur_op_ch->params[i][0] == DIRECT_CHAR)
 				{
-					byte = ft_atoi(cur_op_ch->params[i] + 1);
+					t_inst	*tmp_inst;
+					int		tmp_byte;
+
+					if(ft_isdigit(cur_op_ch->params[i][1]) || cur_op_ch->params[i][1] ==  '-')
+					{
+						tmp_byte = ft_atoi(&cur_op_ch->params[i][1]);
+
+						if (tmp_byte < 0)
+							byte = 255;
+						else
+							byte = 0;
+
+						if (!cur_op_ch->op->dir_size)
+						{
+							write(u->fd_output, &byte, 1);
+							write(u->fd_output, &byte, 1);
+						}
+
+						write(u->fd_output, &byte, 1);
+						
+						
+						byte = tmp_byte;
+						
+						if (tmp_byte < 0)
+							byte = 255 + byte + 1;
+						
+						write(u->fd_output, &byte, 1);
+
+						ft_putnbr(byte);
+						ft_putstr("  ");
+					}
+					else if (cur_op_ch->params[i][1] == LABEL_CHAR)
+					{
+
+						tmp_inst = u->insts;
+
+						char *wordo;
+						int y;
+
+						y = 2;
+						while(ft_strchr(LABEL_CHARS, cur_op_ch->params[i][y]))
+							y++;
+						if (!y)
+						{
+							ft_putendl("ERROR 872");
+							return ;
+						}
+						wordo = ft_strsub(cur_op_ch->params[i], 2, y - 2);
+						while (tmp_inst && ft_strcmp(tmp_inst->name, wordo))
+							tmp_inst = tmp_inst->next;
+						
+						if (!tmp_inst)
+						{
+							ft_putendl("ERROR 873");
+							return ;
+						}
+						ft_putnbr(cur_inst->index);
+						ft_putstr("  ");
+						ft_putnbr(cur_op_ch->index);
+						ft_putendl(" ");
+						tmp_byte = tmp_inst->index - cur_op_ch->index;
+
+						if (tmp_inst->index > cur_op_ch->index)
+							byte = 0;
+						else
+							byte = 255;
+
+						if (!cur_op_ch->op->dir_size)
+						{
+							write(u->fd_output, &byte, 1);
+							write(u->fd_output, &byte, 1);
+						}
+
+						if (tmp_byte < 0)
+							tmp_byte = -tmp_byte - 1;
+
+						if (tmp_byte > 255)
+							byte -= tmp_byte / 255;
+						else
+							byte += tmp_byte / 255;
+						write(u->fd_output, &byte, 1);
+
+						byte = tmp_byte % 255;
+						if (tmp_inst->index > cur_op_ch->index)
+							byte = tmp_byte;
+						else
+							byte = 255 - tmp_byte;
+						write(u->fd_output, &byte, 1);
+
+						ft_putnbr(tmp_byte);
+						ft_putstr("  ");
+						ft_putnbr(byte);
+						ft_putstr("  ");
+					}
+					else
+					{
+						
+						ft_putendl("------------");
+						ft_putendl("ERRRRROOORRR");
+						ft_putendl(cur_op_ch->params[i]);
+						ft_putendl("------------");
+
+					}
+					
+					// write(u->fd_output, &byte, cur_op_ch->op->dir_size ? 2 : 4);
+					
+				}
+				else
+				{
+					byte = 254;
 					write(u->fd_output, &byte, 1);
 				}
-				
+
+				// ft_putnbr(cur_op_ch->index);
+				// ft_putstr("  ");
+
 				ft_putendl(cur_op_ch->params[i]);
 			}
 
@@ -323,6 +512,7 @@ int main(int argc, char const *argv[])
 	}
 
 	parse_file(u);
+	final_parse(u);
 	print_program(u);
 	return (0);
 }

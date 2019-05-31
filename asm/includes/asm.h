@@ -26,14 +26,15 @@
 typedef struct	s_inst t_inst;
 typedef struct	s_op_ch t_op_ch;
 
-typedef struct	s_op_ch
+typedef struct		s_op_ch
 {
-	int			index;
-	char		**params;
-	t_op		*op;
-	t_op_ch		*prev;
-	t_op_ch		*next;
-}				t_op_ch;
+	int				index;
+	char			**params;
+	unsigned int	param_codage;
+	t_op			*op;
+	t_op_ch			*prev;
+	t_op_ch			*next;
+}					t_op_ch;
 
 typedef struct	s_inst
 {
