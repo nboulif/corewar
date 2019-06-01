@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   asm.h                                              :+:      :+:    :+:   */
+/*   handler_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nboulif <nboulif@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,28 +10,41 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "asm.h"
 
-#ifndef __ASM_H__
-# define __ASM_H__
-
-# include <limits.h>
-# include <fcntl.h>
-
-# include "op.h"
-# include "asm_s.h"
-# include "asm_f.h"
-# include "../libft/libft.h"
-
-# define BUFF_SIZE 10000
-
-
-typedef struct	s_gnl
+int		handle_register(t_asm *u, char *param)
 {
-	char	buf[BUFF_SIZE + 1];
-	char	*r[OPEN_MAX];
-	int		ret;
-	int		len;
-	int		n;
-}				t_gnl;
 
-#endif
+	int byte;
+
+	byte = ft_atoi(param);
+	write(u->fd_output, &byte, 1);
+
+	ft_putnbr(byte);
+	ft_putstr("  ");
+
+	return (1);
+}
+
+int		handle_number(t_asm *u, char *param)
+{
+	unsigned int	bytes;
+	unsigned int	byte;
+	int				nb;
+	
+	nb = ft_atoi(param);
+
+	if (nb >= 0)
+		bytes = nb;
+	else
+		bytes = (INT_MAX + nb) + 1;
+		
+	byte = (bytes >> 8);
+	write(u->fd_output, &byte, 1);
+	byte = bytes;
+	write(u->fd_output, &byte, 1);
+
+	ft_putnbr(byte);
+	ft_putstr("  ");
+	return (1);
+}

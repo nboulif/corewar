@@ -49,7 +49,6 @@
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
-typedef char					t_arg_type;
 
 # define T_REG					1
 # define T_DIR					2
@@ -68,18 +67,5 @@ typedef struct					s_header
 	unsigned int				prog_size;
 }								t_header;
 
-typedef struct					s_op
-{
-	char						*name;
-	unsigned int				argc;
-	t_arg_type					argv[3];
-	unsigned char				op_code;
-	unsigned int				cycle;
-	char						*description;
-	unsigned char				codage_octal;
-	unsigned char				dir_size; // 2 if 1 else 4
-}								t_op;
-
-extern t_op 					g_op_tab[17];
 
 #endif
