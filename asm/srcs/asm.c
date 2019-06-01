@@ -25,14 +25,44 @@ t_op 			*check_if_operation(char *line)
 }
 
 
+void 	write_header(t_asm *u)
+{
+	int 		byte;
+
+	byte = COREWAR_EXEC_MAGIC >> 24;
+	write(u->fd_output, &byte, 1);
+	byte = COREWAR_EXEC_MAGIC >> 16;
+	write(u->fd_output, &byte, 1);
+	byte = COREWAR_EXEC_MAGIC >> 8;
+	write(u->fd_output, &byte, 1);
+	byte = COREWAR_EXEC_MAGIC;
+	write(u->fd_output, &byte, 1);
+
+	write(u->fd_output, u->prog_name, PROG_NAME_LENGTH);
+
+	byte = 0;
+	write(u->fd_output, &byte, 4);
+	byte = 0;
+	write(u->fd_output, &byte, 1);
+	write(u->fd_output, &byte, 1);
+	byte = u->prog_size >> 8;
+	write(u->fd_output, &byte, 1);
+	byte = u->prog_size;
+	write(u->fd_output, &byte, 1);
+
+	write(u->fd_output, u->comment, COMMENT_LENGTH);
+	byte = 0;
+	write(u->fd_output, &byte, 4);
+}
+
 void 	write_program(t_asm *u)
 {
 	t_inst		*cur_inst;
 	t_op_ch		*cur_op_ch;
 	int			i;
-	int 		byte;
 
-
+	write_header(u);
+	
 	cur_inst = u->insts;
 	while (cur_inst)
 	{
@@ -77,15 +107,11 @@ void 	write_program(t_asm *u)
 					ft_putendl("------------");
 					ft_putendl("error 856");
 					ft_putendl("------------");
-					byte = 254;
-					write(u->fd_output, &byte, 1);
 				}
-
-				// ft_putnbr(cur_op_ch->index);
-				// ft_putstr("  ");
 
 				ft_putendl(cur_op_ch->params[i]);
 			}
+			// ft_tabdel(&cur_op_ch->params);
 
 			
 			cur_op_ch = cur_op_ch->next;
@@ -105,6 +131,9 @@ int		main(int argc, char const *argv[])
 	}
 
 	u = (t_asm*)malloc(sizeof(t_asm));
+
+	u->magic = COREWAR_EXEC_MAGIC;
+
 	u->fd_input = open(argv[1], O_RDONLY);
 	u->extend = 0;
 	u->octal_index = 0;
@@ -128,6 +157,9 @@ int		main(int argc, char const *argv[])
 		return (0);
 	}
 	parse_file(u);
+
+	u->prog_size = u->octal_index;
+
 	write_program(u);
 	return (0);
 }

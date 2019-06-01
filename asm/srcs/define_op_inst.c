@@ -95,41 +95,33 @@ int		parse_params(t_asm *u, t_op_ch *cur_op_ch)
 {
 	int i;
 
-
 	cur_op_ch->index = u->octal_index++;
 	if (cur_op_ch->op->codage_octal)
 		u->octal_index++;
 				
 	i = -1;
-
 	cur_op_ch->param_codage = 0;
 	while (cur_op_ch->params[++i])
 	{
 		cur_op_ch->params[i] = zap_space_tab(cur_op_ch->params[i]);
-
 		if (cur_op_ch->params[i][0] == 'r')
 		{
-			cur_op_ch->param_codage |=  1 << (2 * (3 - i));
-			
+			cur_op_ch->param_codage |=  REG_CODE << (2 * (3 - i));
 			u->octal_index++;
 		}
 		else if(ft_isdigit(cur_op_ch->params[i][0]) || cur_op_ch->params[i][0] == '-')
 		{
-			cur_op_ch->param_codage |=  3 << (2 * (3 - i));
-
+			cur_op_ch->param_codage |= IND_CODE << (2 * (3 - i));
 			u->octal_index += 2;
 		}
 		else if (cur_op_ch->params[i][0] == DIRECT_CHAR)
 		{
-			cur_op_ch->param_codage |= 2 << (2 * (3 - i));
-
+			cur_op_ch->param_codage |= DIR_CODE << (2 * (3 - i));
 			u->octal_index += cur_op_ch->op->dir_size ? 2 : 4;
 		}
 		else
 		{
-			ft_putendl("------------");
-			ft_putendl("error 026");
-			ft_putendl("------------");
+		ft_putendl("ERROR 026");
 			return(0);	
 		}
 	}
@@ -175,7 +167,6 @@ int		parse_next_line(t_asm *u, t_inst *cur_inst, t_op_ch *cur_op_ch, char *line)
 	if (!cur_op_ch->params || !parse_params(u, cur_op_ch))
 		return(-1);	
 	
-	// ft_tabdel(&line_splited);
 
 	ft_strdel(&line_o);
 

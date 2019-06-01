@@ -29,7 +29,7 @@ int				get_next_line(const int fd, char **line);
 
 char			*retrieve_valid_word(char *param);
 t_inst			*check_and_retrieve_valid_inst(t_asm *u, char *word);
-int				handle_direct_number(t_asm *u, t_op_ch *cur_op_ch, int nb, int from_255);
+int				handle_direct_number(t_asm *u, t_op_ch *cur_op_ch, int nb);
 int				handle_direct_label(t_asm *u, char *param, t_op_ch *cur_op_ch);
 int				handle_direct_digit(t_asm *u, char *param, t_op_ch *cur_op_ch);
 void			handle_direct(t_asm *u, char *param, t_op_ch *cur_op_ch);

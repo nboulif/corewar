@@ -22,21 +22,33 @@ char	*zap_space_tab(char *line)
 
 int		parse_header(t_asm *u, char **line)
 {
-	int 		res;
+	int			res;
+	char		**splited;
 
 	
 	while ((res = get_next_line(u->fd_input, &(*line))) == 1)
 	{
 		if ((*line)[0] == '#')
 		{
-
 			ft_strdel(&(*line));
 			continue;
 		}
-		else if (ft_strstr((*line), ".name"))
-			u->name = *line;
-		else if (ft_strstr((*line), ".comment"))
-			u->comment = *line;
+		else if (ft_strstr((*line), NAME_CMD_STRING))
+		{
+			splited = ft_strsplit(*line, '"');
+			ft_strncpy(u->prog_name, splited[1], PROG_NAME_LENGTH);
+			ft_strdel(&(*line));
+			ft_tabdel(&splited);
+
+		}
+		else if (ft_strstr((*line), COMMENT_CMD_STRING))
+		{
+			splited = ft_strsplit(*line, '"');
+			ft_strncpy(u->comment, splited[1], COMMENT_LENGTH);
+			ft_strdel(&(*line));
+			ft_tabdel(&splited);
+
+		}
 		else if (ft_strstr((*line), ".extend"))
 			u->extend = 1;
 		else

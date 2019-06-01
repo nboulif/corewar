@@ -20,6 +20,7 @@ int		handle_register(t_asm *u, char *param)
 	byte = ft_atoi(param);
 	write(u->fd_output, &byte, 1);
 
+	ft_putstr("reg ");
 	ft_putnbr(byte);
 	ft_putstr("  ");
 

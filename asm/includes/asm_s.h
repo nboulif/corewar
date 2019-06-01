@@ -56,8 +56,12 @@ typedef struct	s_inst
 
 typedef struct	s_asm
 {
-	char		*name;
-	char		*comment;
+	
+	unsigned int				magic;
+	char						prog_name[PROG_NAME_LENGTH + 1];
+	char						comment[COMMENT_LENGTH + 1];
+	unsigned int				prog_size;
+
 	int			extend;
 
 	t_inst		*insts;
