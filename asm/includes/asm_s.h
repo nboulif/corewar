@@ -14,66 +14,17 @@
 #ifndef __ASM_S_H__
 # define __ASM_S_H__
 
-typedef struct	s_inst t_inst;
-typedef struct	s_op_ch t_op_ch;
-typedef struct	s_op t_op;
-
-
-typedef struct					s_op
+typedef struct				s_asm
 {
-	char						*name;
-	unsigned int				argc;
-	char						argv[3];
-	unsigned char				op_code;
-	unsigned int				cycle;
-	char						*description;
-	unsigned char				codage_octal;
-	unsigned char				dir_size; // 2 if 1 else 4
-}								t_op;
-
-extern t_op 					g_op_tab[17];
-
-
-typedef struct		s_op_ch
-{
-	int				index;
-	char			**params;
-	unsigned int	param_codage;
-	t_op			*op;
-	t_op_ch			*prev;
-	t_op_ch			*next;
-}					t_op_ch;
-
-typedef struct	s_inst
-{
-	char		*name;
-	int			index;
-	int			address;
-	t_op_ch		*ops;
-	t_inst		*prev;
-	t_inst		*next;
-}				t_inst;
-
-typedef struct	s_asm
-{
+	unsigned int			magic;
 	
-	unsigned int				magic;
-	char						prog_name[PROG_NAME_LENGTH + 1];
-	char						comment[COMMENT_LENGTH + 1];
-	unsigned int				prog_size;
+	int						fd_input;
+	int						fd_output;
 
-	int			extend;
+	t_prog					*prog;
 
-	t_inst		*insts;
+	int						octal_index;
 
-
-	int			octal_index;
-	
-	int			fd_input;
-	int			fd_output;
-
-}				t_asm;
-
-
+}							t_asm;
 
 #endif

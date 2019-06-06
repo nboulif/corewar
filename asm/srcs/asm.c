@@ -38,19 +38,19 @@ void 	write_header(t_asm *u)
 	byte = COREWAR_EXEC_MAGIC;
 	write(u->fd_output, &byte, 1);
 
-	write(u->fd_output, u->prog_name, PROG_NAME_LENGTH);
+	write(u->fd_output, u->prog->prog_name, PROG_NAME_LENGTH);
 
 	byte = 0;
 	write(u->fd_output, &byte, 4);
 	byte = 0;
 	write(u->fd_output, &byte, 1);
 	write(u->fd_output, &byte, 1);
-	byte = u->prog_size >> 8;
+	byte = u->prog->prog_size >> 8;
 	write(u->fd_output, &byte, 1);
-	byte = u->prog_size;
+	byte = u->prog->prog_size;
 	write(u->fd_output, &byte, 1);
 
-	write(u->fd_output, u->comment, COMMENT_LENGTH);
+	write(u->fd_output, u->prog->comment, COMMENT_LENGTH);
 	byte = 0;
 	write(u->fd_output, &byte, 4);
 }
@@ -63,7 +63,7 @@ void 	write_program(t_asm *u)
 
 	write_header(u);
 	
-	cur_inst = u->insts;
+	cur_inst = u->prog->insts;
 	while (cur_inst)
 	{
 		ft_putendl("---INSTRUCTION---");
@@ -120,9 +120,33 @@ void 	write_program(t_asm *u)
 	}
 }
 
-int		main(int argc, char const *argv[])
+t_asm		*init_asm(void)
 {
 	t_asm		*u;
+
+	u = (t_asm*)malloc(sizeof(t_asm));
+
+	u->magic = COREWAR_EXEC_MAGIC;
+	u->octal_index = 0;
+	
+	u->prog = (t_prog*)malloc(sizeof(t_prog));
+
+	u->prog->extend = 0;
+	u->prog->insts = (t_inst*)malloc(sizeof(t_inst));
+	u->prog->insts->name = ft_strdup("main");
+	u->prog->insts->index = u->octal_index;
+	u->prog->insts->address = 0;
+	u->prog->insts->ops = NULL;
+	u->prog->insts->prev = NULL;
+	u->prog->insts->next = NULL;
+	
+	return (u);
+}
+
+int main_asm(int argc, char const *argv[])
+{
+	t_asm		*u;
+	char 		*output_name;
 	
 	if (argc != 2)
 	{
@@ -130,37 +154,41 @@ int		main(int argc, char const *argv[])
 		return (0);
 	}
 
-	u = (t_asm*)malloc(sizeof(t_asm));
-
-	u->magic = COREWAR_EXEC_MAGIC;
-
-	u->fd_input = open(argv[1], O_RDONLY);
-	u->extend = 0;
-	u->octal_index = 0;
-
-	u->insts = (t_inst*)malloc(sizeof(t_inst));
-	u->insts->name = ft_strdup("main");
-	u->insts->index = u->octal_index;
-	u->insts->address = 0;
-	u->insts->ops = NULL;
-	u->insts->prev = NULL;
-	u->insts->next = NULL;
+	if (!(u = init_asm()))
+	{
+		ft_putendl("ERROR MALLOC U");
+		return (0);
+	}
 	
-	if (u->fd_input <= 0)
+	if ((u->fd_input = open(argv[1], O_RDONLY)) < 0)
 	{
 		ft_putendl("ERROR OPEN FILE");
 		return (0);
 	}
 
-	if ((u->fd_output = open("test_2.cor", O_CREAT | O_RDWR, 0644)) < 0)
+	output_name = strdup(argv[1]);
+	output_name[ft_strlen(output_name) - 1] = 'c';
+	output_name = ft_strjoin(output_name , "or");
+	
+	if ((u->fd_output = open(output_name, O_CREAT | O_RDWR, 0644)) < 0)
 	{
+		ft_putendl("ERROR CREATE/OPEN OUT FILE");
 		return (0);
 	}
+
 	parse_file(u);
 
-	u->prog_size = u->octal_index;
+	u->prog->prog_size = u->octal_index;
 
 	write_program(u);
+	
 	return (0);
+}
+
+int		main(int argc, char const *argv[])
+{
+
+	return (main_asm(argc, argv));
+
 }
 

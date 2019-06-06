@@ -12,7 +12,6 @@
 
 #ifndef __OP_H__
 # define __OP_H__
-
 /*
 ** Toutes les tailles sont en octets.
 ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?

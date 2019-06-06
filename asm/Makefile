@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = corewar
+NAME = asm
 
 CC = gcc
 
@@ -28,7 +28,7 @@ HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = srcs/
-SOURCES_LIST = asm.c define_op_inst.c get_next_line.c handler_1.c handler_2.c op.c parse.c 
+SOURCES_LIST = asm.c define_op_inst.c get_next_line.c handler_direct.c handler_other.c op.c parse.c retrieve_utils.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objs/

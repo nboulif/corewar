@@ -18,12 +18,14 @@
 # include <fcntl.h>
 
 # include "op.h"
+# include "corewar_s.h"
 # include "asm_s.h"
 # include "asm_f.h"
 # include "../libft/libft.h"
 
 # define BUFF_SIZE 10000
 
+extern t_op 					g_op_tab[17];
 
 typedef struct	s_gnl
 {

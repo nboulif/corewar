@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handler_1.c                                        :+:      :+:    :+:   */
+/*   handler_direct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nboulif <nboulif@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,40 +11,6 @@
 /* ************************************************************************** */
 
 #include "asm.h"
-
-
-
-
-char		*retrieve_valid_word(char *param)
-{
-	int y;
-
-	y = 1;
-	while(ft_strchr(LABEL_CHARS, *(param + y)))
-		y++;
-	if (!y)
-	{
-		ft_putendl("ERROR 872");
-		return (NULL);
-	}
-	return (ft_strsub(param, 1, y - 1));
-}
-
-t_inst		*check_and_retrieve_valid_inst(t_asm *u, char *word)
-{
-	t_inst		*tmp_inst;
-
-	tmp_inst = u->insts;
-	while (tmp_inst && ft_strcmp(tmp_inst->name, word))
-			tmp_inst = tmp_inst->next;
-		
-	if (!tmp_inst)
-	{
-		ft_putendl("ERROR 873");
-		return (NULL);
-	}
-	return (tmp_inst);
-}
 
 int			handle_direct_number(t_asm *u, t_op_ch *cur_op_ch, int nb)
 {
