@@ -14,9 +14,9 @@ NAME = corewar
 
 CC = gcc
 
-FLAGS = -Wall -Wextra -Werror -O3 
+FLAGS = -Wall -Wextra -Werror -O3
 
-LIBRARIES = -lft -L$(LIBFT_DIRECTORY)
+LIBRARIES = -lft -L$(LIBFT_DIRECTORY) -lncurses
 INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS)
 
 LIBFT = $(LIBFT_DIRECTORY)libft.a
@@ -28,7 +28,7 @@ HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = srcs/
-SOURCES_LIST = vm.c op.c
+SOURCES_LIST = vm.c handler.c parse.c run.c op.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objs/
@@ -44,7 +44,7 @@ RESET = \033[0m
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJECTS_DIRECTORY) $(OBJECTS)
-	@$(CC) $(FLAGS) $(LIBRARIES) $(INCLUDES) $(OBJECTS) -o $(NAME) # -fsanitize=address
+	@$(CC) $(FLAGS) $(LIBRARIES) $(INCLUDES) $(OBJECTS) -o $(NAME) -fsanitize=address
 	@echo "\n$(NAME): $(GREEN)object files were created$(RESET)"
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 

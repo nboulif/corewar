@@ -12,19 +12,7 @@
 
 #include "vm.h"
 
-int		run_vm()
-{
-
-	return (1);
-}
-
-int		init_vm()
-{
-
-	return (1);
-}
-
-t_op 			*check_if_operation(unsigned char octet)
+t_op 	*check_if_operation(unsigned char octet)
 {
 	int i;
 
@@ -36,200 +24,144 @@ t_op 			*check_if_operation(unsigned char octet)
 	
 }
 
-int		parse_player(int id)
-{
-	// u_vm->players = realloc(u_vm->players, id * sizeof(t_player));
-	char *buff;
-	int 	index;
-
-	buff = (char*)malloc(sizeof(char) * 8);
-	int res;
-
-	res = read(u_vm->fd_input, buff, 4 + PROG_NAME_LENGTH + 4 + 4 + COMMENT_LENGTH + 4);
-	
-	
-	t_op 	*op;
-
-	index = 0;
-	while (read(u_vm->fd_input, buff, 1) > 0)
-	{
-		if (!(op = check_if_operation(buff[0])))
-		{
-			
-			ft_putendl("ERROR NOT OPERATION CODE");
-			return (0);
-		}
-		else
-		{
-			ft_putnbr(index);
-			ft_putstr("____");
-			ft_putendl(op->name);
-			
-			index++;
-
-			int size_to_read;
-			
-			size_to_read = 0;
-
-			if (op->codage_octal)
-			{
-				res = read(u_vm->fd_input, buff, 1);
-				index++;
-
-				unsigned char oo = buff[0];
-				unsigned char ooo;
-
-
-				int i;
-				i = 7;
-				while (i >= 0)
-				{
-					unsigned char o = (oo >> i) & 1;
-					ft_putnbr(o);
-					i--;
-				}
-				ft_putendl(" ");
-				
-
-				unsigned int y;
-
-				y = 0;
-				i = 6;
-				while (y++ < op->argc)
-				{
-
-					ooo = (oo >> i) & 3;
-					ft_putnbr(ooo);
-					ft_putstr(" ----- ");
-					if (ooo)
-					{
-						if (ooo == IND_CODE)
-							size_to_read = 2;
-						else if (ooo == DIR_CODE)
-							size_to_read = op->dir_size ? 2 : 4;
-						else if (ooo == REG_CODE)
-						{
-							size_to_read = 1;
-						}
-						ft_putnbr(size_to_read);
-						read(u_vm->fd_input, buff, size_to_read);
-						if (ooo == REG_CODE)
-						{
-							ft_putstr(" ----- ");
-							ft_putnbr(buff[0]);
-						}
-						else if (ooo == DIR_CODE)
-						{
-							unsigned int ppp;
-
-							ppp = 0;
-							if (size_to_read == 4)
-							{
-								ppp =  (ppp | buff[0]) << 8;
-								ppp =  (ppp | buff[1]) << 8;
-								ppp =  (ppp | buff[2]) << 8;
-								ppp =  (ppp | buff[3]);
-							}
-							else
-							{
-								ppp |=  buff[0] << 8;
-								ppp |=  buff[1];
-							}
-							ft_putstr(" ----- ");
-							ft_putnbr(ppp);
-						}
-						else if (ooo == IND_CODE)
-						{
-							unsigned int ppp;
-
-							ppp = 0;
-							ppp |=  buff[0] << 8;
-							ppp |=  buff[1];
-
-							ft_putstr(" ----- ");
-							ft_putnbr(ppp);
-						}
-					}
-					else
-					{
-						ft_putendl("ERROR WRONG CODAGE OCTAL");
-						return (0);
-					}
-					index += size_to_read;
-					ft_putendl(" ");
-					i -= 2;
-				}
-			}
-			else
-			{
-				if (!ft_strcmp("live", op->name))
-					size_to_read = 4;
-				else if (!ft_strcmp("zjmp", op->name))
-					size_to_read = IND_SIZE;
-				else if (!ft_strcmp("fork", op->name))
-					size_to_read = op->dir_size ? 2 : 4;
-				else if (!ft_strcmp("lfork", op->name))
-					size_to_read = op->dir_size ? 2 : 4;
-				read(u_vm->fd_input, buff, size_to_read);
-				
-				index += size_to_read;
-				
-			}
-			ft_putendl(" ");
-		}
-		// break;
-		
-		// res = read(u_vm->fd_input, buff, 8);
-		// printf("%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x", 
-		// 	buff[0], buff[1], buff[2], buff[3],
-		// 	buff[4], buff[5], buff[6], buff[7]);
-		// res = read(u_vm->fd_input, buff, 8);
-		// printf("  %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x\n", 
-		// 	buff[0], buff[1], buff[2], buff[3],
-		// 	buff[4], buff[5], buff[6], buff[7]);
-	}
-
-
-	u_vm->nb_player = id;
-
-	return (1);
-}
-
-int		parse_champion(int id, char *argv)
-{
-
-	if ((u_vm->fd_input = open(argv, O_RDONLY)) < 0)
-	{
-
-		ft_putendl("ERROR OPEN IN FILE");
-		return (0);
-	}
-
-	if (!parse_player(id))
-	{
-		ft_putendl("ERROR PARSE");
-		return (0);
-	}
-
-	close(u_vm->fd_input);
-	return (1);
-}
-
-int		parse_champions(int argc, char *argv[])
+void	print_memory(void)
 {
 	int i;
+	int y;
 
 	i = 0;
-	while (++i < argc)
+	while (i < MEM_SIZE)
 	{
-		if (!parse_champion(i, argv[i]))
+		y = -1;
+		while (++y < 64)
 		{
-			ft_putendl("ERROR PARSE CHAMPION");
-			return (0);
+			printf("%s", u_vm->memory[i]->color);
+			printf("%.2x ", u_vm->memory[i]->data);
+			printf(PF_COLOR_RESET);
+
+			i++;
 		}
+
+		printf("\n");
+	}
+	printf("\n");
+
+}
+
+int		init_champions(void)
+{
+	unsigned int id;
+
+	id = 0;
+	while (id < u_vm->nb_champion)
+	{
+		id + 1 == 1 ? u_vm->champions[id]->color = ft_strdup(PF_COLOR_PLAYER_1) : 0;
+		id + 1 == 1 ? u_vm->champions[id]->nc_color = NC_COLOR_PLAYER_1 : 0;
+		id + 1 == 2 ? u_vm->champions[id]->color = ft_strdup(PF_COLOR_PLAYER_2) : 0;
+		id + 1 == 2 ? u_vm->champions[id]->nc_color = NC_COLOR_PLAYER_2 : 0;
+		id + 1 == 3 ? u_vm->champions[id]->color = ft_strdup(PF_COLOR_PLAYER_3) : 0;
+		id + 1 == 3 ? u_vm->champions[id]->nc_color = NC_COLOR_PLAYER_3 : 0;
+		id + 1 == 4 ? u_vm->champions[id]->color = ft_strdup(PF_COLOR_PLAYER_4) : 0;
+		id + 1 == 4 ? u_vm->champions[id]->nc_color = NC_COLOR_PLAYER_4 : 0;
+
+		u_vm->champions[id]->id = id + 1;
+		u_vm->champions[id]->last_live = 0;
+		u_vm->champions[id]->total_lives = 0;
+
+		u_vm->champions[id]->processes = (t_process*)malloc(sizeof(t_process));
+		u_vm->champions[id]->nb_processes = 1;
 		
+		unsigned int i;
+		
+		i = 0;
+		while (i < REG_NUMBER)
+			u_vm->champions[id]->processes->regs[i++] = (unsigned int)0;
+
+		u_vm->champions[id]->processes->regs[0] = u_vm->champions[id]->id;
+		u_vm->champions[id]->processes->pc = id * (MEM_SIZE / u_vm->nb_champion);
+		u_vm->champions[id]->processes->old_pc = u_vm->champions[id]->processes->pc;
+		u_vm->champions[id]->processes->carry = 0;
+
+		u_vm->champions[id]->processes->cycle_to_run = 0;
+		u_vm->champions[id]->processes->nbr_live = 0;
+		u_vm->champions[id]->processes->cur_op = NULL;
+
+		u_vm->champions[id]->processes->champion = u_vm->champions[id];
+
+		u_vm->champions[id]->processes->prev = NULL;
+		u_vm->champions[id]->processes->next = NULL;
+		
+
+		i = 0;
+		while (i < u_vm->champions[id]->prog->prog_size)
+		{
+			u_vm->memory[u_vm->champions[id]->processes->pc + i]->data = 
+				u_vm->champions[id]->prog->prog[i];
+			u_vm->memory[u_vm->champions[id]->processes->pc + i]->nc_color = u_vm->champions[id]->nc_color;
+			u_vm->memory[u_vm->champions[id]->processes->pc + i]->color = u_vm->champions[id]->color;
+			nc_print(u_vm->champions[id]->processes->pc + i);
+			i++;
+		}
+		id++;
 	}
 	return (1);
+}
+
+void			init_handlers(void)
+{
+	u_vm->handlers[0] = &handle_label_live;
+	u_vm->handlers[1] = &handle_label_ld;
+	u_vm->handlers[2] = &handle_label_st;
+	u_vm->handlers[3] = &handle_label_add;
+	u_vm->handlers[4] = &handle_label_sub;
+	u_vm->handlers[5] = &handle_label_and;
+	u_vm->handlers[6] = &handle_label_or;
+	u_vm->handlers[7] = &handle_label_xor;
+	u_vm->handlers[8] = &handle_label_zjmp;
+	u_vm->handlers[9] = &handle_label_ldi;
+	u_vm->handlers[10] = &handle_label_sti;
+	u_vm->handlers[11] = &handle_label_fork;
+	u_vm->handlers[12] = &handle_label_lld;
+	u_vm->handlers[13] = &handle_label_lldi;
+	u_vm->handlers[14] = &handle_label_lfork;
+	u_vm->handlers[15] = &handle_label_aff;
+}
+void			init_pairs(void)
+{
+	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_BLACK, NC_COLOR_PLAYER_1, NC_COLOR_BLACK);
+	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_WHITE, NC_COLOR_PLAYER_1, NC_COLOR_WHITE);
+	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_1);
+	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_2);
+	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_3);
+	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_4);
+
+	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_BLACK, NC_COLOR_PLAYER_2, NC_COLOR_BLACK);
+	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_WHITE, NC_COLOR_PLAYER_2, NC_COLOR_WHITE);
+	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_2);
+	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_1);
+	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_3);
+	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_4);
+
+	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_BLACK, NC_COLOR_PLAYER_3, NC_COLOR_BLACK);
+	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_WHITE, NC_COLOR_PLAYER_3, NC_COLOR_WHITE);
+	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_3);
+	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_2);
+	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_1);
+	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_4);
+
+	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_BLACK, NC_COLOR_PLAYER_4, NC_COLOR_BLACK);
+	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_WHITE, NC_COLOR_PLAYER_4, NC_COLOR_WHITE);
+	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_4);
+	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_2);
+	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_3);
+	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_1);
+
+	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_BLACK, NC_COLOR_WHITE, NC_COLOR_BLACK);
+	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_WHITE, NC_COLOR_WHITE, NC_COLOR_WHITE);
+	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_PLAYER_1, NC_COLOR_WHITE, NC_COLOR_PLAYER_1);
+	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_PLAYER_2, NC_COLOR_WHITE, NC_COLOR_PLAYER_2);
+	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_PLAYER_3, NC_COLOR_WHITE, NC_COLOR_PLAYER_3);
+	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_PLAYER_4, NC_COLOR_WHITE, NC_COLOR_PLAYER_4);
 }
 
 int		main(int argc, char *argv[])
@@ -241,10 +173,33 @@ int		main(int argc, char *argv[])
 	}
 
 	u_vm = (t_vm*)malloc(sizeof(t_vm));
-	
-	u_vm->magic = COREWAR_EXEC_MAGIC;
-
+	init_handlers();
 	parse_champions(argc, argv);
 	
-	return (run_vm());
+	initscr();
+	start_color();
+	
+	init_pairs();
+
+	int i;
+
+	i = -1;
+	while (++i < MEM_SIZE)
+	{
+		u_vm->memory[i]->data = 0;
+		u_vm->memory[i]->proc = NULL;
+		u_vm->memory[i]->nb_process = 0;
+
+		u_vm->memory[i]->color = PF_COLOR_WHITE;
+		u_vm->memory[i]->nc_color = NC_COLOR_WHITE;
+		nc_print(i);
+	}
+
+	init_champions();
+
+	start_battle();
+	timeout(-1);
+    getch();
+    endwin();
+	return (0);
 }

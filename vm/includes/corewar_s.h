@@ -52,16 +52,17 @@ typedef struct					s_inst
 	t_inst						*next;
 }								t_inst;
 
-typedef struct			s_prog
+typedef struct					s_prog
 {
-	char				prog_name[PROG_NAME_LENGTH + 1];
-	char				comment[COMMENT_LENGTH + 1];
+	char						prog_name[PROG_NAME_LENGTH + 1];
+	char						comment[COMMENT_LENGTH + 1];
 
-	unsigned int		prog_size;
-	int					extend;
-	t_inst				*insts;
-	
-}						t_prog;
+	unsigned int				prog_size;
+	int							extend;
+	t_inst						*insts;
+	unsigned char				*prog;
+
+}								t_prog;
 
 
 

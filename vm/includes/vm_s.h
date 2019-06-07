@@ -14,47 +14,76 @@
 #ifndef __VM_S_H__
 # define __VM_S_H__
 
+typedef struct			s_champion t_champion;
 typedef struct			s_process t_process;
 
 typedef struct			s_process
 {
-	unsigned char		regs[REG_NUMBER][REG_SIZE];
-	unsigned char		pc;
+	unsigned int		regs[REG_NUMBER];
+	unsigned int		pc;
+	unsigned int		old_pc;
 	unsigned int		carry;
-	int					octal_index;
 
+	unsigned int		cycle_to_run;
+	unsigned int		nbr_live;
+	t_op				*cur_op;
+
+	t_champion			*champion;
+
+	t_process			*prev;
 	t_process			*next;
 }						t_process;
 
-typedef struct			s_player
+typedef struct			s_champion
 {
 	
 	unsigned char		id;
+	unsigned int		last_live;
+	unsigned int		total_lives;
+
+	char				*color;
+	int					pair_nc_color;
+	int					nc_color;
 
 	t_prog				*prog;
-	t_prog				*processes;
+	t_process			*processes;
 	unsigned int		nb_processes;
 	
-}						t_player;
+}						t_champion;
+
+typedef struct			s_memory
+{
+	unsigned char		data;
+	t_process			*proc;
+	int					nb_process;
+
+	char				*color;
+	int					nc_color;
+}						t_memory;
 
 typedef struct			s_vm
 {
-	
-	unsigned int		magic;
-
 	int					fd_input;
-	int					fd_output;
 
-	unsigned int		memory[MEM_SIZE];
+	t_memory			memory[MEM_SIZE][1];
 
-	t_player			players[MAX_PLAYERS];
+	t_champion			**champions;
+	unsigned int		nb_champion;
+	unsigned int		nb_champion_alive;
 
-	unsigned int		nb_player;
+	unsigned int		total_processes;
 
-	unsigned int		cycle;
+	unsigned int		cycle_passed;
 
-	unsigned int		check;
-	unsigned int		live;
+	unsigned int		cycle_last_check;
+
+	unsigned int		cycle_to_die;
+
+	unsigned int		nbr_live;
+
+	unsigned int		nbr_check;
+
+	int					(*handlers[16])();
 
 }				t_vm;
 
