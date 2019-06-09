@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-size_t	ft_lstlen(t_list *lst)
+uint32_t	ft_lstlen(t_list *lst)
 {
 	if (!lst)
 		return (0);

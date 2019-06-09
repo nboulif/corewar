@@ -19,13 +19,13 @@ typedef struct			s_process t_process;
 
 typedef struct			s_process
 {
-	unsigned int		regs[REG_NUMBER];
-	unsigned int		pc;
-	unsigned int		old_pc;
-	unsigned int		carry;
+	int32_t			regs[REG_NUMBER];
+	uint32_t			pc;
+	uint32_t			old_pc;
+	uint32_t			carry;
 
-	unsigned int		cycle_to_run;
-	unsigned int		nbr_live;
+	uint32_t			cycle_to_run;
+	uint32_t			nbr_live;
 	t_op				*cur_op;
 
 	t_champion			*champion;
@@ -37,9 +37,9 @@ typedef struct			s_process
 typedef struct			s_champion
 {
 	
-	unsigned char		id;
-	unsigned int		last_live;
-	unsigned int		total_lives;
+	int					id;
+	uint32_t			last_live;
+	uint32_t			total_lives;
 
 	char				*color;
 	int					pair_nc_color;
@@ -47,43 +47,47 @@ typedef struct			s_champion
 
 	t_prog				*prog;
 	t_process			*processes;
-	unsigned int		nb_processes;
+	uint32_t		nb_processes;
 	
 }						t_champion;
 
-typedef struct			s_memory
+typedef struct			s_mem_status
 {
-	unsigned char		data;
 	t_process			*proc;
-	int					nb_process;
+	uint32_t			nb_process;
 
 	char				*color;
 	int					nc_color;
-}						t_memory;
+}						t_mem_status;
 
 typedef struct			s_vm
 {
-	int					fd_input;
+	int				fd_input;
 
-	t_memory			memory[MEM_SIZE][1];
+	uint8_t			mem_data[MEM_SIZE];
+	t_mem_status	mem_stat[MEM_SIZE][1];
 
-	t_champion			**champions;
-	unsigned int		nb_champion;
-	unsigned int		nb_champion_alive;
+	t_champion		**champions;
+	uint32_t		nb_champion;
+	uint32_t		nb_champion_alive;
 
-	unsigned int		total_processes;
+	uint32_t		paused;
 
-	unsigned int		cycle_passed;
+	uint32_t		total_processes;
 
-	unsigned int		cycle_last_check;
+	uint32_t		cycle_passed;
 
-	unsigned int		cycle_to_die;
+	uint32_t		cycle_last_check;
 
-	unsigned int		nbr_live;
+	uint32_t		cycle_to_die;
 
-	unsigned int		nbr_check;
+	uint32_t		nbr_live;
 
-	int					(*handlers[16])();
+	uint32_t		nbr_check;
+
+	int				(*handlers[16])();
+	int32_t			(*hdl_param[16])();
+	uint8_t			(*hdl_conv_code_type[16])();
 
 }				t_vm;
 

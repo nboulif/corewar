@@ -28,7 +28,19 @@ HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = srcs/
-SOURCES_LIST = vm.c handler.c parse.c run.c op.c
+SOURCES_LIST = vm.c \
+				nc_utils.c \
+				op_handler_arithm_binary.c \
+				op_handler_basic.c \
+				op_handler_fork.c \
+				op_handler_load.c \
+				op_handler_store.c \
+				op_handler_utils.c \
+				op.c \
+				parse.c \
+				run.c \
+				utils.c
+
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objs/

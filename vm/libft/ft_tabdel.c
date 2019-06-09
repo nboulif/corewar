@@ -14,7 +14,7 @@
 
 void	ft_tabdel(char ***tab)
 {
-	size_t n;
+	uint32_t n;
 
 	n = 0;
 	while (*tab && (*tab)[n])

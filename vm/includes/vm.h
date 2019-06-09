@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef __ASM_H__
 # define __ASM_H__
 
 # include <limits.h>
 # include <fcntl.h>
+# include <stdint.h>
 
 # include <ncurses.h>
 
@@ -62,7 +62,7 @@
 # define NC_LINE_POSE			5
 # define NC_LINE_CYCLE_PASSED	1
 # define NC_LINE_SLEEP			2
-# define NC_LINE_PLAYER_STATUS	20
+# define NC_LINE_PLAYER_STATUS	10
 
 # include <stdio.h>
 

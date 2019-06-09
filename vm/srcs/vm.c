@@ -12,48 +12,12 @@
 
 #include "vm.h"
 
-t_op 	*check_if_operation(unsigned char octet)
-{
-	int i;
-
-	i = -1;
-	while (++i < 16)
-		if (g_op_tab[i].op_code == octet)
-			return (&g_op_tab[i]);
-	return (NULL);
-	
-}
-
-void	print_memory(void)
-{
-	int i;
-	int y;
-
-	i = 0;
-	while (i < MEM_SIZE)
-	{
-		y = -1;
-		while (++y < 64)
-		{
-			printf("%s", u_vm->memory[i]->color);
-			printf("%.2x ", u_vm->memory[i]->data);
-			printf(PF_COLOR_RESET);
-
-			i++;
-		}
-
-		printf("\n");
-	}
-	printf("\n");
-
-}
-
 int		init_champions(void)
 {
-	unsigned int id;
+	int id;
 
 	id = 0;
-	while (id < u_vm->nb_champion)
+	while (id < (int)u_vm->nb_champion)
 	{
 		id + 1 == 1 ? u_vm->champions[id]->color = ft_strdup(PF_COLOR_PLAYER_1) : 0;
 		id + 1 == 1 ? u_vm->champions[id]->nc_color = NC_COLOR_PLAYER_1 : 0;
@@ -64,18 +28,18 @@ int		init_champions(void)
 		id + 1 == 4 ? u_vm->champions[id]->color = ft_strdup(PF_COLOR_PLAYER_4) : 0;
 		id + 1 == 4 ? u_vm->champions[id]->nc_color = NC_COLOR_PLAYER_4 : 0;
 
-		u_vm->champions[id]->id = id + 1;
+		u_vm->champions[id]->id = -(id + 1);
 		u_vm->champions[id]->last_live = 0;
 		u_vm->champions[id]->total_lives = 0;
 
 		u_vm->champions[id]->processes = (t_process*)malloc(sizeof(t_process));
 		u_vm->champions[id]->nb_processes = 1;
 		
-		unsigned int i;
+		uint32_t i;
 		
 		i = 0;
 		while (i < REG_NUMBER)
-			u_vm->champions[id]->processes->regs[i++] = (unsigned int)0;
+			u_vm->champions[id]->processes->regs[i++] = (uint32_t)0;
 
 		u_vm->champions[id]->processes->regs[0] = u_vm->champions[id]->id;
 		u_vm->champions[id]->processes->pc = id * (MEM_SIZE / u_vm->nb_champion);
@@ -95,73 +59,16 @@ int		init_champions(void)
 		i = 0;
 		while (i < u_vm->champions[id]->prog->prog_size)
 		{
-			u_vm->memory[u_vm->champions[id]->processes->pc + i]->data = 
+			u_vm->mem_data[u_vm->champions[id]->processes->pc + i] = 
 				u_vm->champions[id]->prog->prog[i];
-			u_vm->memory[u_vm->champions[id]->processes->pc + i]->nc_color = u_vm->champions[id]->nc_color;
-			u_vm->memory[u_vm->champions[id]->processes->pc + i]->color = u_vm->champions[id]->color;
+			u_vm->mem_stat[u_vm->champions[id]->processes->pc + i]->nc_color = u_vm->champions[id]->nc_color;
+			u_vm->mem_stat[u_vm->champions[id]->processes->pc + i]->color = u_vm->champions[id]->color;
 			nc_print(u_vm->champions[id]->processes->pc + i);
 			i++;
 		}
 		id++;
 	}
 	return (1);
-}
-
-void			init_handlers(void)
-{
-	u_vm->handlers[0] = &handle_label_live;
-	u_vm->handlers[1] = &handle_label_ld;
-	u_vm->handlers[2] = &handle_label_st;
-	u_vm->handlers[3] = &handle_label_add;
-	u_vm->handlers[4] = &handle_label_sub;
-	u_vm->handlers[5] = &handle_label_and;
-	u_vm->handlers[6] = &handle_label_or;
-	u_vm->handlers[7] = &handle_label_xor;
-	u_vm->handlers[8] = &handle_label_zjmp;
-	u_vm->handlers[9] = &handle_label_ldi;
-	u_vm->handlers[10] = &handle_label_sti;
-	u_vm->handlers[11] = &handle_label_fork;
-	u_vm->handlers[12] = &handle_label_lld;
-	u_vm->handlers[13] = &handle_label_lldi;
-	u_vm->handlers[14] = &handle_label_lfork;
-	u_vm->handlers[15] = &handle_label_aff;
-}
-void			init_pairs(void)
-{
-	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_BLACK, NC_COLOR_PLAYER_1, NC_COLOR_BLACK);
-	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_WHITE, NC_COLOR_PLAYER_1, NC_COLOR_WHITE);
-	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_1);
-	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_2);
-	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_3);
-	init_pair((NC_COLOR_PLAYER_1 * 10) + NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_4);
-
-	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_BLACK, NC_COLOR_PLAYER_2, NC_COLOR_BLACK);
-	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_WHITE, NC_COLOR_PLAYER_2, NC_COLOR_WHITE);
-	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_2);
-	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_1);
-	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_3);
-	init_pair((NC_COLOR_PLAYER_2 * 10) + NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_4);
-
-	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_BLACK, NC_COLOR_PLAYER_3, NC_COLOR_BLACK);
-	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_WHITE, NC_COLOR_PLAYER_3, NC_COLOR_WHITE);
-	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_3);
-	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_2);
-	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_1);
-	init_pair((NC_COLOR_PLAYER_3 * 10) + NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_4);
-
-	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_BLACK, NC_COLOR_PLAYER_4, NC_COLOR_BLACK);
-	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_WHITE, NC_COLOR_PLAYER_4, NC_COLOR_WHITE);
-	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_4);
-	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_PLAYER_2, NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_2);
-	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_PLAYER_3, NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_3);
-	init_pair((NC_COLOR_PLAYER_4 * 10) + NC_COLOR_PLAYER_1, NC_COLOR_PLAYER_4, NC_COLOR_PLAYER_1);
-
-	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_BLACK, NC_COLOR_WHITE, NC_COLOR_BLACK);
-	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_WHITE, NC_COLOR_WHITE, NC_COLOR_WHITE);
-	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_PLAYER_1, NC_COLOR_WHITE, NC_COLOR_PLAYER_1);
-	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_PLAYER_2, NC_COLOR_WHITE, NC_COLOR_PLAYER_2);
-	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_PLAYER_3, NC_COLOR_WHITE, NC_COLOR_PLAYER_3);
-	init_pair((NC_COLOR_WHITE * 10) + NC_COLOR_PLAYER_4, NC_COLOR_WHITE, NC_COLOR_PLAYER_4);
 }
 
 int		main(int argc, char *argv[])
@@ -186,12 +93,13 @@ int		main(int argc, char *argv[])
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
-		u_vm->memory[i]->data = 0;
-		u_vm->memory[i]->proc = NULL;
-		u_vm->memory[i]->nb_process = 0;
+		u_vm->mem_data[i] = 0;
 
-		u_vm->memory[i]->color = PF_COLOR_WHITE;
-		u_vm->memory[i]->nc_color = NC_COLOR_WHITE;
+		u_vm->mem_stat[i]->proc = NULL;
+		u_vm->mem_stat[i]->nb_process = 0;
+
+		u_vm->mem_stat[i]->color = PF_COLOR_WHITE;
+		u_vm->mem_stat[i]->nc_color = NC_COLOR_WHITE;
 		nc_print(i);
 	}
 

@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void	*ft_memalloc(size_t size)
+void	*ft_memalloc(uint32_t size)
 {
 	void	*mem;
 

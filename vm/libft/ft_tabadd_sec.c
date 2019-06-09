@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int		ft_tabadd_sec(char ***tab, size_t i, size_t len)
+int		ft_tabadd_sec(char ***tab, uint32_t i, uint32_t len)
 {
 	if (!((*tab)[i] = ft_strnew(len)))
 	{

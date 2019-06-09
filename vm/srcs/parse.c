@@ -12,7 +12,7 @@
 
 #include "vm.h"
 
-int parse_param(unsigned int codage_octal, int id, t_op *op, unsigned int *index)
+int parse_param(uint32_t codage_octal, int id, t_op *op, uint32_t *index)
 {
 	int argv;
 
@@ -49,9 +49,9 @@ int parse_param(unsigned int codage_octal, int id, t_op *op, unsigned int *index
 
 int		parse_champion_file(int id)
 {
-	unsigned int		index;
+	uint32_t		index;
 	t_op				*op;
-	unsigned char 		codage_octal;
+	uint8_t 		codage_octal;
 	index = 0;
 	while (index < u_vm->champions[id]->prog->prog_size)
 	{
@@ -95,7 +95,7 @@ int		parse_champion_file(int id)
 
 int		check_valid_magic(void)
 {
-	unsigned char		buff[4];
+	uint8_t		buff[4];
 	int					res;
 
 	if ((res = read(u_vm->fd_input, buff, 4)) == 4 
@@ -112,7 +112,7 @@ int		parse_champion_header(int id)
 {
 	int				res;
 	char			buff[COMMENT_LENGTH + 1];
-	unsigned int	prog_size;
+	uint32_t	prog_size;
 
 	if (!check_valid_magic())
 		return (0);
@@ -144,10 +144,10 @@ int		parse_champion_header(int id)
 
 int		parse_champion_prog(int id)
 {
-	unsigned char		*buff;
+	uint8_t		*buff;
 	int			res;
 
-	buff = (unsigned char*)malloc(sizeof(unsigned char) *
+	buff = (uint8_t*)malloc(sizeof(uint8_t) *
 		u_vm->champions[id]->prog->prog_size);
 
 	res = read(u_vm->fd_input, buff, u_vm->champions[id]->prog->prog_size);

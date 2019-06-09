@@ -14,7 +14,7 @@
 
 char		*ft_itoa(int n)
 {
-	size_t			len;
+	uint32_t			len;
 	int				neg;
 	char			*str;
 	long long int	n2;

@@ -15,7 +15,7 @@
 char	*ft_strmap(char const *s, char (*f)(char))
 {
 	char	*str;
-	size_t	i;
+	uint32_t	i;
 
 	if (!s || !f || !(str = ft_strnew(ft_strlen(s))))
 		return (NULL);

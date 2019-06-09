@@ -14,7 +14,7 @@
 
 char	*ft_strcpy(char *dst, const char *src)
 {
-	unsigned int n;
+	uint32_t n;
 
 	n = 0;
 	while (*src)

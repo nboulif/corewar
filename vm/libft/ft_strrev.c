@@ -14,8 +14,8 @@
 
 char	*ft_strrev(char *s)
 {
-	size_t		start;
-	size_t		end;
+	uint32_t		start;
+	uint32_t		end;
 	char		tmp;
 
 	start = 0;

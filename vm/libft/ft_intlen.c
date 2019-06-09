@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-size_t		ft_intlen(int n)
+uint32_t		ft_intlen(int n)
 {
 	if (n != 0)
 		return (ft_intlen(n / 10) + 1);

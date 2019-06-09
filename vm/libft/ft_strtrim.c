@@ -15,8 +15,8 @@
 char	*ft_strtrim(char const *s)
 {
 	char	*str;
-	size_t	i;
-	size_t	len_s;
+	uint32_t	i;
+	uint32_t	len_s;
 
 	if (!s)
 		return (NULL);

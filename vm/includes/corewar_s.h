@@ -21,13 +21,13 @@ typedef struct	s_op t_op;
 typedef struct					s_op
 {
 	char						*name;
-	unsigned int				argc;
-	char						argv[3];
-	unsigned char				op_code;
-	unsigned int				cycle;
+	uint32_t				argc;
+	uint8_t						argv[3];
+	uint8_t				op_code;
+	uint32_t				cycle;
 	char						*description;
-	unsigned char				codage_octal;
-	unsigned char				dir_size; // 2 if 1 else 4
+	uint8_t				codage_octal;
+	uint8_t				dir_size; // 2 if 1 else 4
 }								t_op;
 
 
@@ -36,7 +36,7 @@ typedef struct					s_op_ch
 {
 	int							index;
 	char						**params;
-	unsigned int				param_codage;
+	uint32_t				param_codage;
 	t_op						*op;
 	t_op_ch						*prev;
 	t_op_ch						*next;
@@ -57,10 +57,10 @@ typedef struct					s_prog
 	char						prog_name[PROG_NAME_LENGTH + 1];
 	char						comment[COMMENT_LENGTH + 1];
 
-	unsigned int				prog_size;
+	uint32_t				prog_size;
 	int							extend;
 	t_inst						*insts;
-	unsigned char				*prog;
+	uint8_t					*prog;
 
 }								t_prog;
 

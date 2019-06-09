@@ -12,11 +12,11 @@
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memmove(void *dst, const void *src, uint32_t len)
 {
-	if ((unsigned char)dst > (unsigned char)src)
+	if ((uint8_t)dst > (uint8_t)src)
 		while (len--)
-			((unsigned char *)dst)[len] = ((unsigned char *)src)[len];
+			((uint8_t *)dst)[len] = ((uint8_t *)src)[len];
 	else
 		ft_memcpy(dst, src, len);
 	return (dst);

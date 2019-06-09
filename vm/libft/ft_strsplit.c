@@ -15,9 +15,9 @@
 char		**ft_strsplit(char const *s, char c)
 {
 	char		**tab;
-	size_t		i;
-	size_t		d;
-	size_t		count_words;
+	uint32_t		i;
+	uint32_t		d;
+	uint32_t		count_words;
 
 	if (!s || !(tab =
 		(char **)malloc(sizeof(char *) * (ft_count_words(s, c) + 1))))
