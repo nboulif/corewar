@@ -15,6 +15,15 @@
 ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
 */
 
+
+typedef struct		s_prog
+{
+  char			*name;
+  char			*comment;
+}										t_prog;
+
+int magic_number(t_prog *header);
+
 #define IND_SIZE				2
 #define REG_SIZE				4
 #define DIR_SIZE				REG_SIZE
