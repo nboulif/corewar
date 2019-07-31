@@ -59,6 +59,11 @@ int find_comment(char *line, t_prog *header)
 	return (1);
 }
 
+int	parse_commands(char *line)
+{
+	return(0);
+}
+
 int main(int argc, char **argv)
 {
 	int fd;
@@ -79,6 +84,6 @@ int main(int argc, char **argv)
 			find_comment(line, &header);
 	}
 	close(fd);
-	//parse_commands(&line);
+	parse_commands(&line);
 	return (0);
 }
