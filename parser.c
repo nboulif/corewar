@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/07/23 19:30:20 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/01 21:03:08 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 
-int find_name(char *line, t_prog *header)
+int	find_name(char *line, t_prog *header)
 {
 	int name_length;
 	int i;
@@ -37,7 +37,7 @@ int find_name(char *line, t_prog *header)
 	return (1);
 }
 
-int find_comment(char *line, t_prog *header)
+int	find_comment(char *line, t_prog *header)
 {
 	int	comment_length;
 	int i;
@@ -59,18 +59,51 @@ int find_comment(char *line, t_prog *header)
 	return (1);
 }
 
-int	parse_commands(char *line)
+int	identify_opc(char *line)
 {
-	return(0);
+	char	**opc;
+	int		i;
+
+	opc = malloc(sizeof(char*) * 16);
+	*opc = malloc(sizeof(char*) * 5);
+	opc[0] = "live";
+	opc[1] = "ld";
+	opc[2] = "st";
+	opc[3] = "add";
+	opc[4] = "sub";
+	opc[5] = "and";
+	opc[6] = "or";
+	opc[7] = "xor";
+	opc[8] = "zjump";
+	opc[9] = "ldi";
+	opc[10] = "sti";
+	opc[11] = "fork";
+	opc[12] = "lld";
+	opc[13] = "lldi";
+	opc[14] = "lfork";
+	opc[15] = "aff";
+	i = 0;
+	while (++i < 16)
+	{
+		if (!strcmp(line, opc[i - 1]))
+			return (i);
+	}
+	return (0);
 }
 
-int main(int argc, char **argv)
+int	parse_commands(char *line)
 {
-	int fd;
-	char *line;
-	int i;
-	t_prog header;
 	
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	int		fd;
+	char	*line;
+	int		i;
+	t_prog	header;
+
 	header.name = ft_strnew(PROG_NAME_LENGTH);
 	header.comment = ft_strnew(COMMENT_LENGTH);
 	line = (char *)malloc(sizeof(*line) * 1);
@@ -80,10 +113,10 @@ int main(int argc, char **argv)
 	i = 0;
 	while (get_next_line(fd, &line) > 0)
 	{
-			find_name(line, &header);
-			find_comment(line, &header);
+		find_name(line, &header);
+		find_comment(line, &header);
+		parse_commands(&line);
 	}
 	close(fd);
-	parse_commands(&line);
 	return (0);
 }
