@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/02 19:23:16 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/02 19:57:56 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,13 @@ int	parse_commands(char *line)
 	a.label = "";
 	i = 0;
 	printf("**line** %s\n", line);
+	while (line[i] != ' ' && line[i] != ':' && line[i] != '%' && line[i] != ',')
+		i++;
+	printf("%c\n", line[i]);
 	arg = ft_strsplit(line, ' ');
 	if (arg[0] == NULL)
 		return (0);
+	i = 0;
 	if (arg[i][ft_strlen(arg[i]) - 1] == ':')
 		a.label = arg[i++];
 	opc = arg[i++];
