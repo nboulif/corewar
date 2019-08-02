@@ -6,7 +6,7 @@
 /*   By: nsondag <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/14 19:21:07 by nsondag           #+#    #+#             */
-/*   Updated: 2018/09/02 17:22:52 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/01 21:23:10 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,7 @@ char				*ft_strncpy(char *dst, const char *src, size_t len);
 char				*ft_strcat(char *s1, const char *s2);
 char				*ft_strnew(size_t size);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
+size_t				word_count(const char *s, char c);
+char				**ft_strsplit(char const *s, char c);
 char				*ft_strjoin(char const *s1, char const *s2);
 #endif

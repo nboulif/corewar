@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/01 21:03:08 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/02 19:23:16 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	identify_opc(char *line)
 	opc[5] = "and";
 	opc[6] = "or";
 	opc[7] = "xor";
-	opc[8] = "zjump";
+	opc[8] = "zjmp";
 	opc[9] = "ldi";
 	opc[10] = "sti";
 	opc[11] = "fork";
@@ -93,7 +93,25 @@ int	identify_opc(char *line)
 
 int	parse_commands(char *line)
 {
-	
+	char	**arg;
+	char	*opc;
+	int		i;
+	t_line	a;
+
+	a.label = "";
+	i = 0;
+	printf("**line** %s\n", line);
+	arg = ft_strsplit(line, ' ');
+	if (arg[0] == NULL)
+		return (0);
+	if (arg[i][ft_strlen(arg[i]) - 1] == ':')
+		a.label = arg[i++];
+	opc = arg[i++];
+	a.params = arg[i];
+	a.opc = identify_opc(opc);
+	printf("label: %s\n", a.label);
+	printf("opc: %d\n", a.opc);
+	printf("params: %s\n", a.params);
 	return (0);
 }
 
@@ -113,9 +131,11 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (get_next_line(fd, &line) > 0)
 	{
-		find_name(line, &header);
-		find_comment(line, &header);
-		parse_commands(&line);
+		if (find_name(line, &header))
+			continue;
+		if (find_comment(line, &header))
+			continue;
+		parse_commands(line);
 	}
 	close(fd);
 	return (0);

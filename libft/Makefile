@@ -6,12 +6,12 @@
 #    By: nsondag <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/14 21:09:08 by nsondag           #+#    #+#              #
-#    Updated: 2018/09/02 17:22:10 by nsondag          ###   ########.fr        #
+#    Updated: 2019/08/01 21:24:12 by nsondag          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = ft_strsub.c ft_bzero.c ft_memset.c ft_strjoin.c ft_strlen.c ft_strnew.c\
-	  ft_strcpy.c ft_strncpy.c ft_strcat.c
+	  ft_strcpy.c ft_strncpy.c ft_strcat.c ft_strsplit.c word_count.c
 
 NAME = libft.a
 FLAGS = -Wall -Werror -Wextra

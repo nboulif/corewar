@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/08/01 20:18:12 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/02 17:48:48 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct	s_line
 	char	*label;
 	int		opc;
 	int		nb_params;
-	int		*params;
+	char	*params;
 }				t_line;
 
 int magic_number(t_prog *header);
