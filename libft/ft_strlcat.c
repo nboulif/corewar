@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 17:59:49 by nsondag           #+#    #+#             */
-/*   Updated: 2018/06/25 17:10:17 by nsondag          ###   ########.fr       */
+/*   Created: 2018/06/21 17:21:34 by nsondag           #+#    #+#             */
+/*   Updated: 2018/06/24 16:05:26 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	char *join;
+	size_t size_dst;
 
-	if (!s1 || !s2)
-		return (NULL);
-	if (!(join = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
-		return (NULL);
-	ft_strcpy(join, s1);
-	ft_strcat(join, s2);
-	return (join);
+	size_dst = ft_strlen(dst);
+	if (size > size_dst)
+	{
+		dst = ft_strncat(dst, src, size - size_dst - 1);
+		return (size_dst + ft_strlen(src));
+	}
+	else
+		return (size + ft_strlen(src));
 }

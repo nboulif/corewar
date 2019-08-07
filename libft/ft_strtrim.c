@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 17:59:49 by nsondag           #+#    #+#             */
-/*   Updated: 2018/06/25 17:10:17 by nsondag          ###   ########.fr       */
+/*   Created: 2018/06/20 20:26:13 by nsondag           #+#    #+#             */
+/*   Updated: 2018/06/24 17:46:58 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strtrim(char const *s)
 {
-	char *join;
+	char	*dst;
+	size_t	len;
+	size_t	i;
 
-	if (!s1 || !s2)
+	if (!s)
 		return (NULL);
-	if (!(join = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
+	i = 0;
+	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
+		i++;
+	len = ft_strlen(s);
+	while ((s[len - 1] == ' ' || s[len - 1] == '\n' \
+				|| s[len - 1] == '\t') && len != i)
+		len--;
+	if (!(dst = ft_strnew(len - i)))
 		return (NULL);
-	ft_strcpy(join, s1);
-	ft_strcat(join, s2);
-	return (join);
+	dst = ft_strsub(s, i, len - i);
+	dst[len - i + 1] = '\0';
+	return (dst);
 }

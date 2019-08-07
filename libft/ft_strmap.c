@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 17:59:49 by nsondag           #+#    #+#             */
-/*   Updated: 2018/06/25 17:10:17 by nsondag          ###   ########.fr       */
+/*   Created: 2018/06/21 15:25:47 by nsondag           #+#    #+#             */
+/*   Updated: 2018/06/24 17:59:39 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strmap(char const *s, char (*f)(char))
 {
-	char *join;
+	char	*dst;
+	size_t	i;
 
-	if (!s1 || !s2)
+	if (!s)
 		return (NULL);
-	if (!(join = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
+	i = 0;
+	if (!(dst = (char*)malloc(sizeof(char) * (ft_strlen(s) + 1))))
 		return (NULL);
-	ft_strcpy(join, s1);
-	ft_strcat(join, s2);
-	return (join);
+	ft_strcpy(dst, s);
+	while (dst[i] != '\0')
+	{
+		dst[i] = f(*s);
+		i++;
+		s++;
+	}
+	return (dst);
 }

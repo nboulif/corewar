@@ -15,6 +15,8 @@
 ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
 */
 
+#include <fcntl.h>
+
 typedef struct		s_prog
 {
 	char	*name;

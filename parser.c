@@ -12,9 +12,7 @@
 
 #include "op.h"
 #include <stdio.h>
-#include <fcntl.h>
 #include "libft/libft.h"
-#include "get_next_line.h"
 
 int	find_name(char *line, t_prog *header)
 {
@@ -23,8 +21,8 @@ int	find_name(char *line, t_prog *header)
 	int test;
 
 	i = 0;
-	name_length = strlen(NAME_CMD_STRING);
-	if ((test = strncmp(NAME_CMD_STRING, line, name_length)) != 0)
+	name_length = ft_strlen(NAME_CMD_STRING);
+	if ((test = ft_strncmp(NAME_CMD_STRING, line, name_length)) != 0)
 		return (0);
 	if (line[i + name_length + 1] == '"')
 		i++;
@@ -45,7 +43,7 @@ int	find_comment(char *line, t_prog *header)
 
 	i = 0;
 	comment_length = strlen(COMMENT_CMD_STRING);
-	if ((test = strncmp(COMMENT_CMD_STRING, line, comment_length)) != 0)
+	if ((test = ft_strncmp(COMMENT_CMD_STRING, line, comment_length)) != 0)
 		return (0);
 	if (line[i + comment_length + 1] == '"')
 		i++;
@@ -85,7 +83,7 @@ int	identify_opc(char *line)
 	i = 0;
 	while (++i < 16)
 	{
-		if (!strcmp(line, opc[i - 1]))
+		if (!ft_strcmp(line, opc[i - 1]))
 			return (i);
 	}
 	return (0);
@@ -93,7 +91,6 @@ int	identify_opc(char *line)
 
 int	parse_commands(char *line)
 {
-	char	**arg;
 	char	*opc;
 	int		i;
 	t_line	a;
@@ -101,21 +98,24 @@ int	parse_commands(char *line)
 	a.label = "";
 	i = 0;
 	printf("**line** %s\n", line);
-	while (line[i] != ' ' && line[i] != ':' && line[i] != '%' && line[i] != ',')
+	while (line[i] != ' ' && line[i] != ':' && line[i] != '%' && line[i] != '\t')
 		i++;
-	printf("%c\n", line[i]);
-	arg = ft_strsplit(line, ' ');
-	if (arg[0] == NULL)
-		return (0);
-	i = 0;
-	if (arg[i][ft_strlen(arg[i]) - 1] == ':')
-		a.label = arg[i++];
-	opc = arg[i++];
-	a.params = arg[i];
+	if (line[i] == ':')
+	{
+		printf("if\n");
+		printf("has label");
+		opc = NULL;
+	}
+	else
+	{
+		printf("else\n");
+		while (line[i] != ' ' && line[i] != '\t' && line[i] != '%')
+			i++;
+		opc = ft_strnew(i);
+		opc = ft_strsub(line, 0, i);
+	}
 	a.opc = identify_opc(opc);
-	printf("label: %s\n", a.label);
-	printf("opc: %d\n", a.opc);
-	printf("params: %s\n", a.params);
+	printf("opc %d\n", a.opc);
 	return (0);
 }
 

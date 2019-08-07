@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   word_count.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/20 17:59:49 by nsondag           #+#    #+#             */
-/*   Updated: 2018/06/25 17:10:17 by nsondag          ###   ########.fr       */
+/*   Created: 2018/11/29 23:51:12 by nsondag           #+#    #+#             */
+/*   Updated: 2018/11/29 23:55:18 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+size_t	word_count(const char *s, char c)
 {
-	char *join;
+	size_t count;
 
-	if (!s1 || !s2)
-		return (NULL);
-	if (!(join = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
-		return (NULL);
-	ft_strcpy(join, s1);
-	ft_strcat(join, s2);
-	return (join);
+	if (s == NULL)
+		return (0);
+	count = 0;
+	while (*s != '\0')
+	{
+		while (*s == c && *s != '\0')
+			s++;
+		while (*s != c && *s != '\0')
+			s++;
+		count++;
+	}
+	return (count);
 }
