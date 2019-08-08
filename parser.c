@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/02 19:57:56 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/08 18:07:34 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,18 +97,18 @@ int	parse_commands(char *line)
 
 	a.label = "";
 	i = 0;
-	printf("**line** %s\n", line);
-	while (line[i] != ' ' && line[i] != ':' && line[i] != '%' && line[i] != '\t')
+	while (line[i] != ' ' && line[i] != ':' && line[i] != '%' && line[i] != '\t' && line[i])
 		i++;
+	if (!line[i + 1])
+		return (0);
 	if (line[i] == ':')
 	{
-		printf("if\n");
-		printf("has label");
+		printf("has label\n");
 		opc = NULL;
+		return (1);
 	}
 	else
 	{
-		printf("else\n");
 		while (line[i] != ' ' && line[i] != '\t' && line[i] != '%')
 			i++;
 		opc = ft_strnew(i);
@@ -135,6 +135,8 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (get_next_line(fd, &line) > 0)
 	{
+		printf("i %d\n", i);
+		i++;
 		if (find_name(line, &header))
 			continue;
 		if (find_comment(line, &header))
