@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/08 18:07:34 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/09 15:29:41 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,24 @@ int	identify_opc(char *line)
 	return (0);
 }
 
+int parse_params (char *params, int opc)
+{
+	if (opc == 1 || opc == 9 || opc == 12 || opc == 15)
+		printf("1 param direct\n");
+	else if (opc >= 6 && opc <= 8)
+		printf("3 params\n");
+	else if (opc == 2 || opc == 13)
+		printf("2 params ld\n");
+	else if (opc == 4 || opc == 5)
+		printf("3 reg\n");
+	else if (opc > 0 && opc <= 16)
+		printf("other\n");
+	else
+		printf("error\n");
+	printf("%s\n", params);
+	return (0);
+}
+
 int	parse_commands(char *line)
 {
 	char	*opc;
@@ -105,7 +123,6 @@ int	parse_commands(char *line)
 	{
 		a.label = ft_strnew(i);
 		a.label = ft_strsub(line, 0, i);
-		printf("label %s\n", a.label);
 		while (line[i + 1] == ' ' || line[i + 1] == '\t')
 			i++;
 		line = line + i + 1;
@@ -116,9 +133,14 @@ int	parse_commands(char *line)
 	opc = ft_strnew(i);
 	opc = ft_strsub(line, 0, i);
 	a.opc = identify_opc(opc);
+	if (line[i] != '%')
+		line = line + i + 1;
+	else
+		line = line + i;
+	a.params = line;
+	parse_params(line, a.opc);
 	printf("opc %d\n", a.opc);
-	line = line + i + 1;
-	printf("line: %s\n", line);
+	printf("label %s\n", a.label);
 	return (0);
 }
 

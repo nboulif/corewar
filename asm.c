@@ -17,7 +17,7 @@ int magic_number(t_prog *header)
 	size_t length;
 
 	length = ft_strlen(header->name);
-	printf("%zu\n", length);
+	//printf("%zu\n", length);
 	byte = ConvertToBigEndian(byte);
 	fd = open(header->name, O_CREAT | O_RDWR, 0644);
 	write(fd, &byte, 4);
