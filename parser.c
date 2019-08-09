@@ -99,23 +99,26 @@ int	parse_commands(char *line)
 	i = 0;
 	while (line[i] != ' ' && line[i] != ':' && line[i] != '%' && line[i] != '\t' && line[i])
 		i++;
-	if (!line[i + 1])
+	if (!line[i])
 		return (0);
 	if (line[i] == ':')
 	{
-		printf("has label\n");
-		opc = NULL;
-		return (1);
-	}
-	else
-	{
-		while (line[i] != ' ' && line[i] != '\t' && line[i] != '%')
+		a.label = ft_strnew(i);
+		a.label = ft_strsub(line, 0, i);
+		printf("label %s\n", a.label);
+		while (line[i + 1] == ' ' || line[i + 1] == '\t')
 			i++;
-		opc = ft_strnew(i);
-		opc = ft_strsub(line, 0, i);
+		line = line + i + 1;
 	}
+	i = 0;
+	while (line[i] != ' ' && line[i] != '\t' && line[i] != '%')
+		i++;
+	opc = ft_strnew(i);
+	opc = ft_strsub(line, 0, i);
 	a.opc = identify_opc(opc);
 	printf("opc %d\n", a.opc);
+	line = line + i + 1;
+	printf("line: %s\n", line);
 	return (0);
 }
 
@@ -135,7 +138,6 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (get_next_line(fd, &line) > 0)
 	{
-		printf("i %d\n", i);
 		i++;
 		if (find_name(line, &header))
 			continue;
