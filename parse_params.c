@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/09 15:29:43 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/09 15:38:24 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,9 @@
 
 int one_param_reg(char *params, int opc)
 {
-	
+	if (params[1] == ":")
+		printf("label\n");
+	else
+		printf("no label\n");
+	return (0);
 }
