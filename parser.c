@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/09 15:38:22 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/13 22:53:19 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	identify_opc(char *line)
 
 	opc = malloc(sizeof(char*) * 16);
 	*opc = malloc(sizeof(char*) * 5);
+	//en fait il y a deja un tableau 
 	opc[0] = "live";
 	opc[1] = "ld";
 	opc[2] = "st";
@@ -89,21 +90,46 @@ int	identify_opc(char *line)
 	return (0);
 }
 
-int parse_params (char *params, int opc)
+int parse_params (char *str_params, t_op op)
 {
-	if (opc == 1 || opc == 9 || opc == 12 || opc == 15)
-		printf("1 param direct\n");
-	else if (opc >= 6 && opc <= 8)
-		printf("3 params\n");
-	else if (opc == 2 || opc == 13)
-		printf("2 params ld\n");
-	else if (opc == 4 || opc == 5)
-		printf("3 reg\n");
-	else if (opc > 0 && opc <= 16)
-		printf("other\n");
-	else
-		printf("error\n");
-	printf("%s\n", params);
+	char	**params;
+	int		i;
+	int		reg;
+	char	*str_direct;
+	int		direct;
+	int 	indirect;
+
+	//recuperer code octal
+	i = 0;
+	params = ft_strsplit(str_params, SEPERATOR_CHAR);
+	while (i < op.nb_params)
+	{
+		//skip_whitespace;
+		if (!params[i])
+			return (printf("error\n"));
+		if (params[i][0] == 'r') 
+		{
+			reg = ft_atoi(&params[i][1]);
+			if (reg > 0 && reg < 17  && (op.params[i - 1] & T_REG))
+				//valide
+		}
+		else if (params[i][0] == DIRECT_CHAR)
+		{
+			if (params[i][1] == LABEL_CHAR)
+				str_direct = &params[i][2];
+				//verifie label;
+			else if (params[i][1] == '-' || ft_isdigit(params[i][1]))
+				direct = ft_atoi(&params[i][1]); //
+			else
+				return (printf("error\n"));
+		}
+		else if (params[i][0] == '-' || ft_isdigit(params[i][0]))
+		{
+			indirect = ft_atoi(params[i]);
+		}
+		else
+			return (printf("error\n"));
+	}	
 	return (0);
 }
 

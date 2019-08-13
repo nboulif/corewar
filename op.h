@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/08/09 15:38:20 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/13 22:53:16 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,25 @@
 
 #include <fcntl.h>
 
+extern t_op g_op_tab[17];
+
 typedef struct		s_prog
 {
 	char	*name;
 	char	*comment;
 }					t_prog;
+
+typedef struct s_op
+{
+	char	*name;
+	int		nb_params;
+	char	params[3];
+	int		opc;
+	int		cycles;
+	char	*comment;
+	int		codage_octal;
+	int		dir_size;
+}				t_op;
 
 typedef struct	s_line
 {
