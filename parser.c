@@ -6,11 +6,12 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/13 22:53:19 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/14 16:35:43 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
+#include "asm.h"
 #include <stdio.h>
 #include "libft/libft.h"
 
@@ -101,7 +102,7 @@ int parse_params (char *str_params, t_op op)
 
 	//recuperer code octal
 	i = 0;
-	params = ft_strsplit(str_params, SEPERATOR_CHAR);
+	params = ft_strsplit(str_params, SEPARATOR_CHAR);
 	while (i < op.nb_params)
 	{
 		//skip_whitespace;
@@ -111,7 +112,7 @@ int parse_params (char *str_params, t_op op)
 		{
 			reg = ft_atoi(&params[i][1]);
 			if (reg > 0 && reg < 17  && (op.params[i - 1] & T_REG))
-				//valide
+				;//valide
 		}
 		else if (params[i][0] == DIRECT_CHAR)
 		{
@@ -140,8 +141,9 @@ int	parse_commands(char *line)
 	t_line	a;
 
 	a.label = "";
+	line = skip_chars(line, " \t");
 	i = 0;
-	while (line[i] != ' ' && line[i] != ':' && line[i] != '%' && line[i] != '\t' && line[i])
+	while (line[i] != ':' && line[i] != '%' && line[i])
 		i++;
 	if (!line[i])
 		return (0);

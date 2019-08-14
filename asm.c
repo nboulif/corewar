@@ -1,7 +1,18 @@
-#include <unistd.h>
-#include <fcntl.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   asm.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/08/14 15:10:31 by nsondag           #+#    #+#             */
+/*   Updated: 2019/08/14 15:11:23 by nsondag          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+#include "asm.h" 
 #include "op.h"
-#include <stdio.h>
 #include "libft/libft.h"
 
 unsigned int ConvertToBigEndian(unsigned int x)
