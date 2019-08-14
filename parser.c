@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/14 16:35:43 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/14 20:03:35 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,36 +99,50 @@ int parse_params (char *str_params, t_op op)
 	char	*str_direct;
 	int		direct;
 	int 	indirect;
+	int		code_octal;
 
-	//recuperer code octal
 	i = 0;
+	code_octal = 0;
 	params = ft_strsplit(str_params, SEPARATOR_CHAR);
 	while (i < op.nb_params)
 	{
-		//skip_whitespace;
+		params[i] = skip_chars(params[i], " \t");
 		if (!params[i])
 			return (printf("error\n"));
-		if (params[i][0] == 'r') 
+		if (params[i][0] == 'r')
 		{
 			reg = ft_atoi(&params[i][1]);
-			if (reg > 0 && reg < 17  && (op.params[i - 1] & T_REG))
-				;//valide
+			if (!(reg > 0 && reg < 17  && (op.params[i - 1] & T_REG)))
+				return (printf("error\n"));
+			params[i] += count_digit(reg) + 1;
+			code_octal |= REG_CODE << (2 * (3 - i));
 		}
 		else if (params[i][0] == DIRECT_CHAR)
 		{
 			if (params[i][1] == LABEL_CHAR)
+			{
 				str_direct = &params[i][2];
-				//verifie label;
+				params[i] = skip_chars(&params[i][2], LABEL_CHARS);
+			}
 			else if (params[i][1] == '-' || ft_isdigit(params[i][1]))
-				direct = ft_atoi(&params[i][1]); //
+			{
+				direct = ft_atoi(&params[i][1]);
+				params[i] += count_digit(direct) + 1;
+			}
 			else
 				return (printf("error\n"));
+			code_octal |= REG_CODE << (2 * (3 - i));
 		}
 		else if (params[i][0] == '-' || ft_isdigit(params[i][0]))
 		{
 			indirect = ft_atoi(params[i]);
+			params[i] += count_digit(indirect);
+			code_octal |= REG_CODE << (2 * (3 - i));
 		}
 		else
+			return (printf("error\n"));
+		params[i] = skip_chars(params[i], " \t");
+		if (params[i])
 			return (printf("error\n"));
 	}	
 	return (0);

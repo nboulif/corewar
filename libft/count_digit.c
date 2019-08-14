@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   skip_chars.c                                       :+:      :+:    :+:   */
+/*   count_digit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/14 16:09:39 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/14 19:32:55 by nsondag          ###   ########.fr       */
+/*   Created: 2019/08/14 19:40:40 by nsondag           #+#    #+#             */
+/*   Updated: 2019/08/14 20:03:41 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*skip_chars(char *s, char *chars)
+size_t		count_digit(int n)
 {
-	int i;
+	size_t count;
 
-	i = 0;
-	if (!s || !*s)
-		return (0);
-	while (chars[i])
+	count = 0;
+	if (n == -2147483648)
+		return (10);
+	if (n < 0)
 	{
-		if (*s == chars[i])
-		{
-			s++;
-			i = 0;
-		}
-		else
-			i++;
+		n = -n;
+		count++;
 	}
-	return (s);
+	if (n == 0)
+		return (1);
+	while (n > 0)
+	{
+		n = n / 10;
+		count++;
+	}
+	return (count);
 }
