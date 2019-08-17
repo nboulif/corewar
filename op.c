@@ -6,11 +6,12 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/08/14 20:03:37 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/17 20:43:28 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "op.h"
+#include "asm.h"
 // {name, nbr arguments, arguments, opcode, cycles, description, codage octal, 0->4bytes 1->2bytes}
 t_op    g_op_tab[17] =
 {

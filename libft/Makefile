@@ -6,7 +6,7 @@
 #    By: nsondag <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/14 21:09:08 by nsondag           #+#    #+#              #
-#    Updated: 2019/08/14 16:20:24 by nsondag          ###   ########.fr        #
+#    Updated: 2019/08/17 20:37:55 by nsondag          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,8 @@ SRC =	ft_atoi.c\
 		ft_issorted.c\
 		ft_isrevsorted.c\
 		get_next_line.c\
-		skip_chars.c
+		skip_chars.c\
+		count_digit.c\
 
 NAME = libft.a
 

@@ -6,13 +6,13 @@
 /*   By: nsondag <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 12:19:21 by nsondag           #+#    #+#             */
-/*   Updated: 2018/11/28 19:03:35 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/17 20:40:04 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t		count_digit(int n)
+static size_t		spcount_digit(int n)
 {
 	size_t count;
 
@@ -48,7 +48,7 @@ char				*ft_itoa(int n)
 	is_negatif(&n, &neg);
 	if (!(nbr = ft_strnew(count_digit(n) + neg)))
 		return (0);
-	i = (int)count_digit(n) - 1 + neg;
+	i = (int)spcount_digit(n) - 1 + neg;
 	if (n == -2147483648)
 	{
 		nbr[i--] = 8 + '0';

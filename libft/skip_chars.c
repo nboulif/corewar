@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 16:09:39 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/14 19:32:55 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/17 20:51:35 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ char	*skip_chars(char *s, char *chars)
 
 	i = 0;
 	if (!s || !*s)
-		return (0);
-	while (chars[i])
+		return (s);
+	while (chars[i] && *s)
 	{
 		if (*s == chars[i])
 		{

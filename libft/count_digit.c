@@ -6,9 +6,11 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 19:40:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/14 20:03:41 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/17 20:40:14 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 size_t		count_digit(int n)
 {

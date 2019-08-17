@@ -6,7 +6,7 @@
 /*   By: nsondag <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/14 19:21:07 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/14 16:20:59 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/17 20:38:52 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ int					ft_issorted(int *tab, int len);
 int					ft_isrevsorted(int *tab, int len);
 size_t				word_count(const char *s, char c);
 char				*skip_chars(char *s, char *chars);
+size_t				count_digit(int n);
 
 #endif

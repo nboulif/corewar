@@ -6,12 +6,12 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/14 20:03:35 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/17 21:45:40 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
 #include "asm.h"
+#include "op.h"
 #include <stdio.h>
 #include "libft/libft.h"
 
@@ -58,113 +58,104 @@ int	find_comment(char *line, t_prog *header)
 	return (1);
 }
 
-int	identify_opc(char *line)
+t_op	*identify_opc(char *line)
 {
-	char	**opc;
 	int		i;
 
-	opc = malloc(sizeof(char*) * 16);
-	*opc = malloc(sizeof(char*) * 5);
-	//en fait il y a deja un tableau 
-	opc[0] = "live";
-	opc[1] = "ld";
-	opc[2] = "st";
-	opc[3] = "add";
-	opc[4] = "sub";
-	opc[5] = "and";
-	opc[6] = "or";
-	opc[7] = "xor";
-	opc[8] = "zjmp";
-	opc[9] = "ldi";
-	opc[10] = "sti";
-	opc[11] = "fork";
-	opc[12] = "lld";
-	opc[13] = "lldi";
-	opc[14] = "lfork";
-	opc[15] = "aff";
-	i = 0;
+	i = -1;
 	while (++i < 16)
 	{
-		if (!ft_strcmp(line, opc[i - 1]))
-			return (i);
+		if (!ft_strcmp(line, g_op_tab[i].name))
+			return (&g_op_tab[i]);
 	}
-	return (0);
+	return (NULL);
 }
 
-int parse_params (char *str_params, t_op op)
+t_data	*init_data(char *str_params, int nb_line, char *label, char *str_opc)
 {
-	char	**params;
-	int		i;
-	int		reg;
-	char	*str_direct;
-	int		direct;
-	int 	indirect;
-	int		code_octal;
+	t_data	*line;
 
-	i = 0;
-	code_octal = 0;
-	params = ft_strsplit(str_params, SEPARATOR_CHAR);
-	while (i < op.nb_params)
+	if (!(line = (t_data*)malloc(sizeof(t_data))))
+		return (NULL);
+	if (!(line->op = identify_opc(str_opc)))
+		return (NULL);
+	line->codage_octal = 0;
+	line->params = ft_strsplit(str_params, SEPARATOR_CHAR);
+	line->next = NULL;
+	line->nb_line = nb_line;
+	line->label = label;
+	line->val_param[0] = 0;
+	line->val_param[1] = 0;
+	line->val_param[2] = 0;
+	return (line);
+}
+
+int parse_params (t_data *line)
+{
+	int		i;
+	char	*tmp;
+
+	i = -1;
+	while (++i < line->op->nb_params)
 	{
-		params[i] = skip_chars(params[i], " \t");
-		if (!params[i])
-			return (printf("error\n"));
-		if (params[i][0] == 'r')
+		line->params[i] = skip_chars(line->params[i], " \t");
+		tmp = line->params[i];
+		if (!line->params[i])
+			return (printf("error1\n"));
+		if (line->params[i][0] == 'r')
 		{
-			reg = ft_atoi(&params[i][1]);
-			if (!(reg > 0 && reg < 17  && (op.params[i - 1] & T_REG)))
-				return (printf("error\n"));
-			params[i] += count_digit(reg) + 1;
-			code_octal |= REG_CODE << (2 * (3 - i));
+			line->val_param[i] = ft_atoi(&line->params[i][1]);
+			if (!(line->val_param[i] > 0 && line->val_param[i] < 17  && (line->op->params[i] & T_REG)))
+				return (printf("error2\n"));
+			line->params[i] += count_digit(line->val_param[i]) + 1;
+			line->codage_octal |= REG_CODE << (2 * (3 - i));
 		}
-		else if (params[i][0] == DIRECT_CHAR)
+		else if (line->params[i][0] == DIRECT_CHAR)
 		{
-			if (params[i][1] == LABEL_CHAR)
+			if (line->params[i][1] == LABEL_CHAR)
+				line->params[i] = skip_chars(&line->params[i][2], LABEL_CHARS);
+			else if (line->params[i][1] == '-' || ft_isdigit(line->params[i][1]))
 			{
-				str_direct = &params[i][2];
-				params[i] = skip_chars(&params[i][2], LABEL_CHARS);
-			}
-			else if (params[i][1] == '-' || ft_isdigit(params[i][1]))
-			{
-				direct = ft_atoi(&params[i][1]);
-				params[i] += count_digit(direct) + 1;
+				line->val_param[i] = ft_atoi(&line->params[i][1]);
+				line->params[i] += count_digit(line->val_param[i]) + 1;
 			}
 			else
 				return (printf("error\n"));
-			code_octal |= REG_CODE << (2 * (3 - i));
+			line->codage_octal |= REG_CODE << (2 * (3 - i));
 		}
-		else if (params[i][0] == '-' || ft_isdigit(params[i][0]))
+		else if (line->params[i][0] == '-' || ft_isdigit(line->params[i][0]))
 		{
-			indirect = ft_atoi(params[i]);
-			params[i] += count_digit(indirect);
-			code_octal |= REG_CODE << (2 * (3 - i));
+			line->val_param[i] = ft_atoi(line->params[i]);
+			line->params[i] += count_digit(line->val_param[i]);
+			line->codage_octal |= REG_CODE << (2 * (3 - i));
 		}
 		else
 			return (printf("error\n"));
-		params[i] = skip_chars(params[i], " \t");
-		if (params[i])
+		line->params[i] = skip_chars(line->params[i], " \t");
+		if (line->params[i])
 			return (printf("error\n"));
+		line->params[i] = tmp;
 	}	
 	return (0);
 }
 
-int	parse_commands(char *line)
+t_data	*parse_commands(char *line, int nb_line)
 {
 	char	*opc;
+	char	*label;
+	t_data	*data;
 	int		i;
-	t_line	a;
 
-	a.label = "";
+	label = "";
 	line = skip_chars(line, " \t");
 	i = 0;
 	while (line[i] != ':' && line[i] != '%' && line[i])
 		i++;
 	if (!line[i])
-		return (0);
+		return (NULL);
 	if (line[i] == ':')
 	{
-		a.label = ft_strnew(i);
-		a.label = ft_strsub(line, 0, i);
+		label = ft_strsub(line, 0, i);
 		while (line[i + 1] == ' ' || line[i + 1] == '\t')
 			i++;
 		line = line + i + 1;
@@ -172,18 +163,14 @@ int	parse_commands(char *line)
 	i = 0;
 	while (line[i] != ' ' && line[i] != '\t' && line[i] != '%')
 		i++;
-	opc = ft_strnew(i);
 	opc = ft_strsub(line, 0, i);
-	a.opc = identify_opc(opc);
 	if (line[i] != '%')
 		line = line + i + 1;
 	else
 		line = line + i;
-	a.params = line;
-	parse_params(line, a.opc);
-	printf("opc %d\n", a.opc);
-	printf("label %s\n", a.label);
-	return (0);
+	data = init_data(line, nb_line, label, opc);
+	parse_params(data);
+	return (data);
 }
 
 int	main(int argc, char **argv)
@@ -192,6 +179,8 @@ int	main(int argc, char **argv)
 	char	*line;
 	int		i;
 	t_prog	header;
+	t_data	*data;
+	t_data	*begin;
 
 	header.name = ft_strnew(PROG_NAME_LENGTH);
 	header.comment = ft_strnew(COMMENT_LENGTH);
@@ -203,12 +192,41 @@ int	main(int argc, char **argv)
 	while (get_next_line(fd, &line) > 0)
 	{
 		i++;
-		if (find_name(line, &header))
+		line = skip_chars(line, " \t");
+		printf("line %s\n", line);
+		if (!line)
 			continue;
-		if (find_comment(line, &header))
+		else if (*line == '.' || *line == '#' || !*line)
+		{
+			if (find_name(line, &header))
+				continue;
+			if (find_comment(line, &header))
+				continue;
+		}
+		else
+			break;
+		printf("test\n");
+	}
+	data = parse_commands(line, i++);
+	begin = data;
+	while (get_next_line(fd, &line) > 0)
+	{
+		if (!line)
 			continue;
-		parse_commands(line);
+		data->next = parse_commands(line, i++);
+		data = data->next;
 	}
 	close(fd);
+	while (begin)
+	{
+		printf("nb_line: %d\n", begin->nb_line);
+		printf("label: %s\n", begin->label);
+		printf("val_param0:  %d\n", begin->val_param[0]);
+		printf("val_param1:  %d\n", begin->val_param[1]);
+		printf("val_param2:  %d\n", begin->val_param[2]);
+		printf("codage octal %x\n", begin->codage_octal);
+		printf("\n");
+		begin = begin->next;
+	}
 	return (0);
 }

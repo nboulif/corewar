@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 14:48:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/14 16:25:53 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/17 21:12:44 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,18 @@ typedef struct s_op
 	int		dir_size;
 }				t_op;
 
-typedef struct	s_line
+typedef struct	s_data t_data;
+
+typedef struct	s_data
 {
 	int		nb_line;
 	char	*label;
-	int		opc;
-	int		nb_params;
-	char	*params;
-	char	*param1;
-	char	*param2;
-	char	*param3;
-}				t_line;
+	t_op	*op;
+	char	**params;
+	int		val_param[3];
+	int		codage_octal;
+	t_data	*next;
+}				t_data;
 
 extern t_op g_op_tab[17];
 
