@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 14:48:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/17 21:12:44 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/17 22:35:42 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_op
 	int		opc;
 	int		cycles;
 	char	*comment;
-	int		codage_octal;
+	unsigned char	codage_octal;
 	int		dir_size;
 }				t_op;
 
