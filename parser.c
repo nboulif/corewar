@@ -6,14 +6,11 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/17 22:38:44 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/18 18:10:05 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
-#include "op.h"
-#include <stdio.h>
-#include "libft/libft.h"
 
 int	find_name(char *line, t_prog *header)
 {
@@ -83,10 +80,14 @@ t_data	*init_data(char *str_params, int nb_line, char *label, char *str_opc)
 	line->params = ft_strsplit(str_params, SEPARATOR_CHAR);
 	line->next = NULL;
 	line->nb_line = nb_line;
-	line->label = label;
 	line->val_param[0] = 0;
 	line->val_param[1] = 0;
 	line->val_param[2] = 0;
+	line->nb_octet = 1;
+	if (label && *label)
+		line->label = label;
+	else
+		line->label = NULL;
 	return (line);
 }
 
@@ -96,6 +97,8 @@ int parse_params (t_data *line)
 	char	*tmp;
 
 	i = -1;
+	if (line->op->codage_octal)
+		line->nb_octet++;
 	while (++i < line->op->nb_params)
 	{
 		line->params[i] = skip_chars(line->params[i], " \t");
@@ -109,6 +112,7 @@ int parse_params (t_data *line)
 				return (printf("error2\n"));
 			line->params[i] += count_digit(line->val_param[i]) + 1;
 			line->codage_octal |= REG_CODE << (2 * (3 - i));
+			line->nb_octet++;
 		}
 		else if (line->params[i][0] == DIRECT_CHAR)
 		{
@@ -122,12 +126,17 @@ int parse_params (t_data *line)
 			else
 				return (printf("error3\n"));
 			line->codage_octal |= DIR_CODE << (2 * (3 - i));
+			if (line->op->dir_size == 1)
+				line->nb_octet += 2;
+			else
+				line->nb_octet += 4;
 		}
 		else if (line->params[i][0] == '-' || ft_isdigit(line->params[i][0]))
 		{
 			line->val_param[i] = ft_atoi(line->params[i]);
 			line->params[i] += count_digit(line->val_param[i]);
 			line->codage_octal |= IND_CODE << (2 * (3 - i));
+			line->nb_octet += 2;
 		}
 		else
 			return (printf("error4\n"));
@@ -147,18 +156,13 @@ t_data	*parse_commands(char *line, int nb_line)
 	int		i;
 
 	label = "";
-	printf("l %s\n", line);
 	line = skip_chars(line, " \t");
 	i = 0;
-	printf("k %s\n", line);
 	while (line[i] && line[i] != ':' && line[i] != '%' && line[i] != ' ' && line[i] != '\t')
 		i++;
 	printf("o %s\n", &line[i]);
 	if (!line[i])
-	{
-		printf("testerror\n");
 		return (NULL);
-	}
 	if (line[i] == ':')
 	{
 		label = ft_strsub(line, 0, i);
@@ -176,19 +180,43 @@ t_data	*parse_commands(char *line, int nb_line)
 		line = line + i;
 	data = init_data(line, nb_line, label, opc);
 	parse_params(data);
-	printf("test1\n");
 	return (data);
 }
+
+t_label *update_list_label(t_label *list_label, t_data *data, t_label **begin_label)
+{
+	t_label *new;
+
+
+	if (data->label)
+	{	
+		new = (t_label *)malloc(sizeof(t_label));
+		new->label = data->label;
+		new->pc = data->pc;
+		new->next = NULL;
+		if (list_label)
+			list_label->next = new;
+		if (!*begin_label)
+			*begin_label = new;
+		return (new);
+	}
+	return (list_label);	
+}
+
 
 int	main(int argc, char **argv)
 {
 	int		fd;
 	char	*line;
 	int		i;
-	t_prog	header;
+	t_prog		header;
 	t_data	*data;
 	t_data	*begin;
+	t_label *list_label;
+	t_label *begin_label;
 
+	list_label = NULL;
+	begin_label = NULL;
 	header.name = ft_strnew(PROG_NAME_LENGTH);
 	header.comment = ft_strnew(COMMENT_LENGTH);
 	line = (char *)malloc(sizeof(*line) * 1);
@@ -215,13 +243,21 @@ int	main(int argc, char **argv)
 		printf("test\n");
 	}
 	data = parse_commands(line, i++);
+	data->pc = 0;
 	begin = data;
+	printf("tt\n");
+	list_label = update_list_label(list_label, data, &begin_label);
+	printf("ttt\n");
 	while (get_next_line(fd, &line) > 0)
 	{
 		line = skip_chars(line, " \t");
 		if (!line || *line == '#' || !*line)
 			continue;
 		data->next = parse_commands(line, i++);
+		data->next->pc = data->pc + data->nb_octet;
+		
+		list_label = update_list_label(list_label, data->next, &begin_label);
+		
 		data = data->next;
 		printf("i: %d line: %s\n", i + 1, line);
 	}
@@ -236,6 +272,12 @@ int	main(int argc, char **argv)
 		printf("codage octal %d\n", begin->codage_octal);
 		printf("\n");
 		begin = begin->next;
+	}
+	while (begin_label)
+	{
+		printf("label: %s\n", begin_label->label);
+		printf("pc: %d\n", begin_label->pc);
+		begin_label = begin_label->next;
 	}
 	return (0);
 }
