@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/18 18:10:05 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/21 18:15:18 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ t_op	*identify_opc(char *line)
 	int		i;
 
 	i = -1;
-	while (++i < 16)
+
+	if (!*line)
+			return(&g_op_tab[16]);
+	while (++i < 17)
 	{
 		if (!ft_strcmp(line, g_op_tab[i].name))
 			return (&g_op_tab[i]);
@@ -83,7 +86,7 @@ t_data	*init_data(char *str_params, int nb_line, char *label, char *str_opc)
 	line->val_param[0] = 0;
 	line->val_param[1] = 0;
 	line->val_param[2] = 0;
-	line->nb_octet = 1;
+	line->nb_octet = 0;
 	if (label && *label)
 		line->label = label;
 	else
@@ -96,11 +99,15 @@ int parse_params (t_data *line)
 	int		i;
 	char	*tmp;
 
+
+	printf("parse_params\n");
 	i = -1;
 	if (line->op->codage_octal)
 		line->nb_octet++;
+	printf("operation %s\n", line->op->name);
 	while (++i < line->op->nb_params)
 	{
+		printf("line_params %s\n", line->params[i]);
 		line->params[i] = skip_chars(line->params[i], " \t");
 		tmp = line->params[i];
 		if (!line->params[i])
@@ -127,9 +134,15 @@ int parse_params (t_data *line)
 				return (printf("error3\n"));
 			line->codage_octal |= DIR_CODE << (2 * (3 - i));
 			if (line->op->dir_size == 1)
+			{
+				printf("2 octets\n");
 				line->nb_octet += 2;
+			}
 			else
+			{
+				printf("4 octets\n");
 				line->nb_octet += 4;
+			}
 		}
 		else if (line->params[i][0] == '-' || ft_isdigit(line->params[i][0]))
 		{
@@ -144,7 +157,8 @@ int parse_params (t_data *line)
 		if (line->params[i] && line->params[i][0] && line->params[i][0] != '#')
 			return (printf("error5 %s\n", line->params[i]));
 		line->params[i] = tmp;
-	}	
+	}
+	line->nb_octet++;
 	return (0);
 }
 
@@ -160,7 +174,6 @@ t_data	*parse_commands(char *line, int nb_line)
 	i = 0;
 	while (line[i] && line[i] != ':' && line[i] != '%' && line[i] != ' ' && line[i] != '\t')
 		i++;
-	printf("o %s\n", &line[i]);
 	if (!line[i])
 		return (NULL);
 	if (line[i] == ':')
@@ -171,15 +184,31 @@ t_data	*parse_commands(char *line, int nb_line)
 		line = line + i + 1;
 	}
 	i = 0;
-	while (line[i] != ' ' && line[i] != '\t' && line[i] != '%')
+	while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '%')
 		i++;
+	//if (!line[i])
+	//{
+	//	printf("yy\n");
+	//	return(NULL); 
+	//}
 	opc = ft_strsub(line, 0, i);
-	if (line[i] != '%')
+	printf("opc *%s*\n", opc);
+	printf("tt\n");
+	printf("liiiine **%s** *%c*\n", line, line[i]);
+	if (line[i] && line[i] != '%')
 		line = line + i + 1;
 	else
 		line = line + i;
-	data = init_data(line, nb_line, label, opc);
-	parse_params(data);
+	printf("Liiiine **%s** *%c*\n", line, line[0]);
+	data = NULL;
+	//if (line[i] != '%')
+		data = init_data(line, nb_line, label, opc);
+	printf("line[i] %c\n", line[0]);
+	if	(*line)
+	{
+		parse_params(data);
+		printf("nb_oct %d\n", data->nb_octet);
+	}
 	return (data);
 }
 
@@ -214,9 +243,11 @@ int	main(int argc, char **argv)
 	t_data	*begin;
 	t_label *list_label;
 	t_label *begin_label;
+	t_data	*tmp;
 
 	list_label = NULL;
 	begin_label = NULL;
+	begin = NULL;
 	header.name = ft_strnew(PROG_NAME_LENGTH);
 	header.comment = ft_strnew(COMMENT_LENGTH);
 	line = (char *)malloc(sizeof(*line) * 1);
@@ -242,24 +273,39 @@ int	main(int argc, char **argv)
 			break;
 		printf("test\n");
 	}
-	data = parse_commands(line, i++);
+	data = parse_commands(line, i);
 	data->pc = 0;
-	begin = data;
-	printf("tt\n");
-	list_label = update_list_label(list_label, data, &begin_label);
-	printf("ttt\n");
+	if (data->label)
+		list_label = update_list_label(list_label, data, &begin_label);
+	else
+		begin = data;
 	while (get_next_line(fd, &line) > 0)
 	{
+		i++;
+		printf("------------------------------------\n");
 		line = skip_chars(line, " \t");
 		if (!line || *line == '#' || !*line)
 			continue;
-		data->next = parse_commands(line, i++);
-		data->next->pc = data->pc + data->nb_octet;
-		
-		list_label = update_list_label(list_label, data->next, &begin_label);
-		
-		data = data->next;
-		printf("i: %d line: %s\n", i + 1, line);
+		tmp = parse_commands(line, i);
+		tmp->pc = data->pc + data->nb_octet;
+		if (tmp->op->opc)
+		{
+			if (!begin)
+				begin = tmp;
+			printf("op\n");
+			data->next = tmp;
+			data->next->pc = data->pc + data->nb_octet;
+			printf("octet %d\n", data->nb_octet);
+			data = data->next;
+			printf("PC %d\n", data->pc);
+		}
+		if (tmp->label)
+		{
+			printf("label PC %d\n", tmp->pc);
+			list_label = update_list_label(list_label, tmp, &begin_label);
+			printf("label\n");
+		}
+		printf("i: %d line: %s\n", i, line);
 	}
 	close(fd);
 	while (begin)
