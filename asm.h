@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 14:48:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/21 18:10:18 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/22 19:02:16 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,35 @@
 # include "libft/libft.h"
 
 
+typedef struct	s_op t_op;
+typedef struct	s_data t_data;
+typedef struct	s_label t_label;
+
 typedef struct		s_prog
 {
-	char	*name;
-	char	*comment;
+	int				name_found;
+	int				comment_found;
+	char			*name;
+	char			*comment;
+	t_op			*op;
+	t_data			*list_data;
+	t_label			*list_label;
+	int				fd;
+	char			*line;
+	int				nb_line;
 }					t_prog;
 
 typedef struct s_op
 {
-	char	*name;
-	int		nb_params;
-	char	params[3];
-	int		opc;
-	int		cycles;
-	char	*comment;
+	char			*name;
+	int				nb_params;
+	char			params[3];
+	int				opc;
+	int				cycles;
+	char			*comment;
 	unsigned char	codage_octal;
-	int		dir_size;
+	int				dir_size;
 }				t_op;
-
-typedef struct	s_data t_data;
 
 typedef struct	s_data
 {
@@ -51,8 +61,6 @@ typedef struct	s_data
 	t_data	*next;
 }				t_data;
 
-typedef struct	s_label t_label;
-
 typedef struct	s_label
 {
 	char	*label;
@@ -62,6 +70,7 @@ typedef struct	s_label
 
 extern t_op g_op_tab[17];
 
-int magic_number(t_prog *header);
+t_prog	*get_header(t_prog *prog);	
+int		magic_number(t_prog *header);
 
 #endif

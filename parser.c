@@ -6,13 +6,13 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/21 18:15:18 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/08/22 19:13:43 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-int	find_name(char *line, t_prog *header)
+/*int	find_name(char *line, t_prog *header)
 {
 	int name_length;
 	int i;
@@ -53,7 +53,7 @@ int	find_comment(char *line, t_prog *header)
 	printf("%s\n", header->comment);
 	magic_number(header);
 	return (1);
-}
+}*/
 
 t_op	*identify_opc(char *line)
 {
@@ -235,10 +235,8 @@ t_label *update_list_label(t_label *list_label, t_data *data, t_label **begin_la
 
 int	main(int argc, char **argv)
 {
-	int		fd;
-	char	*line;
 	int		i;
-	t_prog		header;
+	t_prog	header;
 	t_data	*data;
 	t_data	*begin;
 	t_label *list_label;
@@ -248,45 +246,32 @@ int	main(int argc, char **argv)
 	list_label = NULL;
 	begin_label = NULL;
 	begin = NULL;
-	header.name = ft_strnew(PROG_NAME_LENGTH);
-	header.comment = ft_strnew(COMMENT_LENGTH);
-	line = (char *)malloc(sizeof(*line) * 1);
+	header.line = (char *)malloc(sizeof(*header.line) * 1);
 	if (argc < 2)
 		return (printf("print usage\n"));
-	fd = open(argv[1], O_RDONLY);
-	i = 0;
-	while (get_next_line(fd, &line) > 0)
-	{
-		i++;
-		line = skip_chars(line, " \t");
-		printf("i: %d line %s\n", i, line);
-		if (!line)
-			continue;
-		else if (*line == '.' || *line == '#' || !*line)
-		{
-			if (find_name(line, &header))
-				continue;
-			if (find_comment(line, &header))
-				continue;
-		}
-		else
-			break;
-		printf("test\n");
-	}
-	data = parse_commands(line, i);
+	header.fd = open(argv[1], O_RDONLY);
+	i = header.nb_line;
+	header.nb_line = 0;
+	header.name_found = 0;
+	header.comment_found = 0;
+	//---------------------------------
+	header = *get_header(&header);
+	//---------------------------------
+	data = parse_commands(header.line, header.nb_line);
 	data->pc = 0;
 	if (data->label)
 		list_label = update_list_label(list_label, data, &begin_label);
 	else
 		begin = data;
-	while (get_next_line(fd, &line) > 0)
+	while (get_next_line(header.fd, &header.line) > 0)
 	{
+
 		i++;
 		printf("------------------------------------\n");
-		line = skip_chars(line, " \t");
-		if (!line || *line == '#' || !*line)
+		header.line = skip_chars(header.line, " \t");
+		if (!header.line || *header.line == '#' || !*header.line)
 			continue;
-		tmp = parse_commands(line, i);
+		tmp = parse_commands(header.line, i);
 		tmp->pc = data->pc + data->nb_octet;
 		if (tmp->op->opc)
 		{
@@ -305,9 +290,9 @@ int	main(int argc, char **argv)
 			list_label = update_list_label(list_label, tmp, &begin_label);
 			printf("label\n");
 		}
-		printf("i: %d line: %s\n", i, line);
+		printf("i: %d line: %s\n", i, header.line);
 	}
-	close(fd);
+	close(header.fd);
 	while (begin)
 	{
 		printf("nb_line: %d\n", begin->nb_line);
