@@ -15,7 +15,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include "op.h"
-# include "libft/libft.h"
+# include "libft.h"
 
 
 typedef struct	s_op t_op;
@@ -28,6 +28,7 @@ typedef struct		s_prog
 	int				comment_found;
 	char			*name;
 	char			*comment;
+	int				l_h;
 	t_op			*op;
 	t_data			*list_data;
 	t_label			*list_label;
@@ -35,6 +36,7 @@ typedef struct		s_prog
 	char			*line;
 	int				nb_line;
 }					t_prog;
+
 
 typedef struct s_op
 {
@@ -70,7 +72,13 @@ typedef struct	s_label
 
 extern t_op g_op_tab[17];
 
-t_prog	*get_header(t_prog *prog);	
+int		get_header(t_prog *prog);	
 int		magic_number(t_prog *header);
+
+int		manage_errors(t_prog *prog, int i);
+
+int		print_error(t_prog *prog, int i, int o, char *error_type);
+int		print_error_tokken(t_prog *prog, int i, int o, char *error_type);
+int		print_error_lexical(t_prog *prog, int i);
 
 #endif

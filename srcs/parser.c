@@ -209,6 +209,7 @@ t_data	*parse_commands(char *line, int nb_line)
 		parse_params(data);
 		printf("nb_oct %d\n", data->nb_octet);
 	}
+
 	return (data);
 }
 
@@ -254,15 +255,22 @@ int	main(int argc, char **argv)
 	header.nb_line = 0;
 	header.name_found = 0;
 	header.comment_found = 0;
+	header.name = NULL;
+	header.comment = NULL;
 	//---------------------------------
-	header = *get_header(&header);
+	if (get_header(&header))
+		return (1);
+	printf(".name \"%s\"\n", header.name);
+	printf(".comment \"%s\"\n", header.comment);
+	
 	//---------------------------------
-	data = parse_commands(header.line, header.nb_line);
+	data = (t_data*)malloc(sizeof(t_data));
 	data->pc = 0;
-	if (data->label)
-		list_label = update_list_label(list_label, data, &begin_label);
-	else
-		begin = data;
+	data->nb_octet = 0;
+	// if (data->label)
+	// 	list_label = update_list_label(list_label, data, &begin_label);
+	// else
+	// 	begin = data;
 	while (get_next_line(header.fd, &header.line) > 0)
 	{
 
