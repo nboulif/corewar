@@ -12,7 +12,7 @@
 
 #include "op.h"
 #include <stdio.h>
-#include "libft/libft.h"
+# include "libft.h"
 
 int one_param_reg(char *params, int opc)
 {
