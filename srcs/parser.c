@@ -86,36 +86,47 @@ int print_data(t_data	*data)
 		printf("%-11d :    %s:\n", data->pc, data->label);
 	if (data->op->opc)
 	{
-		printf("%-5d (%-3d) :        %-10s", data->pc, data->nb_octet, data->op->name);
+		printf("%-5d (%-3d) :        %-10s ", data->pc, data->nb_octet, data->op->name);
 		i = 0;
 		while(i < data->op->nb_params)
 		{
 			y = 0;
 			while(data->params[i][y] && data->params[i][y] != ' ' && data->params[i][y] != '\t')
 				y++;
-			printf(" %-20.*s", y, data->params[i++]);
+			printf("%-18.*s", y, data->params[i++]);
 		}
 		printf("\n");
 
 		printf("%20s %-4d", "", data->op->opc);
-		if (data->op->codage_octal)
-			printf(" %-6d", data->codage_octal);
-		else
-			printf(" %-6s", "");
+		data->op->codage_octal ? printf(" %-6d", data->codage_octal) : printf(" %-6s", "");
+		
 		i = 0;
 		while(i < data->op->nb_params)
-			printf(" %-20d", data->val_param[i++]);
+		{
+			if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_DIR)
+			{
+				y = 0;
+				while (y < 4)
+				{
+					if (y < (data->op->dir_size ? 2 : 4))
+						printf("%-4u", (uint8_t)(data->val_param[i] >> (8 * (3 - y))));
+					else
+						printf("    ");
+					y++;
+				}
+				printf("  ");
+			}
+			else
+				printf("%-18d", data->val_param[i]);
+			i++;
+		}
 		printf("\n");
 		
-		
 		printf("%20s %-4d", "", data->op->opc);
-		if (data->op->codage_octal)
-			printf(" %-6d", data->codage_octal);
-		else
-			printf(" %-6s", "");
+		data->op->codage_octal ? printf(" %-6d", data->codage_octal) : printf(" %-6s", "");
 		i = 0;
 		while(i < data->op->nb_params)
-			printf(" %-20d", data->val_param[i++]);
+			printf("%-18d", data->val_param[i++]);
 		printf("\n");
 
 		printf("\n");
