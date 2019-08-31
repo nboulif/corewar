@@ -49,8 +49,10 @@ int get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line)
 	
 	i = max_lenght == PROG_NAME_LENGTH ? 5 : 8;
 	i += (int)(skip_chars(prog->line + i, " \t") - (prog->line + i));
-	if (*(prog->line + i) != '"')
+	if (!*(prog->line + i))
 		return (print_error_tokken(prog, i, 0, "ENDLINE"));
+	if (*(prog->line + i) != '"')
+		return (manage_errors(prog, i));
 	i++;
 	if (!( (*final_line) = ft_strnew(max_lenght)))
 		return (printf("MALLOC PROBLEM\n"));
@@ -60,10 +62,10 @@ int get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line)
 
 int get_header(t_prog *prog)
 {
-	while (get_next_line(prog->fd, &prog->line) > 0)
+	while (get_next_line(prog->fd, &prog->full_line) > 0)
 	{
 		prog->nb_line++;
-		prog->line = skip_chars(prog->line, " \t");
+		prog->line = skip_chars(prog->full_line, " \t");
 		if (!prog->line || !*prog->line || *prog->line == '#')
 			continue;
 		else if (!ft_strncmp(prog->line, NAME_CMD_STRING, 5))

@@ -28,12 +28,14 @@ typedef struct		s_prog
 	int				comment_found;
 	char			*name;
 	char			*comment;
-	int				l_h;
+	int				l_h; // counter for char in name or comment
 	t_op			*op;
 	t_data			*list_data;
 	t_label			*list_label;
 	int				fd;
+	char			*full_line;
 	char			*line;
+	int 			i; // counter char passed in current line
 	int				nb_line;
 }					t_prog;
 
@@ -52,6 +54,7 @@ typedef struct s_op
 
 typedef struct	s_data
 {
+	char	*line;
 	int		pc;
 	char	*label;
 	int		nb_octet;
@@ -72,13 +75,34 @@ typedef struct	s_label
 
 extern t_op g_op_tab[17];
 
-int		get_header(t_prog *prog);	
-int		magic_number(t_prog *header);
 
-int		manage_errors(t_prog *prog, int i);
+unsigned int ConvertToBigEndian(unsigned int x);
+int magic_number(t_prog *header);
 
-int		print_error(t_prog *prog, int i, int o, char *error_type);
-int		print_error_tokken(t_prog *prog, int i, int o, char *error_type);
-int		print_error_lexical(t_prog *prog, int i);
+int get_valid_name_comment_loop(t_prog *prog, int max_lenght, char **final_line, int i);
+int get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line);
+int get_header(t_prog *prog);
+
+int manage_errors_direct(t_prog *prog, int i, int o);
+int manage_errors_instruction(t_prog *prog, int i, int o);
+int manage_errors_alnum(t_prog *prog, int i, int o);
+int manage_errors(t_prog *prog, int i);
+
+t_op	*identify_opc(char *line);
+int parse_indirect(t_data *line, int i);
+int parse_register(t_data *line, int i);
+int parse_direct_char(t_data *line, int i);
+int parse_params(t_prog *prog, t_data *line);
+t_data	*parse_commands(t_prog *prog);
+
+t_data	*init_data(char *str_params, int nb_line, char *label, char *str_opc);
+t_prog	*init_prog(int argc, char **argv);
+t_label *update_list_label(t_prog *prog, t_data *data);
+int print_data(t_data	*data);
+int	program_parser(t_prog *prog, t_data	*data);
+
+int print_error_lexical(t_prog *prog, int i);
+int print_error_tokken(t_prog *prog, int i, int o, char *error_type);
+int print_error(t_prog *prog, int i, int o, char *error_type);
 
 #endif

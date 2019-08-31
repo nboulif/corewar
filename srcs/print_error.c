@@ -22,15 +22,18 @@ int print_error_tokken(t_prog *prog, int i, int o, char *error_type)
 	printf("Syntax error at token [TOKEN][%0.3d:%0.3d] %s",
 					   prog->nb_line, i + 1, error_type);
 	if (o)
-		printf(" \"%.*s\"", o, prog->line + i);
+		printf(" \"%.*s\"", o, prog->full_line + i);
 	printf("\n");
 	return (1);
 }
 
 int print_error(t_prog *prog, int i, int o, char *error_type)
 {
-	if (*(prog->line + i + o + (int)(skip_chars(prog->line + i + o, " \t") - (prog->line + i + o))))
-		return (print_error_lexical(prog, 1 + i + o + (int)(skip_chars(prog->line + i + o, " \t") - (prog->line + i + o))));
+	int a;
+
+	a = (int)(skip_chars(prog->full_line + i + o, " \t") - (prog->full_line + i + o));
+	if (*(prog->full_line + i + o + a) && *(prog->full_line + i + o + a) >= 'A' && *(prog->full_line + i + o + a) <= 'Z')
+		return (print_error_lexical(prog, 1 + i + o + a - 1));
 	else
 		return (print_error_tokken(prog, i, o, error_type));
 }

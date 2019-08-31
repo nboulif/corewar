@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "asm.h" 
 
 unsigned int ConvertToBigEndian(unsigned int x)
@@ -39,4 +38,25 @@ int magic_number(t_prog *header)
 	write(fd, &byte, 4);
 	close(fd);
 	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_prog	*prog;
+	t_data	*data;
+
+	if (!(prog = init_prog(argc, argv)))
+		return (1);
+	if (get_header(prog))
+		return (1);
+
+	printf("Name : \"%s\"\n", prog->name);
+	printf("Comment : \"%s\"\n", prog->comment);
+	printf("\n");
+	
+	data = (t_data*)malloc(sizeof(t_data));
+	data->pc = 0;
+	data->nb_octet = 0;
+
+	return (program_parser(prog, data));
 }
