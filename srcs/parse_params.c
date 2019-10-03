@@ -98,7 +98,7 @@ int parse_params(t_prog *prog, t_data *data)
 		if (data->params[i] && *data->params[i] && *data->params[i] != '#' && *data->params[i] != ';')
 			return (manage_errors(prog, prog->i + (int)(data->params[i] - tmp1)));
 		data->params[i] = tmp;
-		prog->i += ft_strlen(tmp1) + 1;		
+		prog->i += ft_strlen(tmp1) + 1;
 	}
 	data->nb_octet++;
 	return (0);

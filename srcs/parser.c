@@ -46,7 +46,16 @@ t_prog	*init_prog(int argc, char **argv)
 		printf("print usage\n");
 		return (NULL);
 	}
-	prog->fd = open(argv[1], O_RDONLY);
+	prog->debug = 0;
+	if (argc > 2 && *argv[1] == '-')
+	{
+		prog->fd = open(argv[2], O_RDONLY);
+		if (!ft_strcmp("-a", argv[1]))
+			prog->debug = 1;
+	}
+	else
+		prog->fd = open(argv[1], O_RDONLY);
+
 	prog->nb_line = 0;
 	prog->name_found = 0;
 	prog->comment_found = 0;
@@ -77,63 +86,7 @@ t_label *update_list_label(t_prog *prog, t_data *data)
 	return (prog->list_label);	
 }
 
-int print_data(t_data	*data)
-{
-	int i;
-	int y;
-	
-	if (data->label)
-		printf("%-11d :    %s:\n", data->pc, data->label);
-	if (data->op->opc)
-	{
-		printf("%-5d (%-3d) :        %-10s ", data->pc, data->nb_octet, data->op->name);
-		i = 0;
-		while(i < data->op->nb_params)
-		{
-			y = 0;
-			while(data->params[i][y] && data->params[i][y] != ' ' && data->params[i][y] != '\t')
-				y++;
-			printf("%-18.*s", y, data->params[i++]);
-		}
-		printf("\n");
 
-		printf("%20s %-4d", "", data->op->opc);
-		data->op->codage_octal ? printf(" %-6d", data->codage_octal) : printf(" %-6s", "");
-		
-		i = 0;
-		while(i < data->op->nb_params)
-		{
-			if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_DIR)
-			{
-				y = 0;
-				while (y < 4)
-				{
-					if (y < (data->op->dir_size ? 2 : 4))
-						printf("%-4u", (uint8_t)(data->val_param[i] >> (8 * (3 - y))));
-					else
-						printf("    ");
-					y++;
-				}
-				printf("  ");
-			}
-			else
-				printf("%-18d", data->val_param[i]);
-			i++;
-		}
-		printf("\n");
-		
-		printf("%20s %-4d", "", data->op->opc);
-		data->op->codage_octal ? printf(" %-6d", data->codage_octal) : printf(" %-6s", "");
-		i = 0;
-		while(i < data->op->nb_params)
-			printf("%-18d", data->val_param[i++]);
-		printf("\n");
-
-		printf("\n");
-		data = data->next;
-	}
-	return (0);
-}
 
 int	program_parser(t_prog *prog, t_data	*data)
 {
@@ -164,8 +117,11 @@ int	program_parser(t_prog *prog, t_data	*data)
 		}
 		if (tmp->label)
 			update_list_label(prog, tmp);
-		print_data(tmp);
+		// if (prog->debug)
+		// 		print_data(tmp);
 	}
+	prog->prog_size = data->pc + data->nb_octet;
+
 	close(prog->fd);
 	return (0);
 }

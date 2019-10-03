@@ -49,14 +49,18 @@ int	main(int argc, char **argv)
 		return (1);
 	if (get_header(prog))
 		return (1);
-
-	printf("Name : \"%s\"\n", prog->name);
-	printf("Comment : \"%s\"\n", prog->comment);
-	printf("\n");
 	
 	data = (t_data*)malloc(sizeof(t_data));
 	data->pc = 0;
 	data->nb_octet = 0;
-
-	return (program_parser(prog, data));
+	
+	if (!program_parser(prog, data))
+	{
+		if (prog->debug)
+			print_debug(prog);
+		else
+			printf("Writing\n");
+		return (0);
+	}
+	return (1);
 }

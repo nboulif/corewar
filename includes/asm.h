@@ -37,6 +37,10 @@ typedef struct		s_prog
 	char			*line;
 	int 			i; // counter char passed in current line
 	int				nb_line;
+	
+	int				prog_size;
+	int				debug;
+
 }					t_prog;
 
 
@@ -98,11 +102,13 @@ t_data	*parse_commands(t_prog *prog);
 t_data	*init_data(char *str_params, int nb_line, char *label, char *str_opc);
 t_prog	*init_prog(int argc, char **argv);
 t_label *update_list_label(t_prog *prog, t_data *data);
-int print_data(t_data	*data);
 int	program_parser(t_prog *prog, t_data	*data);
 
 int print_error_lexical(t_prog *prog, int i);
 int print_error_tokken(t_prog *prog, int i, int o, char *error_type);
 int print_error(t_prog *prog, int i, int o, char *error_type);
+
+int print_data(t_data *data);
+int print_debug(t_prog *prog);
 
 #endif
