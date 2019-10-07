@@ -32,7 +32,7 @@ int print_error(t_prog *prog, int i, int o, char *error_type)
 	int a;
 
 	a = (int)(skip_chars(prog->full_line + i + o, " \t") - (prog->full_line + i + o));
-	if (*(prog->full_line + i + o + a) && *(prog->full_line + i + o + a) >= 'A' && *(prog->full_line + i + o + a) <= 'Z')
+	if (*(prog->full_line + i + o + a) && !ft_strchr(", \t", *(prog->full_line + i + o + a)) && !ft_strchr(LABEL_CHARS, *(prog->full_line + i + o + a)))
 		return (print_error_lexical(prog, 1 + i + o + a - 1));
 	else
 		return (print_error_tokken(prog, i, o, error_type));

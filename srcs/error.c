@@ -52,18 +52,12 @@ int manage_errors_instruction(t_prog *prog, int i, int o)
 	}
 	if (is_upper)
 		return (print_error_lexical(prog, i));
-	if (*(prog->full_line + i + o) && *(prog->full_line + i + o) == ':' && 
-		(
-			!*(prog->full_line + i + o + 1) || (*(prog->full_line + i + o + 1) && 
-			(*(prog->full_line + i + o + 1) == ' ' || *(prog->full_line + i + o + 1) == '\t'))
-		)
-		)
+	if (*(prog->full_line + i + o) && *(prog->full_line + i + o) == ':')
 		return (print_error(prog, i, ++o, "LABEL"));
-	
 	o += (int)(skip_chars(prog->full_line + i + o, " \t") - (prog->full_line + i + o));
-	if (!*(prog->full_line + i + o) || *(prog->full_line + i + o) == ' ' || *(prog->full_line + i + o) == '\t')
+	if (!*(prog->full_line + i + o) || *(prog->full_line + i + o) == ' ' || 
+		*(prog->full_line + i + o) == '\t' || *(prog->full_line + i + o) == SEPARATOR_CHAR)
 		return (print_error(prog, i, o, "INSTRUCTION"));
-
 	return (print_error_lexical(prog, i + o));
 }
 
@@ -105,7 +99,12 @@ int manage_errors(t_prog *prog, int i)
 	int o;
 	
 	o = 1;
-	if (*(prog->full_line + i) == '"')
+	if (!*(prog->full_line + i))
+		// printf("Syntax error at token [TOKEN][%0.3d:%0.3d] ENDLINE",
+		// 	prog->nb_line, i);
+		return (print_error(prog, i, 0, "ENDLINE"));
+
+	else if (*(prog->full_line + i) == '"')
 		return (printf("String ERRROROROROR\n"));
 	else if (*(prog->full_line + i) == '.')
 		return (manage_errors_header(prog, i));

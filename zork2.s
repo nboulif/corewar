@@ -11,18 +11,19 @@
 
 #.name"dasda" :fef			INDIRECT_LABEL
 #.name"dasda" fef:			LABEL
+#.name"dasda" fef:			,, LABEL
 
 
-#tir:stir1,%:tirb,%1  		SEPARATOR
 
 .name "test"
 #.ds "test"
 .comment"bbbbbbbbbbb" 
 #.comment"bbbbbbbbbbb"
 
-l2:		sti r1, %:live, %1456
+l2:		sti r15, %:live, %1456
 		and r1, %0, r1
 
+tir:sti r1,%:l2,%1  		
 
 #.comment"bbbbbbbbbbb"
 
