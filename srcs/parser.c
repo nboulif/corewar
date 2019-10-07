@@ -35,27 +35,41 @@ t_data	*init_data(char *str_params, int nb_line, char *label, char *str_opc)
 	return (data);
 }
 
+int open_file(t_prog *prog, int argc, char **argv)
+{
+	if (argc < 2)
+	{
+		printf("Usage: ./asm_res [-a] <sourcefile.s>\n");
+		printf("    -a : Instead of creating a .cor file, outputs a stripped and annotated version of the code to the standard output\n");
+		return (1);
+	}
+	prog->debug = 0;
+	if (argc > 2 && *argv[1] == '-')
+	{
+		if (!ft_strcmp("-a", argv[1]))
+			prog->debug = 1;
+		prog->fd = open(argv[2], O_RDONLY);
+		if(prog->fd < 0)
+			printf("Can't read source file %s\n", argv[2]);
+	}
+	else
+	{
+		prog->fd = open(argv[1], O_RDONLY);
+		if(prog->fd < 0)
+			printf("Can't read source file %s\n", argv[1]);
+	}
+	return (0);
+}
+
 t_prog	*init_prog(int argc, char **argv)
 {
 	t_prog	*prog;
 
 	prog = (t_prog *)malloc(sizeof(t_prog));
 	prog->line = (char *)malloc(sizeof(*prog->line) * 1);
-	if (argc < 2)
-	{
-		printf("print usage\n");
+	
+	if (open_file(prog, argc, argv))
 		return (NULL);
-	}
-	prog->debug = 0;
-	if (argc > 2 && *argv[1] == '-')
-	{
-		prog->fd = open(argv[2], O_RDONLY);
-		if (!ft_strcmp("-a", argv[1]))
-			prog->debug = 1;
-	}
-	else
-		prog->fd = open(argv[1], O_RDONLY);
-
 	prog->nb_line = 0;
 	prog->name_found = 0;
 	prog->comment_found = 0;
@@ -91,7 +105,7 @@ t_label *update_list_label(t_prog *prog, t_data *data)
 int	program_parser(t_prog *prog, t_data	*data)
 {
 	t_data	*tmp;
-
+	
 	while (get_next_line(prog->fd, &prog->full_line) > 0)
 	{
 		prog->nb_line++;
@@ -121,7 +135,6 @@ int	program_parser(t_prog *prog, t_data	*data)
 		// 		print_data(tmp);
 	}
 	prog->prog_size = data->pc + data->nb_octet;
-
 	close(prog->fd);
 	return (0);
 }

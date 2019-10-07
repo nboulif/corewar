@@ -87,5 +87,5 @@ int get_header(t_prog *prog)
 		if (prog->name && prog->comment)
 			return (0);
 	}
-	return (1);
+	return (0);
 }
