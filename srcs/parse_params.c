@@ -30,6 +30,8 @@ t_op	*identify_opc(char *line)
 
 int parse_indirect(t_data *data, int i)
 {
+	if (!(data->op->params[i] & T_IND))
+		return (printf("error2 IND \n"));
 	data->val_param[i] = ft_atoi(data->params[i]);
 	data->params[i] += count_digit(data->val_param[i]);
 	data->codage_octal |= IND_CODE << (2 * (3 - i));
@@ -41,7 +43,7 @@ int parse_register(t_data *data, int i)
 {
 	data->val_param[i] = ft_atoi(&data->params[i][1]);
 	if (!(data->val_param[i] > 0 && data->val_param[i] < 17  && (data->op->params[i] & T_REG)))
-		return (printf("error2\n"));
+		return (printf("error2 REG\n"));
 	data->params[i] += count_digit(data->val_param[i]) + 1;
 	data->codage_octal |= REG_CODE << (2 * (3 - i));
 	data->nb_octet++;
@@ -50,6 +52,8 @@ int parse_register(t_data *data, int i)
 
 int parse_direct_char(t_data *data, int i)
 {
+	if (!(data->op->params[i] & T_DIR))
+		return (printf("error2 DIR \n"));
 	if (data->params[i][1] == LABEL_CHAR)
 		data->params[i] = skip_chars(&data->params[i][2], LABEL_CHARS);
 	else if (data->params[i][1] == '-' || ft_isdigit(data->params[i][1]))
@@ -87,13 +91,22 @@ int parse_params(t_prog *prog, t_data *data)
 		if (!data->params[i])
 			return (printf("error1\n"));
 		if (data->params[i][0] == 'r')
-			parse_register(data, i);
+		{
+			if (parse_register(data, i))
+				return (1);
+		}
 		else if (data->params[i][0] == DIRECT_CHAR)
-			parse_direct_char(data, i);
+		{
+			if (parse_direct_char(data, i))
+				return (1);
+		}
 		else if (data->params[i][0] == '-' || ft_isdigit(data->params[i][0]))
-			parse_indirect(data, i);
+		{
+			if (parse_indirect(data, i))
+				return (1);
+		}
 		else
-			return (printf("error4\n"));
+			return (manage_errors(prog, prog->i + (int)(data->params[i] - tmp1)));
 		data->params[i] = skip_chars(data->params[i], " \t");
 		if (data->params[i] && *data->params[i] && *data->params[i] != '#' && *data->params[i] != ';')
 			return (manage_errors(prog, prog->i + (int)(data->params[i] - tmp1)));

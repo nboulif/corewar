@@ -80,7 +80,7 @@ typedef struct	s_label
 extern t_op g_op_tab[17];
 
 
-unsigned int ConvertToBigEndian(unsigned int x);
+unsigned int convert_to_big_endian(unsigned int x);
 int magic_number(t_prog *header);
 
 int get_valid_name_comment_loop(t_prog *prog, int max_lenght, char **final_line, int i);

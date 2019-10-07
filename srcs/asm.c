@@ -12,7 +12,7 @@
 
 #include "asm.h" 
 
-unsigned int ConvertToBigEndian(unsigned int x)
+unsigned int convert_to_big_endian(unsigned int x)
 {
 	return (((x>>24) & 0x000000ff) | ((x>>8) & 0x0000ff00) |
 	((x<<8) & 0x00ff0000) | ((x<<24) & 0xff000000));
@@ -26,13 +26,13 @@ int magic_number(t_prog *header)
 
 	length = ft_strlen(header->name);
 	//printf("%zu\n", length);
-	byte = ConvertToBigEndian(byte);
+	byte = convert_to_big_endian(byte);
 	fd = open(header->name, O_CREAT | O_RDWR, 0644);
 	write(fd, &byte, 4);
 	write(fd, header->name, PROG_NAME_LENGTH);
 	byte = 0;
 	write(fd, &byte, 4);
-	length = ConvertToBigEndian(length);
+	length = convert_to_big_endian(length);
 	write(fd, &length, 4);
 	write(fd, header->comment, COMMENT_LENGTH);
 	write(fd, &byte, 4);

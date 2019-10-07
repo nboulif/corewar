@@ -44,7 +44,7 @@ int print_data(t_data	*data)
 				while (y < 4)
 				{
 					if (y < (data->op->dir_size ? 2 : 4))
-						printf("%-4u", (uint8_t)(data->val_param[i] >> (8 * (3 - y))));
+						printf("%-4u", (uint8_t)(data->val_param[i] >> (8 * ((data->op->dir_size ? 1 : 3) - y))));
 					else
 						printf("    ");
 					y++;
