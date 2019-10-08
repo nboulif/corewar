@@ -46,4 +46,16 @@
 # include <errno.h>
 # include "op.h"
 
+typedef struct s_op
+{
+	char			*name;
+	int				nb_params;
+	char			params[3];
+	int				opc;
+	int				cycles;
+	char			*comment;
+	unsigned char	codage_octal;
+	int				dir_size;
+}				t_op;
+
 #endif
