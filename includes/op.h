@@ -27,7 +27,7 @@
 
 #define MAX_ARGS_NUMBER			4
 #define MAX_PLAYERS				4
-#define MEM_SIZE				(4*1024)
+#define MEM_SIZE				(4 * 1024)
 #define IDX_MOD					(MEM_SIZE / 8)
 #define CHAMP_MAX_SIZE			(MEM_SIZE / 6)
 
@@ -65,7 +65,16 @@ typedef char	t_arg_type;
 
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
-# define COREWAR_EXEC_MAGIC		0xea83f3
+# define COREWAR_EXEC_MAGIC	    0xea83f3
+# define MAGIC_SIZE		        (4)
+# define NULL_SIZE		        (4)
+# define EXEC_SIZE              (4)
+# define FULL_HEADER_COR_SIZE   MAGIC_SIZE + \
+								PROG_NAME_LENGTH + \
+								NULL_SIZE + \
+								EXEC_SIZE + \
+								COMMENT_LENGTH + \
+								NULL_SIZE
 
 typedef struct		header_s
 {

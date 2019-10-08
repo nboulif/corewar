@@ -12,6 +12,10 @@
 
 #ifndef VM_COREWAR_H
 # define VM_COREWAR_H
+# include "error_code.h"
+/*
+** code d'erreur renvoyer
+*/
 # include "libft.h"
 /*
 ** read
@@ -66,6 +70,7 @@ typedef struct		s_champs
 	size_t			size_name;
 	size_t			size_comment;
 	size_t			size_executable;
+    int				index;
 }					t_champs;
 
 typedef struct		s_all
@@ -73,7 +78,7 @@ typedef struct		s_all
 	int				*fd;
 	t_champs		*champ;
 	size_t			nb_champ;
-    unsigned int	flag;
+    unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 }					t_all;
 
 #endif
