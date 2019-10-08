@@ -24,16 +24,16 @@ int					main(int argc, char **argv)
 	if (!ft_strcmp(args[0], argv[1]))
 	{
 		ft_handle_dump(argv[2]);
-		i = 5;
+		i = 3;
 	}
 	else
-		i = 3;
+		i = 1;
 	while (i < argc)
-	{
+	{ // gerer le fait que -n est facultatif ( dans ce cas la vm doit assigner un numero d'ordre elle meme )
 		if (ft_strcmp(args[1], argv[i - 2]))
 			return (ft_error_invalid_arg());
 		parse_champ(argv[i - 1], argv[i]);
-		i += 3;
+		i += 1;
 	}
 	return (0);
 }
