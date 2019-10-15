@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 15:10:31 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/15 16:43:14 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/15 17:28:19 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ size_t convert_to_big_endian2(size_t x)
 
 int	write_program(t_prog *prog, int fd)
 {
-	printf("program\n");
 	t_data *data;
 	int i;
 	int size;
@@ -39,12 +38,8 @@ int	write_program(t_prog *prog, int fd)
 			write(fd, &data->codage_octal, 1);
 		size_t byte;
 		i = -1;
-		printf("---------------------\n");
 		while (++i < 3)
 		{
-			printf("%d\n", i);
-			printf("val: %zu\n", (size_t)data->val_param[i]);
-			printf("conv: %zu\n", byte);
 			size = (data->codage_octal >> (2 * (3 - i))) & 3;
 			if (size == 2 && !data->op->dir_size)
 			{
@@ -55,8 +50,6 @@ int	write_program(t_prog *prog, int fd)
 				byte = convert_to_big_endian2(data->val_param[i]);
 			else
 				byte = data->val_param[i];
-			printf("size %d\n", size);
-			printf("hex %zx\n", byte);
 			write(fd, &byte, size);
 		}
 		data = data->next;
@@ -67,20 +60,26 @@ int	write_program(t_prog *prog, int fd)
 int magic_number(t_prog *header)
 {
 	int fd;
+	int i;
 	size_t byte = COREWAR_EXEC_MAGIC;
 	size_t length;
-
-	//length = ft_strlen(header->name);
+	
 	length = header->prog_size;
-	//printf("%zu\n", length);
-	printf("%s\n", header->name);
 	byte = convert_to_big_endian(byte);
-	fd = open(header->name, O_CREAT | O_RDWR, 0644);
+	i = ft_strlen(header->file_name) - 1;
+	while (--i > 0 && header->file_name[i] != '.')
+	{
+		;
+	}
+	if (!i)
+		header->file_name = ".cor";
+	else
+		ft_strcpy(&header->file_name[i], ".cor");
+	fd = open(header->file_name, O_CREAT | O_RDWR, 0644);
 	write(fd, &byte, 4);
 	write(fd, header->name, PROG_NAME_LENGTH);
 	byte = 0;
 	write(fd, &byte, 4);
-	printf("LENGHT %zu\n", length);
 	length = convert_to_big_endian(length);
 	write(fd, &length, 4);
 	write(fd, header->comment, COMMENT_LENGTH);
@@ -106,6 +105,7 @@ int	main(int argc, char **argv)
 	data->pc = 0;
 	data->nb_octet = 0;
 	
+	prog->file_name = argv[1];
 	if (!program_parser(prog, data))
 	{
 		if (!prog->i)
@@ -115,8 +115,8 @@ int	main(int argc, char **argv)
 			print_debug(prog);
 		else
 		{
-			printf("Writing\n");
 			magic_number(prog);
+			printf("Writing output program to %s\n", prog->file_name);
 		}
 	}
 	return (0);

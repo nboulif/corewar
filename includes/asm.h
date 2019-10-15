@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 14:48:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/15 16:41:20 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/15 17:00:26 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct		s_prog
 	
 	int				prog_size;
 	int				debug;
+
+	char			*file_name;
 
 }					t_prog;
 
