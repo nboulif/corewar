@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 14:48:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/22 19:02:16 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:41:20 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ typedef struct	s_label
 
 extern t_op g_op_tab[17];
 
-
-unsigned int convert_to_big_endian(unsigned int x);
+size_t convert_to_big_endian(size_t x);
 int magic_number(t_prog *header);
 
 int get_valid_name_comment_loop(t_prog *prog, int max_lenght, char **final_line, int i);
@@ -110,5 +109,7 @@ int print_error(t_prog *prog, int i, int o, char *error_type);
 
 int print_data(t_data *data);
 int print_debug(t_prog *prog);
+
+int	get_label(t_prog *prog);
 
 #endif

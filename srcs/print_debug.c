@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/14 17:42:57 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/15 16:43:16 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,16 +117,10 @@ int print_debug(t_prog *prog)
 	printf("\n");
 
 	data = prog->list_data;
-	if (!get_label(prog))
-	{
 		while (data)
 		{
 			print_data(data);
 			data = data->next;
 		}
-	}
-	else
-		printf("label error\n");
-
 	return (1);
 }

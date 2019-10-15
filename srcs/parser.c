@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/22 19:13:43 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/15 15:08:41 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ t_label *update_list_label(t_prog *prog, t_data *data)
 int	program_parser(t_prog *prog, t_data	*data)
 {
 	t_data	*tmp;
+	t_prog	*tmp_prog;
 	
 	while (get_next_line(prog->fd, &prog->full_line) > 0)
 	{
@@ -134,6 +135,15 @@ int	program_parser(t_prog *prog, t_data	*data)
 		// if (prog->debug)
 		// 		print_data(tmp);
 	}
+	tmp_prog = prog;
+	tmp = tmp_prog->list_data;
+	if (!get_label(tmp_prog))
+	{
+		while (tmp)
+			tmp = tmp->next;
+	}
+	else
+		printf("label error\n");
 	prog->prog_size = data->pc + data->nb_octet;
 	close(prog->fd);
 	return (0);
