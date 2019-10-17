@@ -6,14 +6,13 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/22 19:10:30 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/16 13:54:53 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-
-int get_valid_name_comment_loop(t_prog *prog, int max_lenght, char **final_line, int i)
+int		get_valid_name_comment_loop(t_prog *prog, int max_lenght, char **final_line, int i)
 {
 	int z;
 
@@ -43,10 +42,10 @@ int get_valid_name_comment_loop(t_prog *prog, int max_lenght, char **final_line,
 	return (printf("Champion name too long (Max length %d)\n", max_lenght));
 }
 
-int get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line)
+int		get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line)
 {
 	int i;
-	
+
 	i = max_lenght == PROG_NAME_LENGTH ? 5 : 8;
 	i += (int)(skip_chars(prog->line + i, " \t") - (prog->line + i));
 	if (!*(prog->line + i))
@@ -54,13 +53,13 @@ int get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line)
 	if (*(prog->line + i) != '"')
 		return (manage_errors(prog, i));
 	i++;
-	if (!( (*final_line) = ft_strnew(max_lenght)))
+	if (!((*final_line) = ft_strnew(max_lenght)))
 		return (printf("MALLOC PROBLEM\n"));
 	prog->l_h = 0;
 	return (get_valid_name_comment_loop(prog, max_lenght, final_line, i));
 }
 
-int get_header(t_prog *prog)
+int		get_header(t_prog *prog)
 {
 	while (get_next_line(prog->fd, &prog->full_line) > 0)
 	{
@@ -69,7 +68,7 @@ int get_header(t_prog *prog)
 		if (!prog->line || !*prog->line || *prog->line == '#')
 			continue;
 		else if (!ft_strncmp(prog->line, NAME_CMD_STRING, 5))
-		{	
+		{
 			if (prog->name)
 				return (print_error_tokken(prog, 0, 5, "COMMAND_NAME"));
 			else if (get_valid_name_comment(prog, PROG_NAME_LENGTH, &prog->name))

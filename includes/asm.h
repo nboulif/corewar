@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 14:48:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/15 17:00:26 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/17 15:11:25 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "op.h"
 # include "libft.h"
 
+# define	SYNTAX	"Syntax error at token [TOKEN]"
+# define	END		"END \"(null)\""
 
 typedef struct	s_op t_op;
 typedef struct	s_data t_data;
@@ -60,7 +62,7 @@ typedef struct s_op
 
 typedef struct	s_data
 {
-	char	*line;
+	//char	*line;
 	int		pc;
 	char	*label;
 	int		nb_octet;
@@ -81,13 +83,14 @@ typedef struct	s_label
 
 extern t_op g_op_tab[17];
 
-size_t convert_to_big_endian(size_t x);
-int magic_number(t_prog *header);
+//size_t convert_to_big_endian(size_t x);
+int write_file(t_prog *header);
 
 int get_valid_name_comment_loop(t_prog *prog, int max_lenght, char **final_line, int i);
 int get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line);
 int get_header(t_prog *prog);
 
+int	manage_errors_inexisting_label(t_prog *prog);
 int manage_errors_direct(t_prog *prog, int i, int o);
 int manage_errors_instruction(t_prog *prog, int i, int o);
 int manage_errors_alnum(t_prog *prog, int i, int o);

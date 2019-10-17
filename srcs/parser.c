@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/15 15:08:41 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/17 14:18:52 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int open_file(t_prog *prog, int argc, char **argv)
 		if (!ft_strcmp("-a", argv[1]))
 			prog->debug = 1;
 		prog->fd = open(argv[2], O_RDONLY);
-		if(prog->fd < 0)
+		if (prog->fd < 0)
 			printf("Can't read source file %s\n", argv[2]);
 	}
 	else
 	{
 		prog->fd = open(argv[1], O_RDONLY);
-		if(prog->fd < 0)
+		if (prog->fd < 0)
 			printf("Can't read source file %s\n", argv[1]);
 	}
 	return (0);
@@ -143,7 +143,7 @@ int	program_parser(t_prog *prog, t_data	*data)
 			tmp = tmp->next;
 	}
 	else
-		printf("label error\n");
+		manage_errors_inexisting_label(prog);
 	prog->prog_size = data->pc + data->nb_octet;
 	close(prog->fd);
 	return (0);

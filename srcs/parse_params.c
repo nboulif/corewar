@@ -6,13 +6,13 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/13 20:05:14 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/16 16:45:22 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-t_op *identify_opc(char *line)
+t_op	*identify_opc(char *line)
 {
 	int i;
 
@@ -27,7 +27,7 @@ t_op *identify_opc(char *line)
 	return (NULL);
 }
 
-int parse_indirect(t_data *data, int i)
+int		parse_indirect(t_data *data, int i)
 {
 	data->val_param[i] = ft_atoi(data->params[i]);
 	data->params[i] += count_digit(data->val_param[i]);
@@ -36,7 +36,7 @@ int parse_indirect(t_data *data, int i)
 	return (0);
 }
 
-int parse_register(t_data *data, int i)
+int		parse_register(t_data *data, int i)
 {
 	int z;
 
@@ -52,7 +52,7 @@ int parse_register(t_data *data, int i)
 	return (0);
 }
 
-int parse_direct_char(t_data *data, int i)
+int		parse_direct_char(t_data *data, int i)
 {
 	if (data->params[i][0] == LABEL_CHAR || data->params[i][1] == LABEL_CHAR)
 	{
@@ -76,9 +76,8 @@ int parse_direct_char(t_data *data, int i)
 	return (0);
 }
 
-int parse_params_2(t_prog *prog, t_data *data, int i, char *ori_param)
+int		parse_params_2(t_prog *prog, t_data *data, int i, char *ori_param)
 {
-	
 	if (!data->params[i])
 		return (manage_errors(prog, prog->i));
 	if (data->params[i][0] == 'r' && data->params[i][1] && ft_isdigit(data->params[i][1]))
@@ -105,11 +104,11 @@ int parse_params_2(t_prog *prog, t_data *data, int i, char *ori_param)
 	return (manage_errors(prog, prog->i + (int)(data->params[i] - ori_param)));
 }
 
-int parse_params(t_prog *prog, t_data *data)
+int		parse_params(t_prog *prog, t_data *data)
 {
-	int i;
-	char *ori_param;
-	char *tmp_param;
+	int		i;
+	char	*ori_param;
+	char	*tmp_param;
 
 	if (data->op->codage_octal)
 		data->nb_octet++;
@@ -120,7 +119,7 @@ int parse_params(t_prog *prog, t_data *data)
 		data->params[i] = skip_chars(data->params[i], " \t");
 		tmp_param = data->params[i];
 		if (parse_params_2(prog, data, i, ori_param))
-			return (1);		
+			return (1);
 		data->params[i] = skip_chars(data->params[i], " \t");
 		if (data->params[i] && *data->params[i] && *data->params[i] != '#' && *data->params[i] != ';')
 			return (manage_errors(prog, prog->i + (int)(data->params[i] - ori_param)));
@@ -131,13 +130,13 @@ int parse_params(t_prog *prog, t_data *data)
 	return (0);
 }
 
-t_data *parse_commands(t_prog *prog)
+t_data	*parse_commands(t_prog *prog)
 {
-	char *opc;
-	char *label;
-	t_data *data;
-	int i;
-	int y;
+	char	*opc;
+	char	*label;
+	t_data	*data;
+	int		i;
+	int		y;
 
 	label = "";
 	y = 0;
@@ -168,7 +167,7 @@ t_data *parse_commands(t_prog *prog)
 		manage_errors(prog, y + i + 1);
 		return (NULL);
 	}
-	if(!(data = init_data(prog->line, prog->nb_line, label, opc)))
+	if (!(data = init_data(prog->line, prog->nb_line, label, opc)))
 	{
 		manage_errors(prog, y + i - 1);
 		return (NULL);

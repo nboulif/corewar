@@ -6,37 +6,35 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/15 16:43:16 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/16 16:46:56 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-int print_data(t_data	*data)
+int		print_data(t_data *data)
 {
 	int i;
 	int y;
-	
+
 	if (data->label)
 		printf("%-11d :    %s:\n", data->pc, data->label);
 	if (data->op->opc)
 	{
 		printf("%-5d (%-3d) :        %-10s ", data->pc, data->nb_octet, data->op->name);
 		i = 0;
-		while(i < data->op->nb_params)
+		while (i < data->op->nb_params)
 		{
 			y = 0;
-			while(data->params[i][y] && data->params[i][y] != ' ' && data->params[i][y] != '\t')
+			while (data->params[i][y] && data->params[i][y] != ' ' && data->params[i][y] != '\t')
 				y++;
 			printf("%-18.*s", y, data->params[i++]);
 		}
 		printf("\n");
-
 		printf("%20s %-4d", "", data->op->opc);
 		data->op->codage_octal ? printf(" %-6d", data->codage_octal) : printf(" %-6s", "");
-		
 		i = 0;
-		while(i < data->op->nb_params)
+		while (i < data->op->nb_params)
 		{
 			if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_DIR)
 			{
@@ -56,14 +54,12 @@ int print_data(t_data	*data)
 			i++;
 		}
 		printf("\n");
-		
 		printf("%20s %-4d", "", data->op->opc);
 		data->op->codage_octal ? printf(" %-6d", data->codage_octal) : printf(" %-6s", "");
 		i = 0;
-		while(i < data->op->nb_params)
+		while (i < data->op->nb_params)
 			printf("%-18d", data->val_param[i++]);
 		printf("\n");
-
 		printf("\n");
 		data = data->next;
 	}
@@ -74,7 +70,8 @@ int	get_label(t_prog *prog)
 {
 	t_data	*data;
 	t_data	*tmp_data;
-	int		i;	
+	int		i;
+
 	data = prog->list_data;
 	tmp_data = data;
 	while (data)
@@ -82,14 +79,14 @@ int	get_label(t_prog *prog)
 		i = -1;
 		while (++i < 3 && data->params[i])
 		{
-			if(!data->val_param[i] && data->params[i][1] == ':')
+			if (!data->val_param[i] && data->params[i][1] == ':')
 			{
 				while (tmp_data)
 				{
 					if (tmp_data->label && !ft_strcmp(tmp_data->label, &data->params[i][2]))
 					{
 						data->val_param[i] = tmp_data->pc - data->pc;
-						break;
+						break ;
 					}
 					else
 					{
@@ -106,7 +103,7 @@ int	get_label(t_prog *prog)
 	return (0);
 }
 
-int print_debug(t_prog *prog)
+int		print_debug(t_prog *prog)
 {
 	t_data	*data;
 
@@ -115,12 +112,11 @@ int print_debug(t_prog *prog)
 	printf("Name : \"%s\"\n", prog->name);
 	printf("Comment : \"%s\"\n", prog->comment);
 	printf("\n");
-
 	data = prog->list_data;
-		while (data)
-		{
-			print_data(data);
-			data = data->next;
-		}
+	while (data)
+	{
+		print_data(data);
+		data = data->next;
+	}
 	return (1);
 }
