@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/16 16:45:22 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/19 16:06:17 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int		parse_params_2(t_prog *prog, t_data *data, int i, char *ori_param)
 int		parse_params(t_prog *prog, t_data *data)
 {
 	int		i;
+	int		j;
 	char	*ori_param;
 	char	*tmp_param;
 
@@ -124,6 +125,12 @@ int		parse_params(t_prog *prog, t_data *data)
 		if (data->params[i] && *data->params[i] && *data->params[i] != '#' && *data->params[i] != ';')
 			return (manage_errors(prog, prog->i + (int)(data->params[i] - ori_param)));
 		data->params[i] = tmp_param;
+		//------------Trim spaces and comments of params
+		j = 0;
+		while (data->params[i][j] && data->params[i][j] != ' ' && data->params[i][j] != '\t' && data->params[i][j] != '#')
+			j++;
+		data->params[i] = ft_strsub(data->params[i], 0, j);
+		//------------
 		prog->i += ft_strlen(ori_param) + 1;
 	}
 	data->nb_octet++;

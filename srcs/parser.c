@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/17 14:18:52 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/19 15:31:24 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,31 +75,9 @@ t_prog	*init_prog(int argc, char **argv)
 	prog->comment_found = 0;
 	prog->name = NULL;
 	prog->comment = NULL;
-	prog->list_label = NULL;
 	prog->list_data = NULL;
 	return (prog);
 }
-
-t_label *update_list_label(t_prog *prog, t_data *data)
-{
-	t_label *new;
-
-
-	if (data->label)
-	{	
-		new = (t_label *)malloc(sizeof(t_label));
-		new->label = data->label;
-		new->pc = data->pc;
-		new->next = NULL;
-		if (prog->list_label)
-			prog->list_label->next = new;
-		else 
-			prog->list_label = new;
-		return (new);
-	}
-	return (prog->list_label);	
-}
-
 
 
 int	program_parser(t_prog *prog, t_data	*data)
@@ -130,8 +108,6 @@ int	program_parser(t_prog *prog, t_data	*data)
 			data->next->pc = data->pc + data->nb_octet;
 			data = data->next;
 		}
-		if (tmp->label)
-			update_list_label(prog, tmp);
 		// if (prog->debug)
 		// 		print_data(tmp);
 	}

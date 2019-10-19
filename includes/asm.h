@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 14:48:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/17 15:11:25 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/19 15:31:14 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ typedef struct		s_prog
 	int				l_h; // counter for char in name or comment
 	t_op			*op;
 	t_data			*list_data;
-	t_label			*list_label;
 	int				fd;
 	char			*full_line;
 	char			*line;
@@ -74,16 +73,8 @@ typedef struct	s_data
 	t_data	*next;
 }				t_data;
 
-typedef struct	s_label
-{
-	char	*label;
-	int 	pc;
-	t_label	*next;
-}				t_label;
-
 extern t_op g_op_tab[17];
 
-//size_t convert_to_big_endian(size_t x);
 int write_file(t_prog *header);
 
 int get_valid_name_comment_loop(t_prog *prog, int max_lenght, char **final_line, int i);
