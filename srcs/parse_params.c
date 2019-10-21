@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/19 16:06:17 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/21 15:07:38 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int		parse_register(t_data *data, int i)
 	int z;
 
 	z = 0;
-	if (data->params[i][1] == '0' && data->params[i][2] && ft_isdigit(data->params[i][2]))
+	if (data->params[i][1] == '0' && data->params[i][2] &&
+			ft_isdigit(data->params[i][2]))
 		z++;
 	data->val_param[i] = ft_atoi(&data->params[i][1 + z]);
 	if (!(data->val_param[i] >= 0 && data->val_param[i] <= 99))
@@ -80,24 +81,25 @@ int		parse_params_2(t_prog *prog, t_data *data, int i, char *ori_param)
 {
 	if (!data->params[i])
 		return (manage_errors(prog, prog->i));
-	if (data->params[i][0] == 'r' && data->params[i][1] && ft_isdigit(data->params[i][1]))
+	if (data->params[i][0] == 'r' && data->params[i][1] &&
+			ft_isdigit(data->params[i][1]))
 	{
 		if (!(data->op->params[i] & T_REG))
-			return (printf("Invalid parameter %d type register for instruction %s\n", i, data->op->name));
+			return (printf("%s %d %s %s\n", INV_PARAM, i, TYPE_REG, data->op->name));
 		if (!parse_register(data, i))
 			return (0);
 	}
 	else if (data->params[i][0] == DIRECT_CHAR || data->params[i][0] == LABEL_CHAR)
 	{
 		if (!(data->op->params[i] & T_DIR))
-			return (printf("Invalid parameter %d type direct for instruction %s\n", i, data->op->name));
+			return (printf("%s %d %s %s\n", INV_PARAM, i, TYPE_INDIR, data->op->name));
 		if (!parse_direct_char(data, i))
 			return (0);
 	}
 	else if (data->params[i][0] == '-' || ft_isdigit(data->params[i][0]))
 	{
 		if (!(data->op->params[i] & T_IND))
-			return (printf("Invalid parameter %d type indirect for instruction %s\n", i, data->op->name));
+			return (printf("%s %d %s %s\n", INV_PARAM, i, TYPE_DIR, data->op->name));
 		if (!parse_indirect(data, i))
 			return (0);
 	}

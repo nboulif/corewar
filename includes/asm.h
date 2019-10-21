@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 14:48:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/19 15:31:14 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/21 15:02:36 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,43 @@
 # include "op.h"
 # include "libft.h"
 
-# define	SYNTAX	"Syntax error at token [TOKEN]"
-# define	END		"END \"(null)\""
+# define	SYNTAX		"Syntax error at token [TOKEN]"
+# define	END			"END \"(null)\""
+# define	USAGE1		"Usage: ./asm_res [-a] <sourcefile.s>\n"
+# define	USAGE2		"    -a : Instead of creating a .cor file, "
+# define	USAGE3		"outputs a stripped and annotated version "
+# define	USAGE4		"of the code to the standard output\n"
+# define	LONG_NAME	"Champion name too long"
+# define	INV_PARAM	"Invalid parameter"
+# define	TYPE_DIR	"type direct for instruction"
+# define	TYPE_INDIR	"type indirect for instruction"
+# define	TYPE_REG	"type register for instruction"
 
-typedef struct	s_op t_op;
-typedef struct	s_data t_data;
-typedef struct	s_label t_label;
+typedef struct	s_op	t_op;
+typedef struct	s_data	t_data;
+typedef struct	s_label	t_label;
 
 typedef struct		s_prog
 {
-	int				name_found;
-	int				comment_found;
+	int				debug;
+	int				nb_line;
 	char			*name;
 	char			*comment;
+	t_data			*list_data;
+
+	int				fd;
+
 	int				l_h; // counter for char in name or comment
 	t_op			*op;
-	t_data			*list_data;
-	int				fd;
 	char			*full_line;
 	char			*line;
 	int 			i; // counter char passed in current line
-	int				nb_line;
-	
 	int				prog_size;
-	int				debug;
-
 	char			*file_name;
-
 }					t_prog;
 
 
-typedef struct s_op
+typedef struct		s_op
 {
 	char			*name;
 	int				nb_params;
@@ -57,9 +63,9 @@ typedef struct s_op
 	char			*comment;
 	unsigned char	codage_octal;
 	int				dir_size;
-}				t_op;
+}					t_op;
 
-typedef struct	s_data
+typedef struct		s_data
 {
 	//char	*line;
 	int		pc;
@@ -71,7 +77,7 @@ typedef struct	s_data
 	int		val_param[3];
 	int		codage_octal;
 	t_data	*next;
-}				t_data;
+}					t_data;
 
 extern t_op g_op_tab[17];
 
@@ -95,7 +101,6 @@ int parse_params(t_prog *prog, t_data *line);
 t_data	*parse_commands(t_prog *prog);
 
 t_data	*init_data(char *str_params, int nb_line, char *label, char *str_opc);
-t_prog	*init_prog(int argc, char **argv);
 t_label *update_list_label(t_prog *prog, t_data *data);
 int	program_parser(t_prog *prog, t_data	*data);
 
