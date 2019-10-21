@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/19 16:02:57 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/21 15:53:12 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,43 +61,6 @@ int		print_data(t_data *data)
 			printf("%-18d", data->val_param[i++]);
 		printf("\n");
 		printf("\n");
-		data = data->next;
-	}
-	return (0);
-}
-
-int	get_label(t_prog *prog)
-{
-	t_data	*data;
-	t_data	*tmp_data;
-	int		i;
-
-	data = prog->list_data;
-	tmp_data = data;
-	while (data)
-	{
-		i = -1;
-		while (++i < 3 && data->params[i])
-		{
-			if (!data->val_param[i] && data->params[i][1] == ':')
-			{
-				while (tmp_data)
-				{
-					if (tmp_data->label && !ft_strcmp(tmp_data->label, &data->params[i][2]))
-					{
-						data->val_param[i] = tmp_data->pc - data->pc;
-						break ;
-					}
-					else
-					{
-						tmp_data = tmp_data->next;
-						if (!tmp_data)
-							return (-1);
-					}
-				}
-				tmp_data = prog->list_data;
-			}
-		}
 		data = data->next;
 	}
 	return (0);

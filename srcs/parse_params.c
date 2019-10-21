@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/21 15:07:38 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/21 16:50:52 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,65 +77,72 @@ int		parse_direct_char(t_data *data, int i)
 	return (0);
 }
 
-int		parse_params_2(t_prog *prog, t_data *data, int i, char *ori_param)
+int		parse_params_2(t_prog *prog, t_data *d, int i, char *ori_param)
 {
-	if (!data->params[i])
+	if (!d->params[i])
 		return (manage_errors(prog, prog->i));
-	if (data->params[i][0] == 'r' && data->params[i][1] &&
-			ft_isdigit(data->params[i][1]))
+	if (d->params[i][0] == 'r' && d->params[i][1] &&
+			ft_isdigit(d->params[i][1]))
 	{
-		if (!(data->op->params[i] & T_REG))
-			return (printf("%s %d %s %s\n", INV_PARAM, i, TYPE_REG, data->op->name));
-		if (!parse_register(data, i))
+		if (!(d->op->params[i] & T_REG))
+			return (printf("%s %d %s %s\n", PARAM, i, TYPE_REG, d->op->name));
+		if (!parse_register(d, i))
 			return (0);
 	}
-	else if (data->params[i][0] == DIRECT_CHAR || data->params[i][0] == LABEL_CHAR)
+	else if (d->params[i][0] == DIRECT_CHAR || d->params[i][0] == LABEL_CHAR)
 	{
-		if (!(data->op->params[i] & T_DIR))
-			return (printf("%s %d %s %s\n", INV_PARAM, i, TYPE_INDIR, data->op->name));
-		if (!parse_direct_char(data, i))
+		if (!(d->op->params[i] & T_DIR))
+			return (printf("%s %d %s %s\n", PARAM, i, TYPE_INDIR, d->op->name));
+		if (!parse_direct_char(d, i))
 			return (0);
 	}
-	else if (data->params[i][0] == '-' || ft_isdigit(data->params[i][0]))
+	else if (d->params[i][0] == '-' || ft_isdigit(d->params[i][0]))
 	{
-		if (!(data->op->params[i] & T_IND))
-			return (printf("%s %d %s %s\n", INV_PARAM, i, TYPE_DIR, data->op->name));
-		if (!parse_indirect(data, i))
+		if (!(d->op->params[i] & T_IND))
+			return (printf("%s %d %s %s\n", PARAM, i, TYPE_DIR, d->op->name));
+		if (!parse_indirect(d, i))
 			return (0);
 	}
-	return (manage_errors(prog, prog->i + (int)(data->params[i] - ori_param)));
+	return (manage_errors(prog, prog->i + (int)(d->params[i] - ori_param)));
 }
 
-int		parse_params(t_prog *prog, t_data *data)
+char	*trim_comments_space(char *params)
+{
+	int i;
+
+	i = 0;
+	while (params && params[i] && params[i] != ' ' &&
+			params[i] != '\t' && params[i] != '#')
+		i++;
+	if (i > 0)
+		params = ft_strsub(params, 0, i);
+	return (params);
+}
+
+int		parse_params(t_prog *p, t_data *d)
 {
 	int		i;
-	int		j;
 	char	*ori_param;
 	char	*tmp_param;
 
-	if (data->op->codage_octal)
-		data->nb_octet++;
+	if (d->op->codage_octal)
+		d->nb_octet++;
 	i = -1;
-	while (++i < data->op->nb_params)
+	while (++i < d->op->nb_params)
 	{
-		ori_param = data->params[i];
-		data->params[i] = skip_chars(data->params[i], " \t");
-		tmp_param = data->params[i];
-		if (parse_params_2(prog, data, i, ori_param))
+		ori_param = d->params[i];
+		d->params[i] = skip_chars(d->params[i], " \t");
+		tmp_param = d->params[i];
+		if (parse_params_2(p, d, i, ori_param))
 			return (1);
-		data->params[i] = skip_chars(data->params[i], " \t");
-		if (data->params[i] && *data->params[i] && *data->params[i] != '#' && *data->params[i] != ';')
-			return (manage_errors(prog, prog->i + (int)(data->params[i] - ori_param)));
-		data->params[i] = tmp_param;
-		//------------Trim spaces and comments of params
-		j = 0;
-		while (data->params[i][j] && data->params[i][j] != ' ' && data->params[i][j] != '\t' && data->params[i][j] != '#')
-			j++;
-		data->params[i] = ft_strsub(data->params[i], 0, j);
-		//------------
-		prog->i += ft_strlen(ori_param) + 1;
+		d->params[i] = skip_chars(d->params[i], " \t");
+		if (d->params[i] && *d->params[i] && *d->params[i] != '#'
+				&& *d->params[i] != ';')
+			return (manage_errors(p, p->i + (int)(d->params[i] - ori_param)));
+		d->params[i] = trim_comments_space(tmp_param);
+		p->i += ft_strlen(ori_param) + 1;
 	}
-	data->nb_octet++;
+	d->nb_octet++;
 	return (0);
 }
 
@@ -149,7 +156,8 @@ t_data	*parse_commands(t_prog *prog)
 
 	label = "";
 	y = 0;
-	while (prog->line[y] && prog->line[y] != ':' && prog->line[y] != '%' && prog->line[y] != ' ' && prog->line[y] != '\t')
+	while (prog->line[y] && prog->line[y] != ':' && prog->line[y] != '%'
+			&& prog->line[y] != ' ' && prog->line[y] != '\t')
 		y++;
 	if (!prog->line[y])
 	{
@@ -164,7 +172,8 @@ t_data	*parse_commands(t_prog *prog)
 		prog->line = prog->line + ++y;
 	}
 	i = 0;
-	while (prog->line[i] && prog->line[i] != ' ' && prog->line[i] != '\t' && prog->line[i] != '%')
+	while (prog->line[i] && prog->line[i] != ' ' &&
+			prog->line[i] != '\t' && prog->line[i] != '%')
 		i++;
 	opc = ft_strsub(prog->line, 0, i);
 	if (prog->line[i] && prog->line[i] != '%')

@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/16 16:46:59 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/21 19:21:02 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,27 @@ int		manage_errors(t_prog *prog, int i)
 		return (print_error_lexical(prog, i));
 }
 
-int		manage_errors_inexisting_label(t_prog *prog)
+int		manage_errors_inexisting_label(t_data *data, int error_line)
 {
-	(void)prog->name;
-	printf("%d\n", prog->list_data->nb_line);
-	printf("label error\n");
-	return (0);
+	int		i;
+	int		j;
+	char	*error_label;
+
+	i = data->nb_line;
+	while (data->nb_line != error_line)
+		data = data->next;
+	j = 0;
+	i = 0;
+	while (data->line[i] != '%')
+		i++;
+	i += 2;
+	while (data->line[i] != ',' && data->line[i] != ' ' && data->line[i])
+	{
+		i++;
+		j++;
+	}
+	error_label = ft_strsub(data->line, i - j - 2, j + 2);
+	printf("%s %s %s [TOKEN][%0.3d:%0.3d] DIRECT_LABEL \"%s\"\n",
+			NO_LABEL, &error_label[2], DEREF, error_line, i - j - 1, error_label);
+	return (1);
 }
