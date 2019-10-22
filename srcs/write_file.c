@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 14:39:04 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/17 16:25:51 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/22 12:40:20 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int		write_program(t_data *data, int fd)
 			size = (data->codage_octal >> (2 * (3 - i))) & 3;
 			if (size == 2 && !data->op->dir_size && (size = 4))
 				byte = convert_to_big_endian(data->val_param[i], 0);
-			else if (size == 2)
+			else if ((size == 2 || size == 3) && (size = 2))
 				byte = convert_to_big_endian(data->val_param[i], 1);
 			else
 				byte = data->val_param[i];
