@@ -50,6 +50,12 @@
 # include <errno.h>
 # include "op.h"
 
+# define SIZE_BUFF	2800
+
+# define DUMP			1
+# define THREAD_FLAG	2
+# define FLAG_BONUS2	4
+
 typedef struct s_op
 {
 	char			*name;
@@ -66,19 +72,38 @@ typedef struct		s_champs
 {
 	char			*name;
 	char			*comment;
-	void			*executable_code;
+	void			*exec_code;
+	int				i_exec_code;
 	size_t			size_name;
 	size_t			size_comment;
-	size_t			size_executable;
+	size_t			size_exec;
     int				index;
+	t_champs		**fork;
+	size_t			nb_fork;
+
 }					t_champs;
 
 typedef struct		s_all
 {
-	int				*fd;
-	t_champs		*champ;
 	size_t			nb_champ;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
+	t_champs		champ[4];
+	int				fd;
 }					t_all;
+
+/*
+** utils 
+*/
+
+int				ft_realloc(void **tab, int *size_av,
+					int new_size_ap, size_t type_size);
+int				read_all(char **str, int fd);
+void			print_error_and_exit(int type_of_error);
+
+/*
+** parse_champ 
+*/
+
+int		parse_champ(t_all *all, char *index, char *file);
 
 #endif

@@ -1,19 +1,10 @@
 #include "vm_corewar.h"
 
-void	print_error_and_exit(int type_of_error)
-{
-	char *str[6] = {"READ ERROR\n", "BAD MAGIC NUMBER\n",\
-					"INDEX DOUBLON\n", "TOO MUCH CHAMPS\n",\
-					"MALLOC ERROR\n", "OPEN FAILED\n"};
-
-	ft_putstr_fd(str[-type_of_error - 1], 2);
-	exit(1);
-}
-
 int		strcpy_champ(char *dest, char *src, int size)
 {
-	int i = 0;
+	int i;
 
+	i = 0;
 	while (src[i])
 	{
 		dest[i] = src[i];
@@ -26,9 +17,6 @@ int		strcpy_champ(char *dest, char *src, int size)
 
 int		init_champ_header(t_champs *champ, char	*mem, char *index)
 {
-	int i;
-	int	offset;
-
 	if (!(champ->name = malloc(sizeof(char) * PROG_NAME_LENGTH)) ||
 		!(champ->comment = malloc(sizeof(char) * COMMENT_LENGTH)))
 		return (0);
@@ -52,23 +40,25 @@ int		check_index_doublon(t_all *all, int index)
 
 int		parse_champ(t_all *all, char *index, char *file)
 {
-	int			fd;
-	char		mem[FULL_HEADER_COR_SIZE];
 	static int	champ_count = -1;
+	char		mem[FULL_HEADER_COR_SIZE];
+	int			fd;
 
 	if (++champ_count == 3)
-		return (TOO_MUCH_CHAMPS);
+		print_error_and_exit(TOO_MANY_CHAMPS);
 	if ((fd = open(file, O_RDONLY)) == -1)
-		return (OPEN_ERROR);
-	if (read(fd, mem, FULL_HEADER_COR_SIZE) < FULL_HEADER_COR_SIZE)
-		return (READ_ERROR);
+		print_error_and_exit(OPEN_ERROR);
+	if (read(fd, mem, FULL_HEADER_COR_SIZE) < FULL_HEADER_COR_SIZE ||
+		!(all->champ[champ_count].size_exec =
+		read_all((char**)&all->champ[champ_count].exec_code, fd)))
+		print_error_and_exit(READ_ERROR);
 	if (*((int*)mem) != COREWAR_EXEC_MAGIC)
-		return (BAD_MAGIC_NUMBER);
+		print_error_and_exit(BAD_MAGIC_NUMBER);
 	if (!init_champ_header(&all->champ[champ_count],
 			&mem[MAGIC_SIZE], index))
-		return (MALLOC_ERROR);
+		print_error_and_exit(MALLOC_ERROR);
 	if (!check_index_doublon(all, champ_count))
-		return (INDEX_DOUBLON);
+		print_error_and_exit(INDEX_DOUBLON);
 	close(fd);
 	return (1);
 }
