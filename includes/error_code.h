@@ -4,10 +4,11 @@
 # define READ_ERROR -1
 # define BAD_MAGIC_NUMBER -2
 # define INDEX_DOUBLON -3
-# define TOO_MANY_champ -4
+# define TOO_MANY_CHAMP -4
 # define MALLOC_ERROR -5
 # define OPEN_ERROR -6
 # define INCOMPLETE_CHAMP -7
+# define EXEC_SIZE_ERROR -8
 
 #endif
 

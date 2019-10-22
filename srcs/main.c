@@ -3,34 +3,24 @@
 static void			handle_player_with_number(int *i, int argc, char **argv,
 	t_all *all)
 {
-	*i += 3;
-	if (*i > argc)
+	*i += 2;
+	if (*i >= argc)
 		print_error_and_exit(INCOMPLETE_CHAMP);
-	parse_champ(all, argv[*i - 2], argv[*i - 1]);
+	parse_champ(all, argv[*i - 1], argv[*i]);
 }
 
 static int			is_valid_flag(char *flag)
 {
-	char			**synonyms;
-
-	synonyms = flags_syn[*flag];
-	if (!flag[0] || !synonyms)
-		return (0);
-	if (!flag[1])
+	if (flags[*flag] && !flag[1])
 		return (1);
-	while (*synonyms)
-	{
-		if (!ft_strcmp(flag, *synonyms))
-			return (1);
-		(*synonyms)++;
-	}
-	return (0);
+	return (flags_syn[*flag] && !ft_strcmp(flag, flags_syn[*flag]));
 }
 
 static int			handle_flag(int *i, int argc, char **argv, t_all *all)
 {
 	unsigned int	out;
 
+	out = flags[argv[*i][1]];
 	if (!is_valid_flag(&argv[*i][1]))
 		parse_champ(all, NULL, argv[*i]);
 	else if (out == FLAG_NUMBER)

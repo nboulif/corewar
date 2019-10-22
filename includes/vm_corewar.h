@@ -74,7 +74,7 @@
 # define FLAG_NUMBER	8
 
 extern unsigned int		flags[256];
-extern char				**flags_syn[256];
+extern char				*flags_syn[256];
 
 typedef struct s_op
 {
@@ -144,6 +144,6 @@ void		init_vm(t_all *all);
 ** vm
 */
 
-int			vm(t_all *all);
+void		vm(t_all *all);
 
 #endif

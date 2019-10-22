@@ -63,7 +63,8 @@ typedef char	t_arg_type;
 
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
-# define COREWAR_EXEC_MAGIC	    0xea83f3
+# define COREWAR_EXEC_MAGIC	    0x00ea83f3
+# define COREWAR_EXEC_MAGIC_REV	0xf383ea00
 # define MAGIC_SIZE		        (4)
 # define NULL_SIZE		        (4)
 # define EXEC_SIZE              (4)

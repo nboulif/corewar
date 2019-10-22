@@ -1,12 +1,15 @@
 #include "vm_corewar.h"
 
-int			next_action(t_all *all, t_process *current_process)
+void		next_action(t_all *all, t_process *current_process)
 {
 	if (current_process->wait)
-		return (current_process->wait--);
+	{
+		current_process->wait--;
+		return ;
+	}
 }
 
-int		vm(t_all *all)
+void		vm(t_all *all)
 {
 	int cycle;
 	int i;
