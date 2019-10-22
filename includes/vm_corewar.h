@@ -52,9 +52,13 @@
 
 # define SIZE_BUFF	2800
 
-# define DUMP			1
-# define THREAD_FLAG	2
-# define FLAG_BONUS2	4
+# define FLAG_DUMP		1
+# define FLAG_THREAD	2
+# define FLAG_VISU		4
+# define FLAG_NUMBER	8
+
+extern unsigned int		flags[256];
+extern char				**flags_syn[256];
 
 typedef struct s_op
 {
@@ -94,7 +98,8 @@ typedef struct		s_all
 /*
 ** utils 
 */
-
+void			config_flags(void);
+void			config_flags_syn(void);
 int				ft_realloc(void **tab, int *size_av,
 					int new_size_ap, size_t type_size);
 int				read_all(char **str, int fd);

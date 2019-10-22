@@ -1,18 +1,44 @@
 #include "vm_corewar.h"
 
-char				args[2][10] = {
-	"-dump",
-	"-n"
-};
-
-int					ft_error_invalid_arg()
+static void			handle_player_with_number(int *i, int argc, char **argv,
+	t_all *all)
 {
-	return (-1);
+	*i += 3;
+	if (*i > argc)
+		print_error_and_exit(INCOMPLETE_CHAMP);
+	parse_champ(all, argv[*i - 2], argv[*i - 1]);
 }
 
-void				ft_handle_dump(char *arg)
+static int			is_valid_flag(char *flag)
 {
-	return ;
+	char			**synonyms;
+
+	synonyms = flags_syn[*flag];
+	if (!flag[0] || !synonyms)
+		return (0);
+	if (!flag[1])
+		return (1);
+	while (*synonyms)
+	{
+		if (!ft_strcmp(flag, *synonyms))
+			return (1);
+		(*synonyms)++;
+	}
+	return (0);
+}
+
+static int			handle_flag(int *i, int argc, char **argv, t_all *all)
+{
+	unsigned int	out;
+
+	if (!is_valid_flag(&argv[*i][1]))
+		parse_champ(all, NULL, argv[*i]);
+	else if (out == FLAG_NUMBER)
+	{
+		handle_player_with_number(i, argc, argv, all);
+		return (0);
+	}
+	return (out);
 }
 
 int					main(int argc, char **argv)
@@ -21,22 +47,17 @@ int					main(int argc, char **argv)
 	int				i;
 
 	ft_bzero(&all, sizeof(t_all));
-	if (argc < 4)
-		return (ft_error_invalid_arg());
-	if (!ft_strcmp(args[0], argv[1]))
+	config_flags();
+	config_flags_syn();
+	i = 0;
+	while (++i < argc)
 	{
-		all.flag |= DUMP;
-		ft_handle_dump(argv[2]);
-		i = 3;
+		if (*argv[i] == '-')
+			all.flag |= handle_flag(&i, argc, argv, &all);
+		else
+			parse_champ(&all, NULL, argv[i]);
 	}
-	else
-		i = 1;
-	while (i < argc)
-	{ // gerer le fait que -n est facultatif ( dans ce cas la vm doit assigner un numero d'ordre elle meme )
-		if (ft_strcmp(args[1], argv[i - 2]))
-			return (ft_error_invalid_arg());
-		parse_champ(&all, argv[i - 1], argv[i]);
-		i += 3;
-	}
+	//execute
+	//free_all
 	return (0);
 }

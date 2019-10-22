@@ -1,5 +1,21 @@
 #include "vm_corewar.h"
 
+unsigned int		flags[256] = {0};
+char				**flags_syn[256] = {NULL};
+
+void				config_flags(void)
+{
+	flags['d'] = FLAG_DUMP;
+	flags['n'] = FLAG_NUMBER;
+	flags['t'] = FLAG_THREAD;
+	flags['v'] = FLAG_VISU;
+}
+
+void				config_flags_syn(void)
+{
+	flags['d'] = (char**){"dump", NULL};
+}
+
 int				ft_realloc(void **tab, int *size_av,
 		int new_size_ap, size_t type_size)
 {
@@ -52,9 +68,10 @@ int			read_all(char **str, int fd)
 
 void	print_error_and_exit(int type_of_error)
 {
-	char *str[6] = {"READ ERROR\n", "BAD MAGIC NUMBER\n",\
+	char *str[7] = {"READ ERROR\n", "BAD MAGIC NUMBER\n",\
 					"INDEX DOUBLON\n", "TOO MUCH CHAMPS\n",\
-					"MALLOC ERROR\n", "OPEN FAILED\n"};
+					"MALLOC ERROR\n", "OPEN FAILED\n",\
+					"INCOMPLETE CHAMP SPECIFICATION\n"};
 
 	ft_putstr_fd(str[-type_of_error - 1], 2);
 	exit(1);
