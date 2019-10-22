@@ -76,3 +76,16 @@ void	print_error_and_exit(int type_of_error)
 	ft_putstr_fd(str[-type_of_error - 1], 2);
 	exit(1);
 }
+
+int		check_index(char *index)
+{
+	int i;
+
+	i = 0;
+	if (index[i] == '-' || index[i] == '+')
+		i++;
+	while (index[i])
+		if (!ft_isdigit(index[i++]))
+			return (0);
+	return (1);
+}

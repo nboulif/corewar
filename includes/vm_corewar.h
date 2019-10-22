@@ -119,21 +119,22 @@ typedef struct		s_all
 }					t_all;
 
 /*
-** utils 
+** utils
 */
 
-void			config_flags(void);
-void			config_flags_syn(void);
-int				ft_realloc(void **tab, int *size_av,
+void		config_flags(void);
+void		config_flags_syn(void);
+int			ft_realloc(void **tab, int *size_av,
 					int new_size_ap, size_t type_size);
 int			read_all(char **str, int fd);
 void		print_error_and_exit(int type_of_error);
+int			check_index(char *index);
 
 /*
 ** parse_champ 
 */
 
-int			parse_champ(t_all *all, char *index, char *file);
+void		parse_champ(t_all *all, char *index, char *file);
 
 /*
 ** init_vm
