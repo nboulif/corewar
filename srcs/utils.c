@@ -68,10 +68,11 @@ int			read_all(char **str, int fd)
 
 void	print_error_and_exit(int type_of_error)
 {
-	char *str[8] = {"READ ERROR\n", "BAD MAGIC NUMBER\n",\
+	char *str[9] = {"READ ERROR\n", "BAD MAGIC NUMBER\n",\
 					"INDEX DOUBLON\n", "TOO MUCH CHAMPS\n",\
 					"MALLOC ERROR\n", "OPEN FAILED\n",\
-					"INCOMPLETE CHAMP SPECIFICATION\n", "BAD EXEC_SIZE\n"};
+					"INCOMPLETE ARGUMENT\n", "BAD EXEC_SIZE\n",\
+					"INVALID CYCLE AMOUNT (DUMP)\n"};
 
 	ft_putstr_fd(str[-type_of_error - 1], 2);
 	exit(1);

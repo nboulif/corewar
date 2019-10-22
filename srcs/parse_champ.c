@@ -44,7 +44,7 @@ void	fix_index(t_champ *champ, char *index)
 	if (!index || !check_index(index))
 		return ;
 	index_int = ft_atoi(index);
-	if (index_int < -124 || index_int > 123)
+	if (index_int < -125)
 		return ;
 	champ->flag_index = 1;
 	champ->index = (char)index_int;
@@ -61,32 +61,25 @@ void		parse_champ(t_all *all, char *index, char *file)
 	char		mem[FULL_HEADER_COR_SIZE];
 	int			fd;
 
-	if (++all->nb_champ == 4)
+	if (++all->nb_champ == 5)
 		print_error_and_exit(TOO_MANY_CHAMP);
-	fix_index(&all->champ[all->nb_champ], index);
+	fix_index(&all->champ[all->nb_champ - 1], index);
 	if ((fd = open(file, O_RDONLY)) == -1)
 		print_error_and_exit(OPEN_ERROR);
 	if (read(fd, mem, FULL_HEADER_COR_SIZE) < FULL_HEADER_COR_SIZE ||
-		!(all->champ[all->nb_champ].size_exec =
-		read_all((char**)&all->champ[all->nb_champ].exec_code, fd)))
+		!(all->champ[all->nb_champ - 1].size_exec =
+		read_all((char**)&all->champ[all->nb_champ - 1].exec_code, fd)))
 		print_error_and_exit(READ_ERROR);
 	if (*((int*)mem) != COREWAR_EXEC_MAGIC_REV)
 		print_error_and_exit(BAD_MAGIC_NUMBER);
-	if (!init_champ_header(&all->champ[all->nb_champ],
+	if (!init_champ_header(&all->champ[all->nb_champ - 1],
 			&mem[MAGIC_SIZE], index))
 		print_error_and_exit(MALLOC_ERROR);
-	if (!check_index_doublon(all, all->nb_champ))
+	if (!check_index_doublon(all, all->nb_champ - 1))
 		print_error_and_exit(INDEX_DOUBLON);
-	if (all->champ[all->nb_champ].size_exec !=
-		rev_int_byte(*(int*)&mem[MAGIC_SIZE + PROG_NAME_LENGTH + NULL_SIZE]))
+	if (all->champ[all->nb_champ - 1].size_exec !=
+		rev_int_byte(*(int*)&mem[MAGIC_SIZE + PROG_NAME_LENGTH + NULL_SIZE]) ||
+		all->champ[all->nb_champ - 1].size_exec > CHAMP_MAX_SIZE)
 		print_error_and_exit(EXEC_SIZE_ERROR);
 	close(fd);
 }
-
-// int		main()
-// {
-// 	char mem[4] = {'1','2','3','4'};
-
-// 	printf("|%d| - |%d|\n", (int)mem[3] << 24 | (int)mem[2] << 16 |(int)mem[1] << 8 | (int)mem[0], ((int*)mem)[0]);
-// 	return (0);
-// }

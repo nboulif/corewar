@@ -99,22 +99,35 @@ typedef struct		s_champ
 	size_t			size_exec;
     int				index;
 	unsigned char	flag_index;
+	int				alive;
+	int				nb_live;
 }					t_champ;
 
 typedef struct		s_process
 {
 	t_champ			*origin_champ;
 	int				step_in_exec;
-	int				curseur;
+	int				flag_live;
 	int				wait;
+	// les registres
+	int				reg[REG_NUMBER];
+	int				pc;
+	int				carry;
 }					t_process;
 
 typedef struct		s_all
 {
+	char			*map;
 	size_t			nb_champ;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 	t_champ			champ[4];
 	t_array			*stack_champ;
+	int				cycle_to_die;
+	int				cycles_before_exit;
+	t_champ			*last_player_alive;
+	int				nb_live;
+	int				nb_alive;
+	int				nb_check;
 }					t_all;
 
 /*

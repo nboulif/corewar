@@ -26,7 +26,7 @@ int		partition(t_array *stack_champ, int start_ind, int size)
 	value_piv = ft_array_get(stack_champ, size - 1);
 	piv_i = start_ind;
 	for (int i = start_ind; i < size; i++)
-		if (cmp_champ_order(value_piv, ft_array_get(stack_champ, i)) == 1)
+		if (cmp_champ_order(value_piv, ft_array_get(stack_champ, i)) == -1)
 			swap_champ(stack_champ, i, piv_i++);
 	swap_champ(stack_champ, size - 1, piv_i);
 	return (piv_i);
@@ -36,29 +36,42 @@ void	qsort_champ(t_array *stack_champ, int start_ind, int size)
 {
 	int pivot_i;
 
+	if (start_ind >= size)
+		return ;
 	pivot_i = partition(stack_champ , start_ind, size);
-	if (start_ind < pivot_i)
-		qsort_champ(stack_champ, start_ind, pivot_i);
-	if (pivot_i + 1 < size)
-		qsort_champ(stack_champ, pivot_i + 1, size);
+	qsort_champ(stack_champ, start_ind, pivot_i);
+	qsort_champ(stack_champ, pivot_i + 1, size);
 }
 
 void		init_vm(t_all *all)
 {
 	int			i;
 	t_process	*proc;
-	char		min_ind;
+	int			min_ind;
+	int			i_undif;
 
-	min_ind = ;
-	i = 0;
+	i_undif = 0;
+	min_ind = 127;
+	i = -1;
 	if (!(all->stack_champ = ft_array_construct(all->nb_champ, sizeof(t_process))))
 		print_error_and_exit(MALLOC_ERROR);
-	while (i < all->nb_champ)
+	while (++i < all->nb_champ)
 	{
+		ft_memcpy(all->map + i * MEM_SIZE / all->nb_champ, all->champ[i].exec_code, all->champ[i].size_exec);
 		proc = ft_array_inject(all->stack_champ);
 		ft_bzero(proc, sizeof(t_process));
-		proc->origin_champ = &all->champ[i++];
+		proc->origin_champ = &all->champ[i];
+		if (all->champ[i].flag_index && min_ind > all->champ[i].index)
+			min_ind = all->champ[i].index;
 	}
-	
-    qsort_champ(all->stack_champ, 0, all->nb_champ);
+	(min_ind == 127) ? (min_ind = 0): 1;
+	i = -1;
+	while (++i < all->nb_champ)
+		if (!all->champ[i].flag_index)
+			all->champ[i].index = min_ind - ++i_undif;
+	qsort_champ(all->stack_champ, 0, all->nb_champ);
+	i = -1;
+	while (++i < all->nb_champ)
+		printf("|%s| |%d|\n", ((t_process*)ft_array_get(all->stack_champ, i))->origin_champ->name,
+				((t_process*)ft_array_get(all->stack_champ, i))->origin_champ->index);
 }
