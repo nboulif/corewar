@@ -54,7 +54,7 @@ void	fix_index(t_champ *champ, char *index)
 {
 	int		index_int;
 
-	if (!index || check_index(index))
+	if (!index || !check_index(index))
 		return ;
 	index_int = ft_atoi(index);
 	if (index_int < -124 || index_int > 123)
@@ -63,40 +63,39 @@ void	fix_index(t_champ *champ, char *index)
 	champ->index = (char)index_int;
 }
 
-int		parse_champ(t_all *all, char *index, char *file)
+int		rev_int_byte(int nbr)
+{
+	return ((nbr & 0xff) << 24 | (nbr & 0xff0000) >> 8 |
+		(nbr & 0xff00) << 8 | (nbr & 0xff000000) >> 24);
+}
+
+void		parse_champ(t_all *all, char *index, char *file)
 {
 	static int	champ_count = -1;
 	char		mem[FULL_HEADER_COR_SIZE];
 	int			fd;
-	int			mem_nbr;
 
 	if (++champ_count == 4)
 		print_error_and_exit(TOO_MANY_CHAMP);
 	fix_index(&all->champ[champ_count], index);
-	printf("file to open |%s|\n", file);
 	if ((fd = open(file, O_RDONLY)) == -1)
 		print_error_and_exit(OPEN_ERROR);
 	if (read(fd, mem, FULL_HEADER_COR_SIZE) < FULL_HEADER_COR_SIZE ||
 		!(all->champ[champ_count].size_exec =
 		read_all((char**)&all->champ[champ_count].exec_code, fd)))
 		print_error_and_exit(READ_ERROR);
-	if (*((int*)mem) != ((COREWAR_EXEC_MAGIC & 0xff) << 24 |
-						(COREWAR_EXEC_MAGIC & 0xff0000) >> 8 |
-						(COREWAR_EXEC_MAGIC & 0xff00) << 8))
+	if (*((int*)mem) != COREWAR_EXEC_MAGIC_REV)
 		print_error_and_exit(BAD_MAGIC_NUMBER);
 	if (!init_champ_header(&all->champ[champ_count],
 			&mem[MAGIC_SIZE], index))
 		print_error_and_exit(MALLOC_ERROR);
 	if (!check_index_doublon(all, champ_count))
 		print_error_and_exit(INDEX_DOUBLON);
-	printf("name -> |%s|\n", all->champ[champ_count].name);
-	printf("comment -> |%s|\n",all->champ[champ_count].comment);
-	mem_nbr = *(int*)&mem[MAGIC_SIZE + PROG_NAME_LENGTH + NULL_SIZE];
-	mem_nbr = (mem_nbr & 0xff) << 24 | (mem_nbr & 0xff0000) >> 8 | (mem_nbr & 0xff00) << 8 | (mem_nbr & 0xff000000) >> 24;
-	if (all->champ[champ_count].size_exec != mem_nbr)
+	if (all->champ[champ_count].size_exec !=
+		rev_int_byte(*(int*)&mem[MAGIC_SIZE + PROG_NAME_LENGTH + NULL_SIZE]))
 		print_error_and_exit(EXEC_SIZE_ERROR);
+	printf("name |%s| index? |%d| index |%d|\n",all->champ[champ_count].name, all->champ[champ_count].flag_index, all->champ[champ_count].index);
 	close(fd);
-	return (1);
 }
 
 // int		main()
