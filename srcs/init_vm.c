@@ -59,8 +59,7 @@ void		init_vm(t_all *all)
 	while (++i < all->nb_champ)
 	{
 		ft_memcpy(all->map + i * (MEM_SIZE / all->nb_champ), all->champ[i].exec_code, all->champ[i].size_exec);
-		proc = ft_array_inject(all->stack_champ);
-		ft_bzero(proc, sizeof(t_process));
+		ft_bzero((proc = ft_array_inject(all->stack_champ)), sizeof(t_process));
 		proc->origin_champ = &all->champ[i];
 		proc->pc = i * (MEM_SIZE / all->nb_champ);
 		if (all->champ[i].flag_index && min_ind > all->champ[i].index)
