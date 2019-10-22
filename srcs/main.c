@@ -69,6 +69,7 @@ int					main(int argc, char **argv)
 	ft_bzero(&all, sizeof(t_all));
 	all.nb_alive = -1;
 	all.cycle_to_die = CYCLE_TO_DIE;
+	all.cycles_before_exit = -1;
 	config_flags();
 	config_flags_syn();
 	i = 0;
@@ -79,7 +80,7 @@ int					main(int argc, char **argv)
 		else
 			parse_champ(&all, NULL, argv[i]);
 	}
-	init_vm(&all);
+	vm(&all);
 	//execute
 	//free_all
 	return (0);

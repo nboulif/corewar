@@ -47,10 +47,10 @@ void		vm(t_all *all)
 
 	cycle = 0;
 	total_cycle = 0;
-	if (!(all->map = malloc(sizeof(char) * MEM_SIZE)))
+	if (!(all->map = malloc(sizeof(char) * MEM_SIZE + 1)))
 		print_error_and_exit(MALLOC_ERROR);
 	init_vm(all);
-	while (total_cycle < all->cycles_before_exit)
+	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
 		while (i < all->stack_champ->n_items)
@@ -68,5 +68,8 @@ void		vm(t_all *all)
 			}
 		}
 	}
-	ft_printf("le joueur %d(%s) a gagne\n", all->last_player_alive->index, all->last_player_alive->name);
+	if (all->last_player_alive)
+		ft_printf("le joueur %d(%s) a gagne\n", all->last_player_alive->index, all->last_player_alive->name);
+	else
+		ft_printf("tout le monde a perdu\n");
 }
