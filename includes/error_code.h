@@ -7,6 +7,7 @@
 # define TOO_MANY_champ -4
 # define MALLOC_ERROR -5
 # define OPEN_ERROR -6
+# define INCOMPLETE_CHAMP -7
 
 #endif
 
