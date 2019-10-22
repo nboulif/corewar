@@ -9,6 +9,11 @@ static void			handle_player_with_number(int *i, int argc, char **argv,
 	parse_champ(all, argv[*i - 1], argv[*i]);
 }
 
+static void			handle_dump(int *i, int argc, char **argv, t_all *all)
+{
+	
+}
+
 static int			is_valid_flag(char *flag)
 {
 	if (flags[*flag] && !flag[1])
@@ -28,7 +33,14 @@ static int			handle_flag(int *i, int argc, char **argv, t_all *all)
 		handle_player_with_number(i, argc, argv, all);
 		return (0);
 	}
+	else if (out == FLAG_DUMP)
+		handle_dump(i, argc, argv, all);
 	return (out);
+}
+
+void				usage(void)
+{
+	ft_printf("Usage ./corewar [-t] [-v] [-d | -dump] [-n]");
 }
 
 int					main(int argc, char **argv)
@@ -36,6 +48,11 @@ int					main(int argc, char **argv)
 	t_all			all;
 	int				i;
 
+	if (argc == 1)
+	{
+		usage();
+		return (0);
+	}
 	ft_bzero(&all, sizeof(t_all));
 	config_flags();
 	config_flags_syn();

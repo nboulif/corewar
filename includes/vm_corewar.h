@@ -115,6 +115,7 @@ typedef struct		s_all
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 	t_champ			champ[4];
 	t_array			*stack_champ;
+	int				cycles_before_exit;
 }					t_all;
 
 /*
