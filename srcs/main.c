@@ -47,6 +47,7 @@ int					main(int argc, char **argv)
 		else
 			parse_champ(&all, NULL, argv[i]);
 	}
+	init_vm(&all);
 	//execute
 	//free_all
 	return (0);

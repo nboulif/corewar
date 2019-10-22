@@ -47,7 +47,9 @@ void		init_vm(t_all *all)
 {
 	int			i;
 	t_process	*proc;
+	char		min_ind;
 
+	min_ind = ;
 	i = 0;
 	if (!(all->stack_champ = ft_array_construct(all->nb_champ, sizeof(t_process))))
 		print_error_and_exit(MALLOC_ERROR);
@@ -57,5 +59,6 @@ void		init_vm(t_all *all)
 		ft_bzero(proc, sizeof(t_process));
 		proc->origin_champ = &all->champ[i++];
 	}
-    qsort_champ(all->stack_champ, 0, all->stack_champ->n_items);
+	
+    qsort_champ(all->stack_champ, 0, all->nb_champ);
 }
