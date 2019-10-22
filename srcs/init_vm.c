@@ -55,6 +55,7 @@ void		init_vm(t_all *all)
 	i = -1;
 	if (!(all->stack_champ = ft_array_construct(all->nb_champ, sizeof(t_process))))
 		print_error_and_exit(MALLOC_ERROR);
+	ft_bzero(all->map, MEM_SIZE);
 	while (++i < all->nb_champ)
 	{
 		ft_memcpy(all->map + i * MEM_SIZE / all->nb_champ, all->champ[i].exec_code, all->champ[i].size_exec);
