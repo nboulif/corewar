@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/21 19:19:44 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/22 16:19:22 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,34 @@ static int	get_label(t_prog *prog)
 	t_data	*data;
 	t_data	*tmp_data;
 	int		i;
+	int		j;
 
+	j = 0;
 	data = prog->list_data;
 	tmp_data = data;
 	while ((i = -1) && data)
 	{
+		if (data->params[i + 1])
+			j = (data->params[i + 1][1] == ':') ? 0 : 1;
 		while (++i < 3 && data->params[i])
-			if (!data->val_param[i] && data->params[i][1] == ':')
-			{
+		{
+			if (!data->val_param[i] && (data->params[i][1 - j] == ':' ))
 				while (tmp_data)
+				{
 					if (tmp_data->label && !ft_strcmp(tmp_data->label,
-								&data->params[i][2]))
+								&data->params[i][2 - j]))
 					{
 						data->val_param[i] = tmp_data->pc - data->pc;
 						break ;
 					}
 					else if (!(tmp_data = tmp_data->next))
+					{
+						printf("%d\n", data->nb_line);
 						return (data->nb_line);
+					}
+				}
 				tmp_data = prog->list_data;
-			}
+		}
 		data = data->next;
 	}
 	return (0);

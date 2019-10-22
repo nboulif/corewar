@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 15:10:31 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/21 18:17:15 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/22 12:08:04 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 	}
 	if (argc > 2 && *argv[1] == '-')
 	{
+		prog->debug = 0;
 		if (!ft_strcmp("-a", argv[1]))
 			prog->debug = 1;
 		prog->fd = open(argv[2], O_RDONLY);
@@ -53,7 +54,6 @@ static t_prog	*init_prog(int argc, char **argv)
 		free(prog);
 		return (NULL);
 	}
-	prog->debug = 0;
 	prog->nb_line = 0;
 	prog->name = NULL;
 	prog->comment = NULL;
