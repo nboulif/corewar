@@ -15,7 +15,7 @@ int		strcpy_champ(char *dest, char *src, int size)
 	return (i);
 }
 
-int		init_champ_header(t_champs *champ, char	*mem, char *index)
+int		init_champ_header(t_champ *champ, char	*mem, char *index)
 {
 	if (!(champ->name = malloc(sizeof(char) * PROG_NAME_LENGTH)) ||
 		!(champ->comment = malloc(sizeof(char) * COMMENT_LENGTH)))
@@ -38,6 +38,32 @@ int		check_index_doublon(t_all *all, int index)
 	return (1);
 }
 
+int		check_index(char *index)
+{
+	int i;
+
+	i = 0;
+	if (index[i] == '-' || index[i] == '+')
+		i++;
+	while (index[i])
+		if (!ft_isdigit(index[i++]))
+			return (0);
+	return (1);
+}
+
+void	fix_index(t_champ *champ, char *index)
+{
+	int		index_int;
+
+	if (!index || check_index(index))
+		return ;
+	index_int = ft_atoi(index);
+	if (index_int < -124 || index_int > 123)
+		return ;
+	champ->flag_index = 1;
+	champ->index = (char)index_int;
+}
+
 int		parse_champ(t_all *all, char *index, char *file)
 {
 	static int	champ_count = -1;
@@ -45,7 +71,8 @@ int		parse_champ(t_all *all, char *index, char *file)
 	int			fd;
 
 	if (++champ_count == 3)
-		print_error_and_exit(TOO_MANY_CHAMPS);
+		print_error_and_exit(TOO_MANY_champ);
+	fix_index(&all->champ[champ_count], index);
 	if ((fd = open(file, O_RDONLY)) == -1)
 		print_error_and_exit(OPEN_ERROR);
 	if (read(fd, mem, FULL_HEADER_COR_SIZE) < FULL_HEADER_COR_SIZE ||

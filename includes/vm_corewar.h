@@ -12,11 +12,15 @@
 
 #ifndef VM_COREWAR_H
 # define VM_COREWAR_H
+
 # include "error_code.h"
+
 /*
 ** code d'erreur renvoyer
 */
+
 # include "libft.h"
+
 /*
 ** read
 ** lseek
@@ -24,30 +28,42 @@
 ** close
 ** 
 */
+
 # include <unistd.h>
+
 /*
 ** malloc
 ** realloc
 ** free
 ** exit
 */
+
 # include <stdlib.h>
+
 /*
 ** open
 */
+
 # include <fcntl.h>
+
 /*
 ** perror
 */
+
 # include <stdio.h>
+
 /*
 ** strerror
 */
+
 # include <string.h>
+
 /*
 ** errno
 */
+
 # include <errno.h>
+
 # include "op.h"
 
 # define SIZE_BUFF	2800
@@ -68,7 +84,7 @@ typedef struct s_op
 	int				dir_size;
 }				t_op;
 
-typedef struct		s_champs
+typedef struct		s_champ
 {
 	char			*name;
 	char			*comment;
@@ -78,32 +94,50 @@ typedef struct		s_champs
 	size_t			size_comment;
 	size_t			size_exec;
     int				index;
-	t_champs		**fork;
-	size_t			nb_fork;
+	unsigned char	flag_index;
+}					t_champ;
 
-}					t_champs;
+typedef struct		s_process
+{
+	t_champ			*origin_champ;
+	int				step_in_exec;
+	int				curseur;
+	int				wait;
+}					t_process;
 
 typedef struct		s_all
 {
 	size_t			nb_champ;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
-	t_champs		champ[4];
-	int				fd;
+	t_champ			champ[4];
+	t_array			*stack_champ;
 }					t_all;
 
 /*
 ** utils 
 */
 
-int				ft_realloc(void **tab, int *size_av,
+int			ft_realloc(void **tab, int *size_av,
 					int new_size_ap, size_t type_size);
-int				read_all(char **str, int fd);
-void			print_error_and_exit(int type_of_error);
+int			read_all(char **str, int fd);
+void		print_error_and_exit(int type_of_error);
 
 /*
 ** parse_champ 
 */
 
-int		parse_champ(t_all *all, char *index, char *file);
+int			parse_champ(t_all *all, char *index, char *file);
+
+/*
+** init_vm
+*/
+
+void		init_vm(t_all *all);
+
+/*
+** vm
+*/
+
+int			vm(t_all *all);
 
 #endif
