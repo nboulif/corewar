@@ -73,11 +73,12 @@
 # define FLAG_VISU		4
 # define FLAG_NUMBER	8
 
-extern unsigned int		flags[256];
-extern char				*flags_syn[256];
+typedef struct s_process	t_process;
+typedef struct s_all		t_all;
 
 typedef struct s_op
 {
+	void			(*op)(t_all *all, t_process *proc);
 	char			*name;
 	int				nb_params;
 	char			params[3];
@@ -121,7 +122,7 @@ typedef struct		s_all
 	size_t			nb_champ;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 	t_champ			champ[4];
-	t_array			*stack_champ;
+	t_array			*stack_proc;
 	int				cycle_to_die;
 	int				cycles_before_exit;
 	t_champ			*last_player_alive;
@@ -129,6 +130,14 @@ typedef struct		s_all
 	int				nb_alive;
 	int				nb_check;
 }					t_all;
+
+/*
+** global variable
+*/
+
+extern unsigned int		flags[256];
+extern char				*flags_syn[256];
+extern t_op				op_tab[17];
 
 /*
 ** utils

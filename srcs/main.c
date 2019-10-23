@@ -45,9 +45,10 @@ static int			handle_flag(int *i, int argc, char **argv, t_all *all)
 
 void				usage(void)
 {
-	ft_printf("Usage ./corewar [-t] [-v] [-d | -dump N] [[-n N] \
-<champion.cor>] <...>\n");
-	ft_printf("	-t		: enable threads\n\
+	ft_putstr(
+"Usage ./corewar [-t] [-v] [-d | -dump N] [[-n N] \
+<champion.cor>] <...>\n\
+	-t		: enable threads\n\
 	-v		: enable visualization\n\
 	-d -dump N	: at the end of nbr_cycles of executions, dump the \
 memory on the standard output and quit the game. The memory is \
