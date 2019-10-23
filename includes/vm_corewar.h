@@ -115,6 +115,8 @@ typedef struct		s_process
 	int				reg[REG_NUMBER];
 	int				pc;
 	int				carry;
+	// current operation
+	t_op			op;
 }					t_process;
 
 typedef struct		s_all
@@ -139,7 +141,6 @@ typedef struct		s_all
 extern unsigned int		flags[256];
 extern char				*flags_syn[256];
 extern t_op				op_tab[17];
-t_champ					*hash_champ[256];
 
 /*
 ** utils
@@ -154,6 +155,7 @@ void		print_error_and_exit(int type_of_error);
 int			check_index(char *index);
 int			rev_int_byte(int nbr);
 void		move_pc(int *pc, int incr);
+t_champ		*get_champ(int index, t_all *all);
 
 /*
 ** parse_champ 
@@ -184,6 +186,6 @@ void    op_live(t_all *all, t_process *proc);
 ** parse arg op
 */
 
-void	parse_arg_op(t_all *all, t_process *proc, t_op *op);
+void	parse_arg_op(t_all *all, t_process *proc);
 
 #endif

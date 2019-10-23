@@ -106,3 +106,16 @@ void		move_pc(int *pc, int incr)
 	else
 		*pc = (*pc + incr) % MEM_SIZE;
 }
+
+t_champ		*get_champ(int index, t_all *all)
+{
+	int		i;
+
+	i = -1;
+	while (++i < all->nb_champ)
+	{
+		if (all->champ[i].index == index)
+			return (&all->champ[i]);
+	}
+	return (NULL);
+}

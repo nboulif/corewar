@@ -7,8 +7,10 @@ void		next_action(t_all *all, t_process *current_process)
 		current_process->wait--;
 		return ;
 	}
-	if (all->map[current_process->pc] < 1 && all->map[current_process->pc] > 16)
+	if ((all->map[current_process->pc] < 1 && all->map[current_process->pc] > 16) || all->map[current_process->pc] != 1)
+	{
 		return (move_pc(&current_process->pc, 1));
+	}
 	op_tab[all->map[current_process->pc]].op(all, current_process);
 }
 
@@ -26,7 +28,6 @@ int		check_nb_live(t_all *all)
 		else
 			process->flag_live = 0;
 	}
-	printf("nb items %zu\n", all->stack_proc->n_items);
 	return (all->stack_proc->n_items);
 }
 

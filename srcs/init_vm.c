@@ -68,11 +68,8 @@ void		init_vm(t_all *all)
 	(min_ind == 127) ? (min_ind = 0): 1;
 	i = -1;
 	while (++i < all->nb_champ)
-	{
 		if (!all->champ[i].flag_index)
 			all->champ[i].index = min_ind - ++i_undif;
-		hash_champ[all->champ[i].index] = &all->champ[i];
-	}
 	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	i = -1;
 	while (++i < all->nb_champ)

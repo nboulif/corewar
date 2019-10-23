@@ -44,7 +44,7 @@ void	fix_index(t_champ *champ, char *index)
 	if (!index || !check_index(index))
 		return ;
 	index_int = ft_atoi(index);
-	if (index_int < -125)
+	if (index_int < INT_MIN + 3)
 		return ;
 	champ->flag_index = 1;
 	champ->index = (char)index_int;

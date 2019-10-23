@@ -2,7 +2,6 @@
 
 unsigned int		flags[256] = {0};
 char				*flags_syn[256] = {NULL};
-t_champ				*hash_champ[256] = {NULL};
 
 t_op    op_tab[17] =
 {
