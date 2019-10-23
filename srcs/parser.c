@@ -6,11 +6,27 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/22 16:19:22 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/23 12:33:31 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+t_data		*init_data_label_only(int nb_line, char *label)
+{
+	t_data	*data;
+
+	if (!(data = (t_data*)malloc(sizeof(t_data))))
+		return (NULL);
+	data->op = NULL;
+	data->nb_line = nb_line;
+	if (label && *label)
+		data->label = label;
+	else
+		data->label = NULL;
+	data->next = NULL;
+	return (data);
+}
 
 t_data		*init_data(char *str_para, int nb_line, char *label, char *str_opc)
 {
@@ -47,6 +63,11 @@ static int	get_label(t_prog *prog)
 	tmp_data = data;
 	while ((i = -1) && data)
 	{
+		if (!(data->op))
+		{
+			data = data->next;
+			continue ;
+		}
 		if (data->params[i + 1])
 			j = (data->params[i + 1][1] == ':') ? 0 : 1;
 		while (++i < 3 && data->params[i])
@@ -61,10 +82,7 @@ static int	get_label(t_prog *prog)
 						break ;
 					}
 					else if (!(tmp_data = tmp_data->next))
-					{
-						printf("%d\n", data->nb_line);
 						return (data->nb_line);
-					}
 				}
 				tmp_data = prog->list_data;
 		}
@@ -91,12 +109,20 @@ int			program_parser(t_prog *prog, t_data *data)
 			return (manage_errors(prog, 0));
 		if (!(tmp_data = parse_commands(prog)))
 			return (1);
+
 		tmp_data->pc = data->pc + data->nb_octet;
-		if (tmp_data->op->opc)
+		if (tmp_data->op && tmp_data->op->opc)
 		{
 			(!prog->list_data) ? prog->list_data = tmp_data : 0;
 			data->next = tmp_data;
 			data->next->pc = data->pc + data->nb_octet;
+			data->nb_line = prog->nb_line;
+			data = data->next;
+		}
+		else if (tmp_data->label)
+		{
+			(!prog->list_data) ? prog->list_data = tmp_data : 0;
+			data->next = tmp_data;
 			data->nb_line = prog->nb_line;
 			data = data->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/21 15:53:12 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/23 12:33:29 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		print_data(t_data *data)
 
 	if (data->label)
 		printf("%-11d :    %s:\n", data->pc, data->label);
-	if (data->op->opc)
+	if (data->op && data->op->opc)
 	{
 		printf("%-5d (%-3d) :        %-10s ", data->pc, data->nb_octet, data->op->name);
 		i = 0;

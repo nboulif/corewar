@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 14:39:04 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/22 15:58:35 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/23 12:20:35 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ static int		write_program(t_data *data, int fd)
 
 	while (data && (i = -1))
 	{
+		if (!data->op)
+		{
+			data = data->next;
+			continue;
+		}
 		write(fd, &data->op->opc, 1);
 		if (data->codage_octal != 128)
 			write(fd, &data->codage_octal, 1);
