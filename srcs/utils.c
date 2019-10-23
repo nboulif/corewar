@@ -1,8 +1,5 @@
 #include "vm_corewar.h"
 
-unsigned int		flags[256] = {0};
-char				*flags_syn[256] = {NULL};
-
 void				config_flags(void)
 {
 	flags['d'] = FLAG_DUMP;
@@ -89,4 +86,23 @@ int		check_index(char *index)
 		if (!ft_isdigit(index[i++]))
 			return (0);
 	return (1);
+}
+
+int		rev_int_byte(int nbr)
+{
+	return ((nbr & 0xff) << 24 | (nbr & 0xff0000) >> 8 |
+		(nbr & 0xff00) << 8 | (nbr & 0xff000000) >> 24);
+}
+
+void		move_pc(int *pc, int incr)
+{
+	if (incr > MEM_SIZE || incr < -MEM_SIZE)
+		incr %= MEM_SIZE;
+	if (incr < 0)
+	{
+		if ((*pc += incr) < 0)
+			*pc = MEM_SIZE - *pc;
+	}
+	else
+		*pc = (*pc + incr) % MEM_SIZE;
 }

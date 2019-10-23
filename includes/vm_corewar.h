@@ -81,7 +81,8 @@ typedef struct s_op
 	void			(*op)(t_all *all, t_process *proc);
 	char			*name;
 	int				nb_params;
-	char			params[3];
+	char			type_of_params[3];
+	int				params[3];
 	int				opc;
 	int				cycles;
 	char			*comment;
@@ -138,6 +139,7 @@ typedef struct		s_all
 extern unsigned int		flags[256];
 extern char				*flags_syn[256];
 extern t_op				op_tab[17];
+t_champ					*hash_champ[256];
 
 /*
 ** utils
@@ -150,6 +152,8 @@ int			ft_realloc(void **tab, int *size_av,
 int			read_all(char **str, int fd);
 void		print_error_and_exit(int type_of_error);
 int			check_index(char *index);
+int			rev_int_byte(int nbr);
+void		move_pc(int *pc, int incr);
 
 /*
 ** parse_champ 
@@ -168,5 +172,18 @@ void		init_vm(t_all *all);
 */
 
 void		vm(t_all *all);
+
+/*
+** op
+*/
+
+void    op_live(t_all *all, t_process *proc);
+
+
+/*
+** parse arg op
+*/
+
+void	parse_arg_op(t_all *all, t_process *proc, t_op *op);
 
 #endif

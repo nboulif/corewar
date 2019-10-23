@@ -9,7 +9,7 @@ int			cmp_champ_order(t_process *champ1, t_process *champ2)
 	return (1);
 }
 
-void	swap_champ(t_array *stack_proc, int a, int b)
+void	swap_proc(t_array *stack_proc, int a, int b)
 {
 	t_process	tmp;
 
@@ -27,20 +27,20 @@ int		partition(t_array *stack_proc, int start_ind, int size)
 	piv_i = start_ind;
 	for (int i = start_ind; i < size; i++)
 		if (cmp_champ_order(value_piv, ft_array_get(stack_proc, i)) == -1)
-			swap_champ(stack_proc, i, piv_i++);
-	swap_champ(stack_proc, size - 1, piv_i);
+			swap_proc(stack_proc, i, piv_i++);
+	swap_proc(stack_proc, size - 1, piv_i);
 	return (piv_i);
 }
 
-void	qsort_champ(t_array *stack_proc, int start_ind, int size)
+void	qsort_proc(t_array *stack_proc, int start_ind, int size)
 {
 	int pivot_i;
 
 	if (start_ind >= size)
 		return ;
 	pivot_i = partition(stack_proc , start_ind, size);
-	qsort_champ(stack_proc, start_ind, pivot_i);
-	qsort_champ(stack_proc, pivot_i + 1, size);
+	qsort_proc(stack_proc, start_ind, pivot_i);
+	qsort_proc(stack_proc, pivot_i + 1, size);
 }
 
 void		init_vm(t_all *all)
@@ -68,9 +68,12 @@ void		init_vm(t_all *all)
 	(min_ind == 127) ? (min_ind = 0): 1;
 	i = -1;
 	while (++i < all->nb_champ)
+	{
 		if (!all->champ[i].flag_index)
 			all->champ[i].index = min_ind - ++i_undif;
-	qsort_champ(all->stack_proc, 0, all->nb_champ);
+		hash_champ[all->champ[i].index] = &all->champ[i];
+	}
+	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	i = -1;
 	while (++i < all->nb_champ)
 		printf("|%s| |%d|\n", ((t_process*)ft_array_get(all->stack_proc, i))->origin_champ->name,

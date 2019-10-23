@@ -7,6 +7,9 @@ void		next_action(t_all *all, t_process *current_process)
 		current_process->wait--;
 		return ;
 	}
+	if (all->map[current_process->pc] < 1 && all->map[current_process->pc] > 16)
+		return (move_pc(&current_process->pc, 1));
+	op_tab[all->map[current_process->pc]].op(all, current_process);
 }
 
 int		check_nb_live(t_all *all)
@@ -17,13 +20,14 @@ int		check_nb_live(t_all *all)
 	i = -1;
 	while (++i < all->stack_proc->n_items)
 	{
-		if (!(process = (t_process*)ft_array_get(all->stack_proc, i)) &&
-			!process->flag_live)
+		process = (t_process*)ft_array_get(all->stack_proc, i);
+		if (!process->flag_live)
 			ft_array_remove(all->stack_proc, i--, NULL);
 		else
 			process->flag_live = 0;
 	}
-	return (1);
+	printf("nb items %zu\n", all->stack_proc->n_items);
+	return (all->stack_proc->n_items);
 }
 
 void		vm(t_all *all)
@@ -42,19 +46,20 @@ void		vm(t_all *all)
 		i = 0;
 		while (i < all->stack_proc->n_items)
 			next_action(all, (t_process*)ft_array_get(all->stack_proc, i++));
+		total_cycle++;
+		// printf("cycle %d all->cycle_to_die %d total_cycle %d\n", cycle, all->cycle_to_die, total_cycle);
 		if (cycle++ == all->cycle_to_die)
 		{
-			if (!check_nb_live(all) || !all->stack_proc->n_items)
+			if (!check_nb_live(all))
 				break ;
 			if (all->nb_live >= NBR_LIVE  || all->nb_check++ > MAX_CHECKS)
 			{
 				if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
 					break;
-				total_cycle += cycle;
-				cycle = 0;
 				all->nb_check = 0;
-				all->nb_live = 0;
 			}
+			all->nb_live = 0;
+			cycle = 0;
 		}
 	}
 	if (all->last_player_alive)

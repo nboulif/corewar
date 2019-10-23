@@ -50,12 +50,6 @@ void	fix_index(t_champ *champ, char *index)
 	champ->index = (char)index_int;
 }
 
-int		rev_int_byte(int nbr)
-{
-	return ((nbr & 0xff) << 24 | (nbr & 0xff0000) >> 8 |
-		(nbr & 0xff00) << 8 | (nbr & 0xff000000) >> 24);
-}
-
 void		parse_champ(t_all *all, char *index, char *file)
 {
 	char		mem[FULL_HEADER_COR_SIZE];
