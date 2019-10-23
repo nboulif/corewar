@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/22 16:18:56 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/23 10:01:46 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,18 @@ int		parse_register(t_data *data, int i)
 	return (0);
 }
 
+int		count_digit_string(char *s)
+{
+	int i;
+
+	i = 0;
+	if (s[i] == '-')
+		i++;
+	while (ft_isdigit(s[i]))
+		i++;	
+	return (i);
+}
+
 int		parse_direct_char(t_data *data, int i)
 {
 	if (data->params[i][0] == LABEL_CHAR || data->params[i][1] == LABEL_CHAR)
@@ -65,7 +77,7 @@ int		parse_direct_char(t_data *data, int i)
 	else if (data->params[i][1] == '-' || ft_isdigit(data->params[i][1]))
 	{
 		data->val_param[i] = ft_atoi(&data->params[i][1]);
-		data->params[i] += count_digit(data->val_param[i]) + 1;
+		data->params[i] += count_digit_string(&data->params[i][1]) + 1;
 	}
 	else
 		return (1);
