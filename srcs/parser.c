@@ -5,8 +5,20 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
+/*   Updated: 2019/10/23 16:03:25 by nsondag          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/23 12:33:31 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/23 13:06:36 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +80,9 @@ static int	get_label(t_prog *prog)
 			data = data->next;
 			continue ;
 		}
-		if (data->params[i + 1])
-			j = (data->params[i + 1][1] == ':') ? 0 : 1;
 		while (++i < 3 && data->params[i])
 		{
-			if (!data->val_param[i] && (data->params[i][1 - j] == ':' ))
+			if (!data->val_param[i] && ((data->params[i][0] == ':' ) || (data->params[i][0] == '%' && data->params[i][1] == ':')))
 				while (tmp_data)
 				{
 					if (tmp_data->label && !ft_strcmp(tmp_data->label,
