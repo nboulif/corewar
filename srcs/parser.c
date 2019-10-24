@@ -6,19 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/24 10:47:55 by nsondag          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/23 18:34:34 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/23 13:06:36 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/24 14:14:33 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +69,12 @@ static int	get_label(t_prog *prog)
 			continue ;
 		}
 		while (++i < 3 && data->params[i])
-		{
 			if (!data->val_param[i] && ((data->params[i][0] == ':' ) || (data->params[i][0] == '%' && data->params[i][1] == ':')))
+			{
 				while (tmp_data)
 				{
-					if (tmp_data->label && !ft_strcmp(tmp_data->label,
-								&data->params[i][2 - j]))
+					if (tmp_data->label && (!ft_strcmp(tmp_data->label,
+								&data->params[i][2 - j]) || (!ft_strcmp(tmp_data->label, &data->params[i][1 - j]))))
 					{
 						data->val_param[i] = tmp_data->pc - data->pc;
 						break ;

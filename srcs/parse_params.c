@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/24 10:47:57 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/24 14:14:32 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,15 @@ t_op	*identify_opc(char *line)
 
 int		parse_indirect(t_data *data, int i)
 {
-	data->val_param[i] = ft_atoi(data->params[i]);
-	data->params[i] += count_digit(data->val_param[i]);
+	if (data->params[i][0] == LABEL_CHAR)
+		data->params[i] = skip_chars(&data->params[i][1], LABEL_CHARS);
+	else if (data->params[i][0] == '-' || ft_isdigit(data->params[i][0]))
+	{
+		data->val_param[i] = ft_atoi(data->params[i]);
+		data->params[i] += count_digit(data->val_param[i]);
+	}
+	else
+		return (1);
 	data->codage_octal |= IND_CODE << (2 * (3 - i));
 	data->nb_octet += 2;
 	return (0);
@@ -67,13 +74,8 @@ int		count_digit_string(char *s)
 
 int		parse_direct_char(t_data *data, int i)
 {
-	if (data->params[i][0] == LABEL_CHAR || data->params[i][1] == LABEL_CHAR)
-	{
-		if (data->params[i][0] == LABEL_CHAR)
-			data->params[i] = skip_chars(&data->params[i][1], LABEL_CHARS);
-		else
-			data->params[i] = skip_chars(&data->params[i][2], LABEL_CHARS);
-	}
+	if (data->params[i][1] == LABEL_CHAR)
+		data->params[i] = skip_chars(&data->params[i][2], LABEL_CHARS);
 	else if (data->params[i][1] == '-' || ft_isdigit(data->params[i][1]))
 	{
 		data->val_param[i] = ft_atoi(&data->params[i][1]);
@@ -101,14 +103,14 @@ int		parse_params_2(t_prog *prog, t_data *d, int i, char *ori_param)
 		if (!parse_register(d, i))
 			return (0);
 	}
-	else if (d->params[i][0] == DIRECT_CHAR || d->params[i][0] == LABEL_CHAR)
+	else if (d->params[i][0] == DIRECT_CHAR)
 	{
 		if (!(d->op->params[i] & T_DIR))
 			return (printf("%s %d %s %s\n", PARAM, i, TYPE_INDIR, d->op->name));
 		if (!parse_direct_char(d, i))
 			return (0);
 	}
-	else if (d->params[i][0] == '-' || ft_isdigit(d->params[i][0]))
+	else if (d->params[i][0] == '-' || ft_isdigit(d->params[i][0]) || d->params[i][0] == LABEL_CHAR)
 	{
 		if (!(d->op->params[i] & T_IND))
 			return (printf("%s %d %s %s\n", PARAM, i, TYPE_DIR, d->op->name));
