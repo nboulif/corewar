@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/23 16:03:27 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/24 10:47:57 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ t_data	*parse_commands(t_prog *prog)
 		while (prog->line[y + 1] == ' ' || prog->line[y + 1] == '\t')
 			y++;
 		prog->line = prog->line + ++y;
-		if (!prog->line[y])
+		if (!*prog->line)
 			return (init_data_label_only(prog->nb_line, label));
 	}
 	i = 0;

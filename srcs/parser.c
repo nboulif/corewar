@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/23 16:03:25 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/24 10:47:55 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ int			program_parser(t_prog *prog, t_data *data)
 			return (manage_errors(prog, 0));
 		if (!(tmp_data = parse_commands(prog)))
 			return (1);
-
 		tmp_data->pc = data->pc + data->nb_octet;
 		if (tmp_data->op && tmp_data->op->opc)
 		{
