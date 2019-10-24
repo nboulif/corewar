@@ -157,6 +157,8 @@ int			check_index(char *index);
 int			rev_int_byte(int nbr);
 void		move_pc(int *pc, int incr);
 t_champ		*get_champ(int index, t_all *all);
+void		hexdump_map_square(t_all *all);
+void		print_bit(char nb);
 
 /*
 ** parse_champ 

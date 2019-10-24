@@ -6,7 +6,7 @@ int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 	int i;
 
 	i = 0;
-	arg |= all->map[proc->pc];
+	arg = all->map[proc->pc];
 	move_pc(&proc->pc, 1);	
 	while (++i < size_arg)
 	{
@@ -30,6 +30,7 @@ void	parse_arg_op(t_all *all, t_process *proc)
 	if (op_tab[all->map[proc->pc]].codage_octal)
 	{
 		move_pc(&proc->pc, 1);
+		// printf("codage_octal\n");s
 		while (++i < 3)
 		{
 			if (!(((all->map[proc->pc] & 0b11000000) >> 6) ^ tab[i]))
@@ -44,6 +45,9 @@ void	parse_arg_op(t_all *all, t_process *proc)
 	move_pc(&proc->pc, 1);
 	while (++i < proc->op.nb_params)
 	{
+		// printf("type_of_params[%.2d]\n", i);
+		// print_bit(proc->op.type_of_params[i]);
+		// printf("\n");
 		if (proc->op.type_of_params[i] == T_DIR)
 			size_cur_arg = 2 + 2 * (!proc->op.dir_size);
 		else
