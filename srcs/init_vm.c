@@ -62,14 +62,18 @@ void		init_vm(t_all *all)
 		ft_bzero((proc = ft_array_inject(all->stack_proc)), sizeof(t_process));
 		proc->origin_champ = &all->champ[i];
 		proc->pc = i * (MEM_SIZE / all->nb_champ);
+		proc->carry = 1;
 		if (all->champ[i].flag_index && min_ind > all->champ[i].index)
 			min_ind = all->champ[i].index;
 	}
 	(min_ind == 127) ? (min_ind = 0): 1;
 	i = -1;
 	while (++i < all->nb_champ)
+	{
 		if (!all->champ[i].flag_index)
 			all->champ[i].index = min_ind - ++i_undif;
+		((t_process*)ft_array_get(all->stack_proc, i))->reg[0] = all->champ[i].index;
+	}
 	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	i = -1;
 	while (++i < all->nb_champ)

@@ -32,11 +32,11 @@ void	parse_arg_op(t_all *all, t_process *proc)
 		move_pc(&proc->pc, 1);
 		while (++i < 3)
 		{
-			if (!((all->map[proc->pc] & 0b11000000) >> 6) ^ tab[i])
+			if (!(((all->map[proc->pc] & 0b11000000) >> 6) ^ tab[i]))
 				proc->op.type_of_params[0] = tab[i];
-			if (!((all->map[proc->pc] & 0b110000) >> 4) ^ tab[i])
+			if (!(((all->map[proc->pc] & 0b110000) >> 4) ^ tab[i]))
 				proc->op.type_of_params[1] = tab[i];
-			if (!((all->map[proc->pc] & 0b1100) >> 2) ^ tab[i])
+			if (!(((all->map[proc->pc] & 0b1100) >> 2) ^ tab[i]))
 				proc->op.type_of_params[2] = tab[i];
 		}
 		i = -1;

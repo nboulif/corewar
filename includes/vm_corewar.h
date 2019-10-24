@@ -117,6 +117,7 @@ typedef struct		s_process
 	int				carry;
 	// current operation
 	t_op			op;
+	int 			to_do;
 }					t_process;
 
 typedef struct		s_all
@@ -180,7 +181,21 @@ void		vm(t_all *all);
 */
 
 void    op_live(t_all *all, t_process *proc);
-
+void    op_add(t_all *all, t_process *proc);
+void    op_aff(t_all *all, t_process *proc);
+void    op_and(t_all *all, t_process *proc);
+void    op_fork(t_all *all, t_process *proc);
+void    op_ld(t_all *all, t_process *proc);
+void    op_lld(t_all *all, t_process *proc);
+void    op_ldi(t_all *all, t_process *proc);
+void    op_longfork(t_all *all, t_process *proc);
+void    op_xor(t_all *all, t_process *proc);
+void    op_or(t_all *all, t_process *proc);
+void    op_zjmp(t_all *all, t_process *proc);
+void    op_sub(t_all *all, t_process *proc);
+void    op_sti(t_all *all, t_process *proc);
+void    op_st(t_all *all, t_process *proc);
+void    op_lldi(t_all *all, t_process *proc);
 
 /*
 ** parse arg op

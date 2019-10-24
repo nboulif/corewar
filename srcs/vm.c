@@ -4,13 +4,14 @@ void		next_action(t_all *all, t_process *current_process)
 {
 	if (current_process->wait)
 	{
-		current_process->wait--;
+		if (--current_process->wait == 0)
+		{
+			current_process->op.op(all, current_process);
+		}
 		return ;
 	}
-	if ((all->map[current_process->pc] < 1 && all->map[current_process->pc] > 16) || all->map[current_process->pc] != 1)
-	{
+	if ((all->map[current_process->pc] < 1 || all->map[current_process->pc] > 16))
 		return (move_pc(&current_process->pc, 1));
-	}
 	op_tab[all->map[current_process->pc]].op(all, current_process);
 }
 
