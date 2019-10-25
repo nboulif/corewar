@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/24 14:14:33 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/25 14:23:16 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,40 +51,45 @@ t_data		*init_data(char *str_para, int nb_line, char *label, char *str_opc)
 	return (data);
 }
 
+/*
+** t_data d:	data a parcourir pour completer la valeur des labels
+** t_data tmp:	data a parcourir pour trouver les labels
+** i:			index du parametre
+** j:			index de la chaine de caractere du parametre
+**
+** parcours la liste de data
+** parcours les params de cette data si data est plus qu'un label (d->op)
+** Pour chaque param qui a un label_char
+** parcours la liste de data pour chercher le label tant que val_param
+** s'il existe la valeur du parametre vaut la difference des pc -> retour 0
+** sinon -> retour nb_line
+*/
+
 static int	get_label(t_prog *prog)
 {
-	t_data	*data;
-	t_data	*tmp_data;
+	t_data	*d;
+	t_data	*tmp;
 	int		i;
 	int		j;
 
-	j = 0;
-	data = prog->list_data;
-	tmp_data = data;
-	while ((i = -1) && data)
+	d = prog->list_data;
+	tmp = d;
+	while ((i = -1) && d)
 	{
-		if (!(data->op))
+		while (++i < 3 && d->params[i] && d->op)
 		{
-			data = data->next;
-			continue ;
-		}
-		while (++i < 3 && data->params[i])
-			if (!data->val_param[i] && ((data->params[i][0] == ':' ) || (data->params[i][0] == '%' && data->params[i][1] == ':')))
+			j = (d->params[i][0] == ':' ? 0 : 1) + 1;
+			if (d->params[i][j - 1] == ':')
 			{
-				while (tmp_data)
-				{
-					if (tmp_data->label && (!ft_strcmp(tmp_data->label,
-								&data->params[i][2 - j]) || (!ft_strcmp(tmp_data->label, &data->params[i][1 - j]))))
-					{
-						data->val_param[i] = tmp_data->pc - data->pc;
-						break ;
-					}
-					else if (!(tmp_data = tmp_data->next))
-						return (data->nb_line);
-				}
-				tmp_data = prog->list_data;
+				while (tmp && !d->val_param[i])
+					if (tmp->label && !ft_strcmp(tmp->label, &d->params[i][j]))
+						d->val_param[i] = tmp->pc - d->pc;
+					else if (!(tmp = tmp->next))
+						return (d->nb_line);
+				tmp = prog->list_data;
+			}
 		}
-		data = data->next;
+		d = d->next;
 	}
 	return (0);
 }
