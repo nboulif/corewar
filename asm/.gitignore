@@ -3,4 +3,4 @@
 *.o
 *.a
 a.out
-asm
+asm/asm
