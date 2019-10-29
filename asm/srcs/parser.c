@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/25 16:09:27 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/29 11:36:47 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ int				program_parser(t_prog *prog, t_data *data)
 	int		label_error;
 
 	begin_data = data;
-	while (get_next_line(prog->fd, &prog->full_line) > 0)
+	while (get_next_line(prog->fd, &prog->line) > 0)
 	{
-		data->line = prog->full_line;
+		data->line = prog->line;
 		prog->nb_line++;
-		prog->line = skip_chars(prog->full_line, " \t");
+		prog = skip_chars(prog, " \t");
 		if (!prog->line || *prog->line == '#' || !*prog->line)
 			continue;
 		if (*prog->line == '.')

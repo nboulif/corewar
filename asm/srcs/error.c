@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/21 19:21:02 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/29 15:04:12 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		manage_errors_instruction(t_prog *prog, int i, int o)
 		return (print_error_lexical(prog, i));
 	if (*(prog->full_line + i + o) && *(prog->full_line + i + o) == ':')
 		return (print_error(prog, i, ++o, "LABEL"));
-	o += (int)(skip_chars(prog->full_line + i + o, " \t") - (prog->full_line + i + o));
+	o += (int)(skip_chars2(prog->full_line + i + o, " \t") - (prog->full_line + i + o));
 	if (!*(prog->full_line + i + o) || *(prog->full_line + i + o) == ' ' ||
 		*(prog->full_line + i + o) == '\t' || *(prog->full_line + i + o) == SEPARATOR_CHAR)
 		return (print_error(prog, i, o, "INSTRUCTION"));
@@ -99,19 +99,19 @@ int		manage_errors(t_prog *prog, int i)
 	int o;
 
 	o = 1;
-	if (!*(prog->full_line + i))
+	if (!*(prog->line + i))
 		// printf("Syntax error at token [TOKEN][%0.3d:%0.3d] ENDLINE",
 		// 	prog->nb_line, i);
 		return (print_error(prog, i, 0, "ENDLINE"));
-	else if (*(prog->full_line + i) == '"')
+	else if (*(prog->line + i) == '"')
 		return (printf("String ERRROROROROR\n"));
-	else if (*(prog->full_line + i) == '.')
+	else if (*(prog->line + i) == '.')
 		return (manage_errors_header(prog, i));
-	else if (*(prog->full_line + i) == ':')
+	else if (*(prog->line + i) == ':')
 		return (manage_errors_label(prog, i, o));
-	else if (*(prog->full_line + i) == '%' && (*(prog->full_line + i + o) == ':' || ft_isdigit(*(prog->full_line + i + o))))
+	else if (*(prog->line + i) == '%' && (*(prog->line + i + o) == ':' || ft_isdigit(*(prog->line + i + o))))
 		return (manage_errors_direct(prog, i, o));
-	else if (ft_isalnum(*(prog->full_line + i)))
+	else if (ft_isalnum(*(prog->line + i)))
 		return (manage_errors_alnum(prog, i, o));
 	else
 		return (print_error_lexical(prog, i));

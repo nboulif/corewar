@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/08/22 19:10:30 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/29 11:44:31 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int print_error(t_prog *prog, int i, int o, char *error_type)
 {
 	int a;
 
-	a = (int)(skip_chars(prog->full_line + i + o, " \t") - (prog->full_line + i + o));
+	a = (int)(skip_chars2(prog->full_line + i + o, " \t") - (prog->full_line + i + o));
 	if (*(prog->full_line + i + o + a) && !ft_strchr(", \t", *(prog->full_line + i + o + a)) && !ft_strchr(LABEL_CHARS, *(prog->full_line + i + o + a)))
 		return (print_error_lexical(prog, 1 + i + o + a - 1));
 	else

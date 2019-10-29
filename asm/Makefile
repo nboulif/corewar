@@ -6,7 +6,7 @@
 #    By: nboulif <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/04 23:59:28 by nboulif           #+#    #+#              #
-#    Updated: 2019/10/17 14:44:55 by nsondag          ###   ########.fr        #
+#    Updated: 2019/10/29 10:53:47 by nsondag          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./srcs/
 SOURCES_LIST = asm.c op.c parser.c parse_params.c get_header.c error.c\
-			   print_debug.c print_error.c write_file.c
+			   print_debug.c print_error.c write_file.c utiles.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objs/
