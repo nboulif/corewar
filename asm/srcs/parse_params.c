@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/29 16:09:24 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/29 20:15:06 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,6 @@ int		parse_register(t_data *data, int i)
 	return (0);
 }
 
-int		count_digit_string(char *s)
-{
-	int i;
-
-	i = 0;
-	if (s[i] == '-')
-		i++;
-	while (ft_isdigit(s[i]))
-		i++;	
-	return (i);
-}
-
 int		parse_direct_char(t_data *data, int i)
 {
 	if (data->params[i][1] == LABEL_CHAR)
@@ -120,19 +108,6 @@ int		parse_params_2(t_prog *prog, t_data *d, int i, char *ori_param)
 	return (manage_errors(prog, prog->i + (int)(d->params[i] - ori_param)));
 }
 
-char	*trim_comments_space(char *params)
-{
-	int i;
-
-	i = 0;
-	while (params && params[i] && params[i] != ' ' &&
-			params[i] != '\t' && params[i] != '#')
-		i++;
-	if (i > 0)
-		params = ft_strsub(params, 0, i);
-	return (params);
-}
-
 int		parse_params(t_prog *p, t_data *d)
 {
 	int		i;
@@ -165,48 +140,40 @@ t_data	*parse_commands(t_prog *prog)
 	char	*opc;
 	char	*label;
 	t_data	*data;
-	int		i;
-	int		y;
+	int		tmp_i;
 
-	label = "";
-	y = 0;
-	while (prog->line[y] && prog->line[y] != ':' && prog->line[y] != '%'
-			&& prog->line[y] != ' ' && prog->line[y] != '\t')
-		y++;
-	if (!prog->line[y])
+	tmp_i = prog->i;
+	prog = skip_until(prog, ":% \t");
+	printf("%s\n", prog->line);
+	if (!*prog->line)
 	{
-		manage_errors(prog, y);
+		manage_errors(prog, prog->i);
 		return (NULL);
 	}
-	if (prog->line[y] == ':')
+	if (*prog->line == ':')
 	{
-		label = ft_strsub(prog->line, 0, y);
-		while (prog->line[y + 1] == ' ' || prog->line[y + 1] == '\t')
-			y++;
-		prog->line = prog->line + ++y;
+		label = ft_strsub(prog->line - tmp_i, 0, tmp_i);
+		printf("%s\n", label);
+		prog = skip_nb_chars(prog, 1);
+		prog = skip_chars(prog, " \t");
 		if (!*prog->line)
 			return (init_data_label_only(prog->nb_line, label));
 	}
-	i = 0;
-	while (prog->line[i] && prog->line[i] != ' ' &&
-			prog->line[i] != '\t' && prog->line[i] != '%')
-		i++;
-	opc = ft_strsub(prog->line, 0, i);
-	if (prog->line[i] && prog->line[i] != '%')
-		prog->line = prog->line + i + 1;
-	else
-		prog->line = prog->line + i;
+	tmp_i = prog->i;
+	prog = skip_until(prog, ":% \t");
+	opc = ft_strsub(prog->line - tmp_i, 0, tmp_i);
+	if (*prog->line && *prog->line != '%')
+		prog = skip_nb_chars(prog, 1);
 	if (!*prog->line)
 	{
-		manage_errors(prog, y + i + 1);
+		manage_errors(prog, prog->i);
 		return (NULL);
 	}
 	if (!(data = init_data(prog->line, prog->nb_line, label, opc)))
 	{
-		manage_errors(prog, y + i - 1);
+		manage_errors(prog, prog->i);
 		return (NULL);
 	}
-	prog->i = (int)(prog->line - prog->full_line);
 	if (*prog->line)
 		return (!parse_params(prog, data) ? data : NULL);
 	return (data);

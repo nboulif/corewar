@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/29 11:36:47 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/29 20:21:44 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ t_data			*init_data_label_only(int nb_line, char *label)
 	return (data);
 }
 
-t_data			*init_data(char *str_para, int nb_line, char *label, char *str_opc)
+t_data			*init_data(char *str_para, int nb_line,
+		char *label, char *str_opc)
 {
 	t_data	*data;
 
@@ -81,7 +82,7 @@ static int		get_label(t_prog *prog)
 			j = (d->params[i][0] == ':' ? 0 : 1) + 1;
 			if (d->params[i][j - 1] == ':')
 			{
-				while (tmp && !d->val_param[i])
+				while (tmp)
 					if (tmp->label && !ft_strcmp(tmp->label, &d->params[i][j]))
 						d->val_param[i] = tmp->pc - d->pc;
 					else if (!(tmp = tmp->next))

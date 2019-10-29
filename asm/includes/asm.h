@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:30:09 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/29 12:34:02 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/10/29 17:07:26 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,6 @@ t_prog *skip_chars(t_prog *prog, char *charset);
 t_prog *skip_nb_chars(t_prog *prog, int nb);
 t_prog *skip_until(t_prog *prog, char *charset);
 
+char *trim_comments_space(char *params);
+int	count_digit_string(char *s);
 #endif
