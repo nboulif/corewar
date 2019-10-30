@@ -3,29 +3,34 @@
 void    	op_sti(t_all *all, t_process *proc)
 {
 	int	pc_to_write;
+	int old_pc;
 
 	if (!proc->to_do)
 	{
+		ft_memcpy(&proc->op, &op_tab[all->map[proc->pc]], sizeof(t_op));
 		proc->wait = proc->op.cycles - 1;
 	}
 	else
 	{
+		old_pc = proc->pc;
 		parse_arg_op(all, proc);
-		if (proc->op.type_of_params[0] == T_REG)
-		{
-			if (proc->op.params[0] < 1 || proc->op.params[0] > REG_NUMBER)
+		int i = -1;
+		while (++i < 3)
+			if (proc->op.type_of_params[i] == T_REG)
 			{
-				proc->to_do = 0;
-				return ;
+				if (proc->op.params[i] < 1 || proc->op.params[i] > REG_NUMBER)
+				{
+					proc->to_do = 0;
+					return ;
+				}
+				proc->op.params[i] = proc->reg[proc->op.params[i] - 1];
 			}
-			proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
-		}
-		//// printf("sti print->:\n");
-		pc_to_write = 0;
-
+		pc_to_write = old_pc;
+		// moveTo(0, 0);
+		// moveTo(80, 0);
+		// printf("sti params: |%ld| |%ld|\n", (long)proc->op.params[1], (long)proc->op.params[2]);
 		move_pc(&pc_to_write, ((long)proc->op.params[1] + (long)proc->op.params[2]) % IDX_MOD);
-		// move_pc(&pc_to_write, proc->op.params[1]);
-		// move_pc(&pc_to_write, proc->op.params[2]);
+		// move_pc(&pc_to_write, old_pc);
 		all->map[pc_to_write] = (proc->op.params[0] & 0xff000000) >> 24;
 		//printf("%.2x ", all->map[pc_to_write]);
 		move_pc(&pc_to_write, 1);

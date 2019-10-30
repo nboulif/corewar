@@ -21,12 +21,11 @@ int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 void	parse_arg_op(t_all *all, t_process *proc)
 {
 	static int	tab[3] = {T_REG, T_DIR, T_IND};
-	static int 	size_arg[5] = {0, 1, 2, 0, 4};
+	static int 	size_arg[4] = {0, 1, 0, 2};
 	int size_cur_arg;
 	int i;
 
 	i = -1;
-	ft_memcpy(&proc->op, &op_tab[all->map[proc->pc]], sizeof(t_op));
 	if (op_tab[all->map[proc->pc]].codage_octal)
 	{
 		move_pc(&proc->pc, 1);
@@ -43,6 +42,8 @@ void	parse_arg_op(t_all *all, t_process *proc)
 		i = -1;
 	}
 	move_pc(&proc->pc, 1);
+	// if (proc->op.opc == 11)
+	// 	printf("sti arg\n\n");
 	while (++i < proc->op.nb_params)
 	{
 		// printf("type_of_params[%.2d]\n", i);
@@ -53,6 +54,10 @@ void	parse_arg_op(t_all *all, t_process *proc)
 		else
 			size_cur_arg = size_arg[proc->op.type_of_params[i]];
 		proc->op.params[i] = give_next_arg(all, size_cur_arg, proc);
+		// if (proc->op.opc == 11)
+		// 	printf("param %d : |%d|\n", i, proc->op.params[i]);
 	}
+	// if (proc->op.opc == 11)
+	// 	printf("\n");
 }
 

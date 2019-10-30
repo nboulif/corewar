@@ -50,7 +50,9 @@ int		is_a_process(t_all *all, int pc)
 
 void					hexdump_map_square(t_all *all)
 {
-	int i;
+	int			i;
+	static char map_save[MEM_SIZE] = "";
+	static char flag = 0;
 
 	if (!(all->flag & FLAG_VISU))
 		return ;
@@ -58,14 +60,25 @@ void					hexdump_map_square(t_all *all)
 	moveTo(0, 0);
 	while (++i < MEM_SIZE)
 	{
-		printf("%s", text_color[is_a_process(all, i)]);
-		if (!((i + 1) % 64))
-			printf("%.2hhx\n", all->map[i]);
-		else
-			printf("%.2hhx ", all->map[i]);
+		int proc = is_a_process(all, i);
+		if (!flag || all->map[i] != map_save[i] || proc)
+		{
+			if (flag)
+				moveTo((i + 1) / 64, ((i + 1) % 64) * 3);
+			if (!proc && all->map[i])
+				printf("\033[0;35m");
+			else
+				printf("%s", text_color[proc]);
+			if (!((i + 1) % 64))
+				printf("%.2hhx\n", all->map[i]);
+			else
+				printf("%.2hhx ", all->map[i]);
+		}
 	}
+	ft_memcpy(map_save, all->map, MEM_SIZE);
+	flag = 1;
 	// printf("\n");
-	read(0, &i, 4);
+	// read(0, &i, 4);
 }
 
 void				config_flags(void)

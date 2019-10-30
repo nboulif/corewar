@@ -1,0 +1,19 @@
+un processus dit que le joueur -1(test grand sti) est en vie
+le joueur -1(test grand sti) a gagne
+|test grand sti| |-1|
+sti arg
+
+param 0 : |1|
+param 1 : |21|
+param 2 : |1|
+
+[80;0fsti params: |21| |1|
+sti arg
+
+param 0 : |1|
+param 1 : |2|
+param 2 : |0|
+
+[80;0fsti params: |6| |0|
+check
+check

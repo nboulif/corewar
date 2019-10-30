@@ -14,12 +14,12 @@ void		next_action(t_all *all, t_process *current_process)
 	if ((all->map[current_process->pc] < 1 || all->map[current_process->pc] > 16))
 	{
 		move_pc(&current_process->pc, 1);
-		hexdump_map_square(all);	
+		// hexdump_map_square(all);	
 		return ;
 	}
-	if (!(all->flag & FLAG_RESUME))
-		printf(""); // phrase pour print l'action dans le terminal
-	hexdump_map_square(all);
+	// if (!(all->flag & FLAG_RESUME))
+	// 	printf(""); // phrase pour print l'action dans le terminal
+	// hexdump_map_square(all);
 	op_tab[all->map[current_process->pc]].op(all, current_process);
 }
 
@@ -52,9 +52,12 @@ void		vm(t_all *all)
 		!(all->color_in_map = malloc(sizeof(char) * MEM_SIZE)))
 		print_error_and_exit(MALLOC_ERROR);
 	init_vm(all);
-	hexdump_map_square(all);
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
+		hexdump_map_square(all);
+		moveTo(10, 80 * 3);
+		printf("nb_cycle %d", total_cycle);
+		moveTo(120, 0);
 		i = 0;
 		while (i < all->stack_proc->n_items)
 			next_action(all, (t_process*)ft_array_get(all->stack_proc, i++));
@@ -62,7 +65,7 @@ void		vm(t_all *all)
 		// printf("cycle %d all->cycle_to_die %d total_cycle %d\n", cycle, all->cycle_to_die, total_cycle);
 		if (cycle++ == all->cycle_to_die)
 		{
-			printf("check\n");
+			// printf("check\n");
 			if (!check_nb_live(all))
 				break ;
 			if (all->nb_live >= NBR_LIVE  || all->nb_check++ > MAX_CHECKS)

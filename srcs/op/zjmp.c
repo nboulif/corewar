@@ -6,6 +6,7 @@ void    	op_zjmp(t_all *all, t_process *proc)
 
 	if (!proc->to_do)
 	{
+		ft_memcpy(&proc->op, &op_tab[all->map[proc->pc]], sizeof(t_op));
 		proc->wait = proc->op.cycles - 1;
 		//printf("zjmp prepa %d\n", proc->op.params[0]);
 	}
