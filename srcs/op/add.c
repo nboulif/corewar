@@ -4,11 +4,11 @@ void    	op_add(t_all *all, t_process *proc)
 {
 	if (!proc->to_do)
 	{
-		parse_arg_op(all, proc);
 		proc->wait = proc->op.cycles - 1;
 	}
 	else
 	{
+		parse_arg_op(all, proc);
 		if ((unsigned int)proc->op.params[2] > REG_NUMBER ||
 			(unsigned int)proc->op.params[1] > REG_NUMBER ||
 			(unsigned int)proc->op.params[0] > REG_NUMBER)

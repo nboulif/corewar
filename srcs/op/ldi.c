@@ -6,11 +6,11 @@ void    	op_ldi(t_all *all, t_process *proc)
 
 	if (!proc->to_do)
 	{
-		parse_arg_op(all, proc);
 		proc->wait = proc->op.cycles - 1;
 	}
 	else
 	{
+		parse_arg_op(all, proc);
 		if (proc->op.params[2] <= REG_NUMBER && proc->op.params[2] > 0)
 		{
 			pc = ((long)proc->op.params[0] + (long)proc->op.params[1]) % IDX_MOD;

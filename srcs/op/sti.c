@@ -6,11 +6,11 @@ void    	op_sti(t_all *all, t_process *proc)
 
 	if (!proc->to_do)
 	{
-		parse_arg_op(all, proc);
 		proc->wait = proc->op.cycles - 1;
 	}
 	else
 	{
+		parse_arg_op(all, proc);
 		if (proc->op.type_of_params[0] == T_REG)
 		{
 			if (proc->op.params[0] < 1 || proc->op.params[0] > REG_NUMBER)

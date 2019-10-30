@@ -1,6 +1,5 @@
 #include "vm_corewar.h"
 
-char *text_color[256] = {"\033[0m", "\033[0;31m", "\033[0;32m", "\033[0;33m","\033[0;34m", "\033[0;35m"}; //Set the text to the color red
 
 void moveUp(int positions) {
  	printf("\x1b[%dA", positions);
@@ -44,9 +43,7 @@ int		is_a_process(t_all *all, int pc)
 	{
 		proc = (t_process*)ft_array_get(all->stack_proc, i);
 		if (pc == proc->pc)
-		{
 			return ((unsigned int)proc->origin_champ->index % 4 + 1);
-		}
 	}
 	return (0);
 }
@@ -55,6 +52,8 @@ void					hexdump_map_square(t_all *all)
 {
 	int i;
 
+	if (!(all->flag & FLAG_VISU))
+		return ;
 	i = -1;
 	moveTo(0, 0);
 	while (++i < MEM_SIZE)
@@ -75,6 +74,7 @@ void				config_flags(void)
 	flags['n'] = FLAG_NUMBER;
 	flags['t'] = FLAG_THREAD;
 	flags['v'] = FLAG_VISU;
+	flags['r'] = FLAG_RESUME;
 }
 
 void				config_flags_syn(void)

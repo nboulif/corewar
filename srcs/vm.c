@@ -17,6 +17,8 @@ void		next_action(t_all *all, t_process *current_process)
 		hexdump_map_square(all);	
 		return ;
 	}
+	if (!(all->flag & FLAG_RESUME))
+		printf(""); // phrase pour print l'action dans le terminal
 	hexdump_map_square(all);
 	op_tab[all->map[current_process->pc]].op(all, current_process);
 }
@@ -46,7 +48,8 @@ void		vm(t_all *all)
 
 	cycle = 0;
 	total_cycle = 0;
-	if (!(all->map = malloc(sizeof(char) * MEM_SIZE)))
+	if (!(all->map = malloc(sizeof(char) * MEM_SIZE)) ||
+		!(all->color_in_map = malloc(sizeof(char) * MEM_SIZE)))
 		print_error_and_exit(MALLOC_ERROR);
 	init_vm(all);
 	hexdump_map_square(all);
@@ -59,6 +62,7 @@ void		vm(t_all *all)
 		// printf("cycle %d all->cycle_to_die %d total_cycle %d\n", cycle, all->cycle_to_die, total_cycle);
 		if (cycle++ == all->cycle_to_die)
 		{
+			printf("check\n");
 			if (!check_nb_live(all))
 				break ;
 			if (all->nb_live >= NBR_LIVE  || all->nb_check++ > MAX_CHECKS)

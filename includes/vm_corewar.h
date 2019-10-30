@@ -72,6 +72,7 @@
 # define FLAG_THREAD	2
 # define FLAG_VISU		4
 # define FLAG_NUMBER	8
+# define FLAG_RESUME	16
 
 typedef struct s_process	t_process;
 typedef struct s_all		t_all;
@@ -100,6 +101,7 @@ typedef struct		s_champ
 	size_t			size_comment;
 	size_t			size_exec;
     int				index;
+	int				index_player;
 	unsigned char	flag_index;
 	int				alive;
 	int				nb_live;
@@ -123,6 +125,7 @@ typedef struct		s_process
 typedef struct		s_all
 {
 	char			*map;
+	char			*color_in_map;
 	size_t			nb_champ;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 	t_champ			champ[4];
@@ -142,7 +145,7 @@ typedef struct		s_all
 extern unsigned int		flags[256];
 extern char				*flags_syn[256];
 extern t_op				op_tab[17];
-
+extern char				*text_color[256];
 /*
 ** utils
 */
