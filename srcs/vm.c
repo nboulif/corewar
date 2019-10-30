@@ -9,15 +9,17 @@ void		next_action(t_all *all, t_process *current_process)
 			current_process->op.op(all, current_process);
 			// hexdump_map_square(all);
 		}
+		// else
+		// 	ft_printf("waiting %d\n", current_process->wait);
 		return ;
 	}
 	if ((all->map[current_process->pc] < 1 || all->map[current_process->pc] > 16))
 	{
 		move_pc(&current_process->pc, 1);
-		hexdump_map_square(all);	
+		//hexdump_map_square(all);	
 		return ;
 	}
-	hexdump_map_square(all);
+	//hexdump_map_square(all);
 	op_tab[all->map[current_process->pc]].op(all, current_process);
 }
 
@@ -49,7 +51,7 @@ void		vm(t_all *all)
 	if (!(all->map = malloc(sizeof(char) * MEM_SIZE)))
 		print_error_and_exit(MALLOC_ERROR);
 	init_vm(all);
-	hexdump_map_square(all);
+	//hexdump_map_square(all);
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;

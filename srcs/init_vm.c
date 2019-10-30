@@ -78,6 +78,6 @@ void		init_vm(t_all *all)
 	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	i = -1;
 	while (++i < all->nb_champ)
-		printf("|%s| |%d|\n", ((t_process*)ft_array_get(all->stack_proc, i))->origin_champ->name,
+		ft_printf("|%s| |%d|\n", ((t_process*)ft_array_get(all->stack_proc, i))->origin_champ->name,
 				((t_process*)ft_array_get(all->stack_proc, i))->origin_champ->index);
 }

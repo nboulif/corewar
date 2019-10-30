@@ -9,6 +9,7 @@ void    	op_live(t_all *all, t_process *proc)
 		// ft_bzero(proc->op.params, 3 * sizeof(int));
 		parse_arg_op(all, proc);
 		proc->wait = proc->op.cycles - 1;
+		//ft_printf("waiting %d\n", proc->wait);
 	}
 	else
 	{
