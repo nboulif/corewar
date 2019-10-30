@@ -4,39 +4,38 @@ void		next_action(t_all *all, t_process *current_process)
 {
 	if (current_process->wait)
 	{
-		current_process->wait--;
+		if (--current_process->wait == 0)
+		{
+			current_process->op.op(all, current_process);
+			// hexdump_map_square(all);
+		}
 		return ;
 	}
+	if ((all->map[current_process->pc] < 1 || all->map[current_process->pc] > 16))
+	{
+		move_pc(&current_process->pc, 1);
+		hexdump_map_square(all);	
+		return ;
+	}
+	hexdump_map_square(all);
+	op_tab[all->map[current_process->pc]].op(all, current_process);
 }
 
 int		check_nb_live(t_all *all)
 {
-	static t_champ	*tab_of_alive_champ[4];
 	t_process		*process;
 	int				i;
 
 	i = -1;
-	if (all->nb_alive == -1)
+	while (++i < all->stack_proc->n_items)
 	{
-		all->nb_alive = all->nb_champ;
-		while (++i < all->nb_champ)
-			tab_of_alive_champ[i] = &all->champ[i];
-		i = -1;
+		process = (t_process*)ft_array_get(all->stack_proc, i);
+		if (!process->flag_live)
+			ft_array_remove(all->stack_proc, i--, NULL);
+		else
+			process->flag_live = 0;
 	}
-	while (++i < all->nb_alive)
-		if (tab_of_alive_champ[i]->nb_live < NBR_LIVE)
-		{
-			tab_of_alive_champ[i]->alive = 0;
-			tab_of_alive_champ[i--] = tab_of_alive_champ[--all->nb_alive];
-			if (all->nb_alive == 0)
-				return (0);
-		}
-	i = -1;
-	while (++i < all->stack_champ->n_items)
-		if (!(process = (t_process*)ft_array_get(all->stack_champ, i)) &&
-			(!process->origin_champ->alive || !process->flag_live))
-			ft_array_remove(all->stack_champ, i--, process);
-	return (1);
+	return (all->stack_proc->n_items);
 }
 
 void		vm(t_all *all)
@@ -47,25 +46,29 @@ void		vm(t_all *all)
 
 	cycle = 0;
 	total_cycle = 0;
-	if (!(all->map = malloc(sizeof(char) * MEM_SIZE + 1)))
+	if (!(all->map = malloc(sizeof(char) * MEM_SIZE)))
 		print_error_and_exit(MALLOC_ERROR);
 	init_vm(all);
+	hexdump_map_square(all);
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		while (i < all->stack_champ->n_items)
-			next_action(all, (t_process*)ft_array_get(all->stack_champ, i++));
+		while (i < all->stack_proc->n_items)
+			next_action(all, (t_process*)ft_array_get(all->stack_proc, i++));
+		total_cycle++;
+		// printf("cycle %d all->cycle_to_die %d total_cycle %d\n", cycle, all->cycle_to_die, total_cycle);
 		if (cycle++ == all->cycle_to_die)
 		{
-			if (!check_nb_live(all) || !all->stack_champ->n_items ||
-					all->cycle_to_die <= CYCLE_DELTA)
+			if (!check_nb_live(all))
 				break ;
-			if (all->nb_live || all->nb_check++ > MAX_CHECKS)
+			if (all->nb_live >= NBR_LIVE  || all->nb_check++ > MAX_CHECKS)
 			{
-				all->cycle_to_die -= CYCLE_DELTA;
-				total_cycle += cycle;
-				cycle = 0;
+				if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
+					break;
+				all->nb_check = 0;
 			}
+			all->nb_live = 0;
+			cycle = 0;
 		}
 	}
 	if (all->last_player_alive)

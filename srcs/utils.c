@@ -1,7 +1,73 @@
 #include "vm_corewar.h"
 
-unsigned int		flags[256] = {0};
-char				*flags_syn[256] = {NULL};
+char *text_color[256] = {"\033[0m", "\033[0;31m", "\033[0;32m", "\033[0;33m","\033[0;34m", "\033[0;35m"}; //Set the text to the color red
+
+void moveUp(int positions) {
+ 	printf("\x1b[%dA", positions);
+  }
+  
+ void moveDown(int positions) {
+	printf("\x1b[%dB", positions);
+}
+
+ void moveRight(int positions) {	
+	printf("\x1b[%dC", positions);
+}
+
+ void moveLeft(int positions) {	
+	printf("\x1b[%dD", positions);
+}
+
+ void moveTo(int row, int col) {
+ 	printf("\x1b[%d;%df", row, col); }
+
+void	print_bit(char nb)
+{
+	int i;
+
+	i = 1;
+	printf("print_bit->:\n");
+	for (int x = 0; x < 7; x++)
+	{
+		printf("%d", !!(nb & (i << x)));
+	}
+	printf("\n");
+}
+
+int		is_a_process(t_all *all, int pc)
+{
+	int			i;
+	t_process	*proc;
+
+	i = -1;
+	while (++i < all->stack_proc->n_items)
+	{
+		proc = (t_process*)ft_array_get(all->stack_proc, i);
+		if (pc == proc->pc)
+		{
+			return ((unsigned int)proc->origin_champ->index % 4 + 1);
+		}
+	}
+	return (0);
+}
+
+void					hexdump_map_square(t_all *all)
+{
+	int i;
+
+	i = -1;
+	moveTo(0, 0);
+	while (++i < MEM_SIZE)
+	{
+		printf("%s", text_color[is_a_process(all, i)]);
+		if (!((i + 1) % 64))
+			printf("%.2hhx\n", all->map[i]);
+		else
+			printf("%.2hhx ", all->map[i]);
+	}
+	// printf("\n");
+	read(0, &i, 4);
+}
 
 void				config_flags(void)
 {
@@ -89,4 +155,36 @@ int		check_index(char *index)
 		if (!ft_isdigit(index[i++]))
 			return (0);
 	return (1);
+}
+
+int		rev_int_byte(int nbr)
+{
+	return ((nbr & 0xff) << 24 | (nbr & 0xff0000) >> 8 |
+		(nbr & 0xff00) << 8 | (nbr & 0xff000000) >> 24);
+}
+
+void		move_pc(int *pc, int incr)
+{
+	if (incr >= MEM_SIZE || incr <= -MEM_SIZE)
+		incr %= MEM_SIZE;
+	if (incr < 0)
+	{
+		if ((*pc += incr) < 0)
+			*pc = MEM_SIZE - *pc;
+	}
+	else
+		*pc = (*pc + incr) % MEM_SIZE;
+}
+
+t_champ		*get_champ(int index, t_all *all)
+{
+	int		i;
+
+	i = -1;
+	while (++i < all->nb_champ)
+	{
+		if (all->champ[i].index == index)
+			return (&all->champ[i]);
+	}
+	return (NULL);
 }

@@ -73,14 +73,16 @@
 # define FLAG_VISU		4
 # define FLAG_NUMBER	8
 
-extern unsigned int		flags[256];
-extern char				*flags_syn[256];
+typedef struct s_process	t_process;
+typedef struct s_all		t_all;
 
 typedef struct s_op
 {
+	void			(*op)(t_all *all, t_process *proc);
 	char			*name;
 	int				nb_params;
-	char			params[3];
+	char			type_of_params[3];
+	int				params[3];
 	int				opc;
 	int				cycles;
 	char			*comment;
@@ -113,6 +115,9 @@ typedef struct		s_process
 	int				reg[REG_NUMBER];
 	int				pc;
 	int				carry;
+	// current operation
+	t_op			op;
+	int 			to_do;
 }					t_process;
 
 typedef struct		s_all
@@ -121,7 +126,7 @@ typedef struct		s_all
 	size_t			nb_champ;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 	t_champ			champ[4];
-	t_array			*stack_champ;
+	t_array			*stack_proc;
 	int				cycle_to_die;
 	int				cycles_before_exit;
 	t_champ			*last_player_alive;
@@ -129,6 +134,14 @@ typedef struct		s_all
 	int				nb_alive;
 	int				nb_check;
 }					t_all;
+
+/*
+** global variable
+*/
+
+extern unsigned int		flags[256];
+extern char				*flags_syn[256];
+extern t_op				op_tab[17];
 
 /*
 ** utils
@@ -141,6 +154,11 @@ int			ft_realloc(void **tab, int *size_av,
 int			read_all(char **str, int fd);
 void		print_error_and_exit(int type_of_error);
 int			check_index(char *index);
+int			rev_int_byte(int nbr);
+void		move_pc(int *pc, int incr);
+t_champ		*get_champ(int index, t_all *all);
+void		hexdump_map_square(t_all *all);
+void		print_bit(char nb);
 
 /*
 ** parse_champ 
@@ -159,5 +177,32 @@ void		init_vm(t_all *all);
 */
 
 void		vm(t_all *all);
+
+/*
+** op
+*/
+
+void    op_live(t_all *all, t_process *proc);
+void    op_add(t_all *all, t_process *proc);
+void    op_aff(t_all *all, t_process *proc);
+void    op_and(t_all *all, t_process *proc);
+void    op_fork(t_all *all, t_process *proc);
+void    op_ld(t_all *all, t_process *proc);
+void    op_lld(t_all *all, t_process *proc);
+void    op_ldi(t_all *all, t_process *proc);
+void    op_longfork(t_all *all, t_process *proc);
+void    op_xor(t_all *all, t_process *proc);
+void    op_or(t_all *all, t_process *proc);
+void    op_zjmp(t_all *all, t_process *proc);
+void    op_sub(t_all *all, t_process *proc);
+void    op_sti(t_all *all, t_process *proc);
+void    op_st(t_all *all, t_process *proc);
+void    op_lldi(t_all *all, t_process *proc);
+
+/*
+** parse arg op
+*/
+
+void	parse_arg_op(t_all *all, t_process *proc);
 
 #endif
