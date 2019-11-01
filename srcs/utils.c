@@ -61,10 +61,10 @@ void					hexdump_map_square(t_all *all)
 	while (++i < MEM_SIZE)
 	{
 		int proc = is_a_process(all, i);
-		if (!flag || all->map[i] != map_save[i] || proc)
+		//if (!flag || all->map[i] != map_save[i] || proc)
 		{
-			if (flag)
-				moveTo((i + 1) / 64, ((i + 1) % 64) * 3);
+		//	if (flag)
+		//		moveTo((i + 1) / 64, ((i + 1) % 64) * 3);
 			if (!proc && all->map[i])
 				printf("\033[0;35m");
 			else

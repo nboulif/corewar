@@ -25,6 +25,7 @@ void		next_action(t_all *all, t_process *current_process)
 
 int		check_nb_live(t_all *all)
 {
+	static int		first_test = 0;
 	t_process		*process;
 	int				i;
 
@@ -32,11 +33,12 @@ int		check_nb_live(t_all *all)
 	while (++i < all->stack_proc->n_items)
 	{
 		process = (t_process*)ft_array_get(all->stack_proc, i);
-		if (!process->flag_live)
+		if (!process->flag_live && first_test)
 			ft_array_remove(all->stack_proc, i--, NULL);
 		else
 			process->flag_live = 0;
 	}
+	first_test = 1;
 	return (all->stack_proc->n_items);
 }
 
@@ -54,10 +56,16 @@ void		vm(t_all *all)
 	init_vm(all);
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
-		hexdump_map_square(all);
-		moveTo(10, 80 * 3);
-		printf("nb_cycle %d", total_cycle);
-		moveTo(120, 0);
+		if (
+			//total_cycle > 1691 &&
+			all->flag & FLAG_VISU && !(total_cycle % 20))
+		{
+			hexdump_map_square(all);
+			usleep(2000);
+			moveTo(10, 80 * 3);
+			printf("nb_cycle %d", total_cycle);
+			// moveTo(120, 0);
+		}
 		i = 0;
 		while (i < all->stack_proc->n_items)
 			next_action(all, (t_process*)ft_array_get(all->stack_proc, i++));

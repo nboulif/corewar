@@ -18,46 +18,53 @@ int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 	return (arg);
 }
 
-void	parse_arg_op(t_all *all, t_process *proc)
+int		parse_arg_op(t_all *all, t_process *proc)
 {
 	static int	tab[3] = {T_REG, T_DIR, T_IND};
 	static int 	size_arg[4] = {0, 1, 0, 2};
 	int size_cur_arg;
 	int i;
+	int ret;
 
+	// static int y = 66;
+	// moveTo(y++, 100);
+	// if (y > 75)
+	// 	y = 66;
+	ret = 1;
 	i = -1;
 	if (op_tab[all->map[proc->pc]].codage_octal)
 	{
 		move_pc(&proc->pc, 1);
-		// printf("codage_octal\n");s
 		while (++i < 3)
 		{
-			if (!(((all->map[proc->pc] & 0b11000000) >> 6) ^ tab[i]))
+			if ((((all->map[proc->pc] & 0b11000000) >> 6) == tab[i]))
 				proc->op.type_of_params[0] = tab[i];
-			if (!(((all->map[proc->pc] & 0b110000) >> 4) ^ tab[i]))
+			if ((((all->map[proc->pc] & 0b110000) >> 4) == tab[i]))
 				proc->op.type_of_params[1] = tab[i];
-			if (!(((all->map[proc->pc] & 0b1100) >> 2) ^ tab[i]))
+			if ((((all->map[proc->pc] & 0b1100) >> 2) == tab[i]))
 				proc->op.type_of_params[2] = tab[i];
 		}
 		i = -1;
 	}
 	move_pc(&proc->pc, 1);
-	// if (proc->op.opc == 11)
-	// 	printf("sti arg\n\n");
 	while (++i < proc->op.nb_params)
 	{
-		// printf("type_of_params[%.2d]\n", i);
-		// print_bit(proc->op.type_of_params[i]);
-		// printf("\n");
 		if (proc->op.type_of_params[i] == T_DIR)
 			size_cur_arg = 2 + 2 * (!proc->op.dir_size);
 		else
 			size_cur_arg = size_arg[proc->op.type_of_params[i]];
 		proc->op.params[i] = give_next_arg(all, size_cur_arg, proc);
-		// if (proc->op.opc == 11)
-		// 	printf("param %d : |%d|\n", i, proc->op.params[i]);
+		if (proc->op.type_of_params[i] == T_REG)
+		{
+			if (proc->op.params[i] > REG_NUMBER || proc->op.params[i] < 1)
+			{
+				proc->carry = 0;
+				ret = 0;
+			}
+			else
+				proc->op.params[i] = proc->reg[proc->op.params[i] - 1];
+		}
 	}
-	// if (proc->op.opc == 11)
-	// 	printf("\n");
+	return (ret);
 }
 

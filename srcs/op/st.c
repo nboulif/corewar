@@ -9,9 +9,8 @@ void    	op_st(t_all *all, t_process *proc)
 		ft_memcpy(&proc->op, &op_tab[all->map[proc->pc]], sizeof(t_op));
 		proc->wait = proc->op.cycles - 1;
 	}
-	else
+	else if (parse_arg_op(all, proc))
 	{
-		parse_arg_op(all, proc);
 		pc_to_write = 0;
 		move_pc(&pc_to_write, proc->op.params[1]);
 		all->map[pc_to_write] = proc->op.params[0] & 0xff000000;

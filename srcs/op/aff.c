@@ -9,8 +9,8 @@ void    	op_aff(t_all *all, t_process *proc)
 	}
 	else
 	{
-		parse_arg_op(all, proc);
-		ft_putchar((unsigned int)proc->op.params[0] % 256);
+		if (parse_arg_op(all, proc))
+			ft_putchar((unsigned int)proc->op.params[0] % 256);
 		// affiche_new_pc();
 	}
 	proc->to_do = 1 - proc->to_do;

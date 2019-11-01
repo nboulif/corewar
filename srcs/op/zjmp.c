@@ -2,7 +2,8 @@
 
 void    	op_zjmp(t_all *all, t_process *proc)
 {
-	static int old_pc;
+	int old_pc;
+	static int save = 79;
 
 	if (!proc->to_do)
 	{
@@ -14,12 +15,22 @@ void    	op_zjmp(t_all *all, t_process *proc)
 	{
 		old_pc = proc->pc;
 		parse_arg_op(all, proc);
+		// printf("zjump\n");
 		if (proc->carry)
 		{
 			proc->pc = old_pc;
-			//printf("zjmp %d\n", proc->op.params[0]);
+			// moveTo(save++, 10);
+			// printf("zjmp %d\n", proc->op.params[0]);
 			move_pc(&proc->pc, proc->op.params[0] % IDX_MOD);
 		}
+		else
+		{
+			// moveTo(save++, 10);
+			// printf("!! carrry == 0 !!\n");
+		}
+		
 	}
+	if (save > 90)
+		save = 79;
 	proc->to_do = 1 - proc->to_do;
 }

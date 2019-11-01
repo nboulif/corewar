@@ -25,18 +25,14 @@ void    	op_ld(t_all *all, t_process *proc)
 				move_pc(&pc_to_read, 1);
 				proc->reg[proc->op.params[1] - 1] |= ((int)(unsigned char)all->map[pc_to_read]) << 8;
 				move_pc(&pc_to_read, 1);
-				proc->reg[proc->op.params[1] - 1] |= all->map[pc_to_read];
+				proc->reg[proc->op.params[1] - 1] |= (int)(unsigned char)all->map[pc_to_read];
 			}
 			else
-			{
 				proc->reg[proc->op.params[1] - 1] = proc->op.params[0];
-			}
 			proc->carry = !proc->reg[proc->op.params[1] - 1];
 		}
 		else
-		{
 			proc->carry = 0;
-		}
 	}
 	proc->to_do = 1 - proc->to_do;
 }

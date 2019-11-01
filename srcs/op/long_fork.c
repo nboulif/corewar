@@ -10,6 +10,7 @@ void    	op_longfork(t_all *all, t_process *proc)
 	{
 		ft_memcpy(&proc->op, &op_tab[all->map[proc->pc]], sizeof(t_op));
 		proc->wait = proc->op.cycles - 1;
+		proc->to_do = 1;	
 	}
 	else
 	{
@@ -23,7 +24,7 @@ void    	op_longfork(t_all *all, t_process *proc)
 		new_proc.carry = proc->carry;
 		new_proc.pc = old_pc;
 		move_pc(&new_proc.pc, proc->op.params[0]);
+		proc->to_do = 0;	
 		ft_array_add(all->stack_proc, &new_proc);
 	}
-	proc->to_do = 1 - proc->to_do;	
 }

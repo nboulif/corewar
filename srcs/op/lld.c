@@ -12,8 +12,7 @@ int pc_to_read;
 	else
 	{
 		pc_to_read = proc->pc;
-		parse_arg_op(all, proc);
-		if (proc->op.params[1] <= REG_NUMBER && proc->op.params[1] > 0)
+		if (parse_arg_op(all, proc))
 		{
 			if (proc->op.type_of_params[0] == T_IND)
 			{	
@@ -31,8 +30,6 @@ int pc_to_read;
 				proc->reg[proc->op.params[1] - 1] = proc->op.params[0];
 			proc->carry = !proc->reg[proc->op.params[1] - 1];
 		}
-		else
-			proc->carry = 0;
 	}
 	proc->to_do = 1 - proc->to_do;
 }

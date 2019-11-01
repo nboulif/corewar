@@ -88,7 +88,7 @@ typedef struct s_op
 	int				cycles;
 	char			*comment;
 	unsigned char	codage_octal;
-	int				dir_size;
+	unsigned char	dir_size;
 }				t_op;
 
 typedef struct		s_champ
@@ -207,6 +207,6 @@ void    op_lldi(t_all *all, t_process *proc);
 ** parse arg op
 */
 
-void	parse_arg_op(t_all *all, t_process *proc);
+int		parse_arg_op(t_all *all, t_process *proc);
 
 #endif
