@@ -1,0 +1,62 @@
+=================================================================
+==36471==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x621000001189 at pc 0x00010ad64236 bp 0x7fff54eb2210 sp 0x7fff54eb2208
+WRITE of size 1 at 0x621000001189 thread T0
+atos[36472]: unable to get permission to examine process.
+atos[36472]: atos cannot examine process 36471 (a.out) for unknown reasons, even though it appears to exist; try running with `sudo`.
+==36471==WARNING: Can't read from symbolizer at fd 5
+atos[36477]: unable to get permission to examine process.
+atos[36477]: atos cannot examine process 36471 (a.out) for unknown reasons, even though it appears to exist; try running with `sudo`.
+==36471==WARNING: Can't read from symbolizer at fd 5
+atos[36489]: unable to get permission to examine process.
+atos[36489]: atos cannot examine process 36471 (a.out) for unknown reasons, even though it appears to exist; try running with `sudo`.
+==36471==WARNING: Can't read from symbolizer at fd 5
+atos[36520]: unable to get permission to examine process.
+atos[36520]: atos cannot examine process 36471 (a.out) for unknown reasons, even though it appears to exist; try running with `sudo`.
+==36471==WARNING: Can't read from symbolizer at fd 5
+==36471==WARNING: Failed to use and restart external symbolizer!
+    #0 0x10ad64235 in op_sti (/Users/rhunders/Desktop/corewar_public/./a.out:x86_64+0x100017235)
+    #1 0x10ad54349 in next_action (/Users/rhunders/Desktop/corewar_public/./a.out:x86_64+0x100007349)
+    #2 0x10ad54cfe in vm (/Users/rhunders/Desktop/corewar_public/./a.out:x86_64+0x100007cfe)
+    #3 0x10ad4fc83 in main (/Users/rhunders/Desktop/corewar_public/./a.out:x86_64+0x100002c83)
+    #4 0x7fff8d72c234 in start (/usr/lib/system/libdyld.dylib:x86_64+0x5234)
+
+0x621000001189 is located 137 bytes to the right of 4096-byte region [0x621000000100,0x621000001100)
+allocated by thread T0 here:
+    #0 0x10add3e9c in wrap_malloc (/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x58e9c)
+    #1 0x10ad549ab in vm (/Users/rhunders/Desktop/corewar_public/./a.out:x86_64+0x1000079ab)
+    #2 0x10ad4fc83 in main (/Users/rhunders/Desktop/corewar_public/./a.out:x86_64+0x100002c83)
+    #3 0x7fff8d72c234 in start (/usr/lib/system/libdyld.dylib:x86_64+0x5234)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow (/Users/rhunders/Desktop/corewar_public/./a.out:x86_64+0x100017235) in op_sti
+Shadow bytes around the buggy address:
+  0x1c42000001e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x1c42000001f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x1c4200000200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x1c4200000210: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x1c4200000220: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+=>0x1c4200000230: fa[fa]fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x1c4200000240: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x1c4200000250: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x1c4200000260: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x1c4200000270: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x1c4200000280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==36471==ABORTING
