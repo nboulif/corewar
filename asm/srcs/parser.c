@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/02 18:57:27 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/02 19:21:30 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ static int		get_label(t_prog *prog)
 
 	d = prog->list_data;
 	tmp = d;
-	while ((i = -1) && d && d->op)
+	while ((i = -1) && d)
 	{
-		while (++i < 3 && d->params[i] && d->op)
+		while (d->op && ++i < 3 && d->params[i])
 		{
 			j = (d->params[i][0] == ':' ? 0 : 1) + 1;
 			if (d->params[i][j - 1] == ':')

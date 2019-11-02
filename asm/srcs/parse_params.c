@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/02 18:57:21 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/02 19:02:56 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_data	*parse_commands(t_prog *prog)
 
 	label = "";
 	tmp_i = prog->i;
-	tmp = ft_strdup(prog->line);
+	tmp = prog->line;
 	prog = skip_until(prog, ":% \t");
 	if (!*prog->line)
 	{
