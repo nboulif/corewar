@@ -6,13 +6,13 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/29 20:21:44 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/02 17:58:41 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-t_data			*init_data_label_only(int nb_line, char *label)
+t_data			*init_data_label(int nb_line, char *label)
 {
 	t_data	*data;
 
@@ -33,22 +33,16 @@ t_data			*init_data(char *str_para, int nb_line,
 {
 	t_data	*data;
 
-	if (!(data = (t_data*)malloc(sizeof(t_data))))
+	if (!(data = init_data_label(nb_line, label)))
 		return (NULL);
 	if (!(data->op = identify_opc(str_opc)))
 		return (NULL);
 	data->codage_octal = 0;
 	data->params = ft_strsplit(str_para, SEPARATOR_CHAR);
-	data->next = NULL;
-	data->nb_line = nb_line;
 	data->val_param[0] = 0;
 	data->val_param[1] = 0;
 	data->val_param[2] = 0;
 	data->nb_octet = 0;
-	if (label && *label)
-		data->label = label;
-	else
-		data->label = NULL;
 	return (data);
 }
 

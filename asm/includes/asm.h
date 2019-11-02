@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:30:09 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/29 17:07:26 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/02 17:39:19 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		parse_params(t_prog *prog, t_data *line);
 t_data	*parse_commands(t_prog *prog);
 
 t_data	*init_data(char *str_params, int nb_line, char *label, char *str_opc);
-t_data	*init_data_label_only(int nb_line, char *label);
+t_data	*init_data_label(int nb_line, char *label);
 int		program_parser(t_prog *prog, t_data	*data);
 
 int print_error_lexical(t_prog *prog, int i);
