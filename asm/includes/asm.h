@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:30:09 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/05 21:51:55 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/05 22:50:36 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ int print_debug(t_prog *prog);
 
 char	*skip_chars2(char *s, char *charset);
 int		skip_chars(char *line, int *i, char *charset);
-int		skip_nb_chars(char *line, int *i, int nb);
 int		skip_until(char *line, int *i, char *charset);
 
 char *trim_comments_space(char *params);

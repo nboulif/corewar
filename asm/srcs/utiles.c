@@ -6,19 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 17:25:24 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/05 21:52:01 by nsondag          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utiles.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/29 10:53:07 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/05 17:25:08 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/05 22:33:18 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +54,8 @@ int		skip_chars(char *line, int *i, char *charset)
 	return (*i - tmp_i);
 }
 
-int		skip_nb_chars(char *line, int *i, int nb)
-{
-	if (!line || !line[*i])
-		return (0);
-	*i += nb;
-	return (nb);
-}
-
 int		skip_until(char *line, int *i, char *charset)
-{	
+{
 	int j;
 	int tmp_i;
 
@@ -90,7 +70,7 @@ int		skip_until(char *line, int *i, char *charset)
 			if (line[*i] != charset[j])
 				j++;
 			else
-				return(*i - tmp_i);
+				return (*i - tmp_i);
 		}
 		if (!charset[j])
 			*i += 1;

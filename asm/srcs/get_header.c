@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/05 18:19:06 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/05 22:50:29 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 ** len_type: longueur de ".name" ou ".comment"
 ** tmp_i: temporaire pour avoir la longueur de name ou comment
-** 
+**
 ** skip .name ou .comment
 ** skip les espaces
 ** gestion d'erreur si p->line != '"'
@@ -32,26 +32,25 @@
 int		get_valid_name_comment(t_prog *p, int max_len, char **name_comment)
 {
 	int len_type;
-	int tmp_i;
+	int len;
 
 	len_type = max_len == PROG_NAME_LENGTH ? NAME : COMMENT;
-	skip_nb_chars(p->line, &p->i, len_type);
+	p->i += len_type;
 	skip_chars(p->line, &p->i, " \t");
 	if (!(p->line[p->i]))
 		return (print_error_tokken(p, p->i, 0, "ENDLINE"));
 	if (p->line[p->i] != '"')
 		return (manage_errors(p, p->i));
-	skip_nb_chars(p->line, &p->i, 1);
-	tmp_i = p->i;
-	skip_until(p->line, &p->i, "\"");
+	p->i++;
+	len = skip_until(p->line, &p->i, "\"");
 	if (p->line[p->i] != '"')
 		return (manage_errors(p, p->i));
-	if (p->i - tmp_i + 1 >= max_len)
+	if (len >= max_len)
 		return (printf("%s (Max length %d)\n", LONG_NAME, max_len));
 	if (!((*name_comment) = ft_strnew(max_len)))
 		return (printf("MALLOC PROBLEM\n"));
-	ft_strncpy(*name_comment, &p->line[p->i] - p->i + tmp_i, p->i - tmp_i);
-	skip_nb_chars(p->line, &p->i, 1);
+	ft_strncpy(*name_comment, &p->line[p->i - len], len);
+	p->i++;
 	skip_chars(p->line, &p->i, " \t");
 	return ((!(p->line[p->i]) || p->line[p->i] == '#') ? 0 : manage_errors(p, p->i));
 }
