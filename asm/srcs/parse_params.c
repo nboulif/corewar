@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/02 19:53:26 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/05 18:48:13 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,44 +140,39 @@ t_data	*parse_commands(t_prog *prog)
 	char	*opc;
 	char	*label;
 	t_data	*data;
-	int		tmp_i;
-	char	*tmp;
+	int		skip_len;
 
 	label = "";
-	tmp_i = prog->i;
-	tmp = prog->line;
-	prog = skip_until(prog, ":% \t");
-	if (!*prog->line)
+	skip_len = skip_until(prog->line, &prog->i, ":% \t");
+	if (!prog->line[prog->i])
 	{
 		manage_errors(prog, prog->i);
 		return (NULL);
 	}
-	if (*prog->line == ':')
+	if (prog->line[prog->i] == ':')
 	{
-		label = ft_strsub(tmp, 0, prog->i - tmp_i);
-		prog = skip_nb_chars(prog, 1);
-		prog = skip_chars(prog, " \t");
-		if (!*prog->line)
+		label = ft_strsub(prog->line, prog->i - skip_len, skip_len);
+		skip_nb_chars(prog->line, &prog->i, 1);
+		skip_chars(prog->line, &prog->i, " \t");
+		if (!prog->line[prog->i])
 			return (init_data_label(prog->nb_line, label));
-		tmp = prog->line;
-		tmp_i = prog->i;
+		skip_len = skip_until(prog->line, &prog->i, ":% \t");
 	}
-	prog = skip_until(prog, ":% \t");
-	if (*prog->line)
-		opc = ft_strsub(tmp, 0, prog->i - tmp_i);
-	if (*prog->line && *prog->line != '%')
-		prog = skip_nb_chars(prog, 1);
-	if (!*prog->line)
+	if (prog->line[prog->i])
+		opc = ft_strsub(prog->line, prog->i - skip_len,  skip_len);
+	if (prog->line[prog->i] && prog->line[prog->i] != '%')
+		skip_nb_chars(prog->line, &prog->i, 1);
+	if (!prog->line[prog->i])
 	{
 		manage_errors(prog, prog->i);
 		return (NULL);
 	}
-	if (!(data = init_data(prog->line, prog->nb_line, label, opc)))
+	if (!(data = init_data(&prog->line[prog->i], prog->nb_line, label, opc)))
 	{
 		manage_errors(prog, prog->i);
 		return (NULL);
 	}
-	if (*prog->line)
+	if (prog->line[prog->i])
 		return (!parse_params(prog, data) ? data : NULL);
 	return (data);
 }

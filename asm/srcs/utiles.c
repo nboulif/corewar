@@ -5,8 +5,20 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/05 17:25:24 by nsondag           #+#    #+#             */
+/*   Updated: 2019/11/05 18:48:15 by nsondag          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utiles.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 10:53:07 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/02 17:58:39 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/05 17:25:08 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,59 +44,58 @@ char	*skip_chars2(char *s, char *charset)
 	return (s);
 }
 
-t_prog	*skip_chars(t_prog *prog, char *charset)
+int		skip_chars(char *line, int *i, char *charset)
 {
-	int i;
+	int j;
+	int tmp_i;
 
-	i = 0;
-	if (!prog->line || !*prog->line)
-		return (prog);
-	while (charset[i] && *prog->line)
+	tmp_i = *i;
+	j = 0;
+	if (!line || !line[*i])
+		return (0);
+	while (charset[j] && line[*i])
 	{
-		if (*prog->line == charset[i])
+		if (line[*i] == charset[j])
 		{
-			prog->line++;
-			prog->i++;
-			i = 0;
+			*i += 1;
+			j = 0;
 		}
 		else
-			i++;
+			j++;
 	}
-	return (prog);
+	return (*i - tmp_i);
 }
 
-t_prog	*skip_nb_chars(t_prog *prog, int nb)
+int		skip_nb_chars(char *line, int *i, int nb)
 {
-	if (!prog->line || !*prog->line)
-		return (prog);
-	prog->line += nb;
-	prog->i += nb;
-	return (prog);
+	if (!line || !line[*i])
+		return (0);
+	*i += nb;
+	return (nb);
 }
 
-t_prog	*skip_until(t_prog *prog, char *charset)
+int		skip_until(char *line, int *i, char *charset)
 {	
-	int i;
+	int j;
+	int tmp_i;
 
-	if (!prog->line || !*prog->line)
-		return (prog);
-	while (*prog->line)
+	tmp_i = *i;
+	if (!line || !line[*i])
+		return (0);
+	while (line[*i])
 	{
-		i = 0;
-		while (charset[i])
+		j = 0;
+		while (charset[j])
 		{
-			if (*prog->line != charset[i])
-				i++;
+			if (line[*i] != charset[j])
+				j++;
 			else
-				return(prog);
+				return(*i - tmp_i);
 		}
-		if (!charset[i])
-		{
-			prog->line++;
-			prog->i++;
-		}
+		if (!charset[j])
+			*i += 1;
 	}
-	return (prog);
+	return (*i - tmp_i);
 }
 
 char	*trim_comments_space(char *params)

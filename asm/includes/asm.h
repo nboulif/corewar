@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:30:09 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/02 19:19:30 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/05 18:48:09 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,9 @@ int print_data(t_data *data);
 int print_debug(t_prog *prog);
 
 char	*skip_chars2(char *s, char *charset);
-t_prog *skip_chars(t_prog *prog, char *charset);
-t_prog *skip_nb_chars(t_prog *prog, int nb);
-t_prog *skip_until(t_prog *prog, char *charset);
+int		skip_chars(char *line, int *i, char *charset);
+int		skip_nb_chars(char *line, int *i, int nb);
+int		skip_until(char *line, int *i, char *charset);
 
 char *trim_comments_space(char *params);
 int	count_digit_string(char *s);

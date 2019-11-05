@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/02 19:53:28 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/05 18:48:10 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,15 @@ t_data			*init_data(char *str_para, int nb_line,
 	t_data	*data;
 
 	if (!(data = init_data_label(nb_line, label)))
+	{
+		printf("errorrr\n");
 		return (NULL);
+	}
 	if (!(data->op = identify_opc(str_opc)))
+	{
+		printf("erroooooooooooor\n");
 		return (NULL);
+	}
 	data->codage_octal = 0;
 	data->params = ft_strsplit(str_para, SEPARATOR_CHAR);
 	data->val_param[0] = 0;
@@ -114,12 +120,12 @@ int				program_parser(t_prog *prog, t_data *data)
 	begin_data = data;
 	while (get_next_line(prog->fd, &prog->line) > 0)
 	{
+		prog->i = 0;
 		data->line = prog->line;
 		prog->nb_line++;
-		prog = skip_chars(prog, " \t");
-		if (!prog->line || *prog->line == '#' || !*prog->line)
+		if (!prog->line || prog->line[prog->i] == '#' || !prog->line[prog->i])
 			continue;
-		if (*prog->line == '.')
+		if (prog->line[prog->i] == '.')
 			return (manage_errors(prog, 0));
 		if (!(tmp_data = parse_commands(prog)))
 			return (1);
