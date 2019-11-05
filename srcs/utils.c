@@ -33,6 +33,12 @@ void	print_bit(char nb)
 	printf("\n");
 }
 
+void	change_color(t_all *all, t_process *proc, int i)
+{
+	// changer le background si c un pc
+	all->map.color_in_map[i] = text_color[proc->origin_champ->index_player];
+}
+
 int		is_a_process(t_all *all, int pc)
 {
 	int			i;
@@ -43,15 +49,20 @@ int		is_a_process(t_all *all, int pc)
 	{
 		proc = (t_process*)ft_array_get(all->stack_proc, i);
 		if (pc == proc->pc)
-			return ((unsigned int)proc->origin_champ->index % 4 + 1);
+			return ((unsigned int)proc->origin_champ->index_player + 1);
 	}
 	return (0);
+}
+
+char		*give_color(t_champ *champ)
+{
+	return (text_color[champ->index_player + 4]);
 }
 
 void					hexdump_map_square(t_all *all)
 {
 	int			i;
-	static char map_save[MEM_SIZE] = "";
+	// static char map_save[MEM_SIZE] = "";
 	static char flag = 0;
 
 	if (!(all->flag & FLAG_VISU))
@@ -61,24 +72,44 @@ void					hexdump_map_square(t_all *all)
 	while (++i < MEM_SIZE)
 	{
 		int proc = is_a_process(all, i);
-		//if (!flag || all->map[i] != map_save[i] || proc)
+		//if (!flag || all->map.character[i] != map_save[i] || proc)
 		{
 		//	if (flag)
 		//		moveTo((i + 1) / 64, ((i + 1) % 64) * 3);
-			if (!proc && all->map[i])
-				printf("\033[0;35m");
-			else
+			if (proc)
 				printf("%s", text_color[proc]);
-			if (!((i + 1) % 64))
-				printf("%.2hhx\n", all->map[i]);
 			else
-				printf("%.2hhx ", all->map[i]);
+				printf("%s", all->map.color_in_map[i]);
+			// if (!proc && all->map.character[i])
+			// 	printf("\033[0;35m");
+			// else
+			// 	printf("%s", text_color[proc]);
+			if (!((i + 1) % 64))
+				printf("%.2hhx\n", all->map.character[i]);
+			else
+				printf("%.2hhx ", all->map.character[i]);
 		}
 	}
-	ft_memcpy(map_save, all->map, MEM_SIZE);
+	// ft_memcpy(map_save, all->map.character, MEM_SIZE);
 	flag = 1;
 	// printf("\n");
-	// read(0, &i, 4);
+	read(0, &i, 4);
+}
+
+int read_int_in_map(t_all *all, int pc)
+{
+	int ret;
+
+	ret = 0;
+	move_pc(&pc, 0);
+	ret |= ((int)(unsigned char)all->map.character[pc]) << 24;
+	move_pc(&pc, 1);
+	ret |= ((int)(unsigned char)all->map.character[pc]) << 16;
+	move_pc(&pc, 1);
+	ret |= ((int)(unsigned char)all->map.character[pc]) << 8;
+	move_pc(&pc, 1);
+	ret |= (int)(unsigned char)all->map.character[pc];
+	return (ret);
 }
 
 void				config_flags(void)
@@ -180,13 +211,9 @@ void		move_pc(int *pc, int incr)
 {
 	if (incr >= MEM_SIZE || incr <= -MEM_SIZE)
 		incr %= MEM_SIZE;
-	if (incr < 0)
-	{
-		if ((*pc += incr) < 0)
-			*pc = MEM_SIZE - *pc;
-	}
-	else
-		*pc = (*pc + incr) % MEM_SIZE;
+	*pc = (*pc + incr) % MEM_SIZE;
+	if (*pc < 0)
+		*pc = MEM_SIZE + *pc;
 }
 
 t_champ		*get_champ(int index, t_all *all)

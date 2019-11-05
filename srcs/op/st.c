@@ -3,35 +3,23 @@
 void    	op_st(t_all *all, t_process *proc)
 {
 	int	pc_to_write;
+	int p1;
 
-	if (!proc->to_do)
+	pc_to_write = proc->pc;
+	if (parse_arg_op(all, proc))
 	{
-		printf("ici (%d)\n", proc->pc);
-		ft_memcpy(&proc->op, &op_tab[all->map[proc->pc]], sizeof(t_op));
-		proc->wait = proc->op.cycles - 1;
-		printf("la\n");
-
-	}
-	else
-	{
-		pc_to_write = proc->pc;
-		if (parse_arg_op(all, proc))
+		if (proc->op.type_of_params[1] == T_IND)
 		{
-			ft_putstr("ici part 2\n\n");
-			move_pc(&pc_to_write, proc->op.params[1]);
-			printf("pc_to_write (%d)\n", pc_to_write);
-			all->map[pc_to_write] = proc->op.params[0] & 0xff000000;
+			move_pc(&pc_to_write, proc->op.params[1] % IDX_MOD);
+			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0xff000000) >> 24;
 			move_pc(&pc_to_write, 1);
-			printf("pc_to_write (%d)\n", pc_to_write);
-			all->map[pc_to_write] = proc->op.params[0] & 0xff0000;
+			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0x00ff0000) >> 16;
 			move_pc(&pc_to_write, 1);
-			printf("pc_to_write (%d)\n", pc_to_write);
-			all->map[pc_to_write] = proc->op.params[0] & 0xff00;
+			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0x0000ff00) >> 8;
 			move_pc(&pc_to_write, 1);
-			printf("pc_to_write (%d)\n", pc_to_write);
-			all->map[pc_to_write] = proc->op.params[0] & 0xff;
-			printf("la part 2\n");
+			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0x000000ff);
 		}
+		else
+			proc->reg[proc->op.params[1] - 1] = proc->reg[proc->op.params[0] - 1];
 	}
-	proc->to_do = 1 - proc->to_do;
 }

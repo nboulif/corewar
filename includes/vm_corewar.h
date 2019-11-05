@@ -122,10 +122,17 @@ typedef struct		s_process
 	int 			to_do;
 }					t_process;
 
+typedef struct		s_map
+{
+	char			*character;
+	char			**color_in_map;
+}					t_map;
+
 typedef struct		s_all
 {
-	char			*map;
-	char			*color_in_map;
+	t_map			map;
+	// char			*map;
+	// char			*color_in_map;
 	size_t			nb_champ;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 	t_champ			champ[4];
@@ -163,6 +170,8 @@ t_champ		*get_champ(int index, t_all *all);
 void		hexdump_map_square(t_all *all);
 void		print_bit(char nb);
 void		moveTo(int row, int col);
+int			read_int_in_map(t_all *all, int pc);
+void		change_color(t_all *all, t_process *proc, int i);
 
 /*
 ** parse_champ 
@@ -186,27 +195,35 @@ void		vm(t_all *all);
 ** op
 */
 
-void    op_live(t_all *all, t_process *proc);
-void    op_add(t_all *all, t_process *proc);
-void    op_aff(t_all *all, t_process *proc);
-void    op_and(t_all *all, t_process *proc);
-void    op_fork(t_all *all, t_process *proc);
-void    op_ld(t_all *all, t_process *proc);
-void    op_lld(t_all *all, t_process *proc);
-void    op_ldi(t_all *all, t_process *proc);
-void    op_longfork(t_all *all, t_process *proc);
-void    op_xor(t_all *all, t_process *proc);
-void    op_or(t_all *all, t_process *proc);
-void    op_zjmp(t_all *all, t_process *proc);
-void    op_sub(t_all *all, t_process *proc);
-void    op_sti(t_all *all, t_process *proc);
-void    op_st(t_all *all, t_process *proc);
-void    op_lldi(t_all *all, t_process *proc);
+void    	op_live(t_all *all, t_process *proc);
+void    	op_add(t_all *all, t_process *proc);
+void    	op_aff(t_all *all, t_process *proc);
+void    	op_and(t_all *all, t_process *proc);
+void    	op_fork(t_all *all, t_process *proc);
+void    	op_ld(t_all *all, t_process *proc);
+void    	op_lld(t_all *all, t_process *proc);
+void    	op_ldi(t_all *all, t_process *proc);
+void    	op_longfork(t_all *all, t_process *proc);
+void    	op_xor(t_all *all, t_process *proc);
+void    	op_or(t_all *all, t_process *proc);
+void    	op_zjmp(t_all *all, t_process *proc);
+void    	op_sub(t_all *all, t_process *proc);
+void    	op_sti(t_all *all, t_process *proc);
+void    	op_st(t_all *all, t_process *proc);
+void    	op_lldi(t_all *all, t_process *proc);
 
 /*
-** parse arg op
+** op_utils
 */
 
-int		parse_arg_op(t_all *all, t_process *proc);
+void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read);
+void		give_value_of_larg(t_all *all, t_process *proc, int pc, int index);
+void		give_value_of_arg(t_all *all, t_process *proc, int pc, int index);
+
+/*
+** parse_arg_op
+*/
+
+int			parse_arg_op(t_all *all, t_process *proc);
 
 #endif
