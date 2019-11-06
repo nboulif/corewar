@@ -9,7 +9,7 @@ void    	op_fork(t_all *all, t_process *proc)
 	old_pc = proc->pc;
 	parse_arg_op(all, proc);
 	ft_bzero(&new_proc, sizeof(new_proc));
-	ft_memcpy((void*)new_proc.reg, proc->reg, sizeof(int) * REG_SIZE);
+	ft_memcpy((void*)new_proc.reg, proc->reg, sizeof(int) * REG_NUMBER);
 	new_proc.origin_champ = proc->origin_champ;
 	new_proc.carry = proc->carry;
 	new_proc.pc = old_pc;

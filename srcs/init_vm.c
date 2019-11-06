@@ -94,7 +94,7 @@ void		init_vm(t_all *all)
 		ft_bzero(proc->reg, sizeof(int) * REG_NUMBER);
 		proc->origin_champ = &all->champ[i];
 		proc->pc = i * (MEM_SIZE / all->nb_champ);
-		proc->carry = 1;
+		proc->carry = 0;
 		if (all->champ[i].flag_index && min_ind > all->champ[i].index)
 			min_ind = all->champ[i].index;
 	}

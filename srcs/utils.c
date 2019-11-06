@@ -64,36 +64,35 @@ void					hexdump_map_square(t_all *all)
 	int			i;
 	// static char map_save[MEM_SIZE] = "";
 	static char flag = 0;
+	char *last_color;
 
 	if (!(all->flag & FLAG_VISU))
 		return ;
 	i = -1;
+	last_color = NULL;
 	moveTo(0, 0);
 	while (++i < MEM_SIZE)
 	{
 		int proc = is_a_process(all, i);
-		//if (!flag || all->map.character[i] != map_save[i] || proc)
+
+		if (proc)
 		{
-		//	if (flag)
-		//		moveTo((i + 1) / 64, ((i + 1) % 64) * 3);
-			if (proc)
-				printf("%s", text_color[proc]);
-			else
-				printf("%s", all->map.color_in_map[i]);
-			// if (!proc && all->map.character[i])
-			// 	printf("\033[0;35m");
-			// else
-			// 	printf("%s", text_color[proc]);
-			if (!((i + 1) % 64))
-				printf("%.2hhx\n", all->map.character[i]);
-			else
-				printf("%.2hhx ", all->map.character[i]);
+			if (last_color != text_color[proc])
+				printf("%s", last_color = text_color[proc]);
 		}
+		else
+		{
+			if (last_color != all->map.color_in_map[i])
+				printf("%s", last_color = all->map.color_in_map[i]);
+		}
+		if (!((i + 1) % 64))
+			printf("%.2hhx\n", all->map.character[i]);
+		else
+			printf("%.2hhx ", all->map.character[i]);
 	}
 	// ft_memcpy(map_save, all->map.character, MEM_SIZE);
 	flag = 1;
-	// printf("\n");
-	read(0, &i, 4);
+	// read(0, &i, 4);
 }
 
 int read_int_in_map(t_all *all, int pc)
