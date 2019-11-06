@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 14:42:04 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:07:57 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		get_valid_name_comment(t_prog *p, int max_len, char **name_comment)
 			ft_strcat(*name_comment, name_comment_continue);
 		}
 	}
-	if (len >= max_len)
+	if (len > max_len)
 		return (printf("%s (Max length %d)\n", LONG_NAME, max_len));
 	p->i++;
 	skip_chars(p->line, &p->i, " \t");
