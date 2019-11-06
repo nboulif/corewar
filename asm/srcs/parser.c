@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 14:55:01 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 16:48:53 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static int		get_label(t_prog *prog)
 	t_data	*d;
 	t_data	*tmp;
 	int		i;
-	int		j;
 
 	d = prog->list_data;
 	tmp = d;
@@ -73,12 +72,14 @@ static int		get_label(t_prog *prog)
 	{
 		while (d->op && ++i < 3 && d->params[i])
 		{
-			j = (d->params[i][0] == ':' ? 0 : 1) + 1;
-			if (d->params[i][j - 1] == ':')
+			d->i = 0;
+			skip_until(d->params[i], &d->i, ":");
+			if (d->params[i][d->i] == ':')
 			{
+				d->i++;
 				while (tmp)
 				{
-					if (tmp->label && !ft_strcmp(tmp->label, &d->params[i][j]))
+					if (tmp->label && !ft_strcmp(tmp->label, &d->params[i][d->i]))
 					{
 						d->val_param[i] = tmp->pc - d->pc;
 						break ;
@@ -117,12 +118,19 @@ int				program_parser(t_prog *prog, t_data *data)
 		prog->i = 0;
 		data->line = prog->line;
 		prog->nb_line++;
+		skip_chars(prog->line, &prog->i, " \t");
 		if (!prog->line || prog->line[prog->i] == '#' || !prog->line[prog->i])
+		{
+			prog->i = 1;
 			continue;
+		}
 		if (prog->line[prog->i] == '.')
 			return (manage_errors(prog, 0));
 		if (!(tmp_data = parse_commands(prog)))
+		{
+			printf("test\n");
 			return (1);
+		}
 		if ((tmp_data->op && tmp_data->op->opc) || tmp_data->label)
 			data = get_pc(prog, tmp_data, data)->next;
 	}

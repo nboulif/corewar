@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 17:25:24 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/05 22:33:18 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 16:40:42 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,6 @@ int		skip_until(char *line, int *i, char *charset)
 			*i += 1;
 	}
 	return (*i - tmp_i);
-}
-
-char	*trim_comments_space(char *params)
-{
-	int i;
-
-	i = 0;
-	while (params && params[i] && params[i] != ' ' &&
-			params[i] != '\t' && params[i] != '#')
-		i++;
-	if (i > 0)
-		params = ft_strsub(params, 0, i);
-	return (params);
 }
 
 int		count_digit_string(char *s)

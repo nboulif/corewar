@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:30:09 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 15:01:34 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 16:48:58 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define DEREF		"while attempting to dereference token"
 # define NAME		5
 # define COMMENT	8
+# define EXTENSION	".mycor"
 
 typedef struct		s_op	t_op;
 typedef struct		s_data	t_data;
@@ -117,6 +118,5 @@ char	*skip_chars2(char *s, char *charset);
 int		skip_chars(char *line, int *i, char *charset);
 int		skip_until(char *line, int *i, char *charset);
 
-char *trim_comments_space(char *params);
 int	count_digit_string(char *s);
 #endif

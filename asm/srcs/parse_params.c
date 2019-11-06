@@ -5,20 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/06 14:45:45 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 14:55:00 by nsondag          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_params.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 14:45:39 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 16:40:07 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +41,8 @@ int		parse_register(t_data *data, int i)
 
 int		parse_non_register(t_data *d, int i, int type)
 {
+	int code;
+
 	if (d->params[i][d->i] == LABEL_CHAR)
 	{
 		d->i++;
@@ -65,7 +55,8 @@ int		parse_non_register(t_data *d, int i, int type)
 	}
 	else
 		return (1);
-	d->codage_octal |= DIR_CODE << (2 * (3 - i));
+	code = (type == T_IND) ? IND_CODE : DIR_CODE;
+	d->codage_octal |= code << (2 * (3 - i));
 	if (d->op->dir_size == 1 || type == T_IND)
 		d->nb_octet += 2;
 	else
@@ -105,6 +96,7 @@ int		parse_params_2(t_prog *prog, t_data *d, int i)
 int		parse_params(t_prog *p, t_data *d)
 {
 	int		i;
+	int		to_delete;
 
 	if (d->op->codage_octal)
 		d->nb_octet++;
@@ -115,10 +107,10 @@ int		parse_params(t_prog *p, t_data *d)
 		skip_chars(d->params[i], &d->i, " \t");
 		if (parse_params_2(p, d, i))
 			return (1);
-		skip_chars(d->params[i], &d->i, " \t");
+		to_delete = skip_chars(d->params[i], &d->i, " \t");
 		if (d->params[i] && d->params[i][d->i] && d->params[i][d->i] != '#')
 			return (manage_errors(p, p->i + d->i));
-		d->params[i] = trim_comments_space(d->params[i]);
+		d->params[i] = ft_strsub(d->params[i], 0, d->i - to_delete);
 		p->i += d->i + 1;
 	}
 	d->nb_octet++;
@@ -133,6 +125,7 @@ t_data	*parse_commands(t_prog *prog)
 	int		skip_len;
 
 	label = "";
+	skip_chars(prog->line, &prog->i, " \t");
 	skip_len = skip_until(prog->line, &prog->i, ":% \t");
 	if (!prog->line[prog->i])
 	{
@@ -146,6 +139,7 @@ t_data	*parse_commands(t_prog *prog)
 		skip_chars(prog->line, &prog->i, " \t");
 		if (!prog->line[prog->i])
 			return (init_data_label(prog->nb_line, label));
+		skip_chars(prog->line, &prog->i, " \t");
 		skip_len = skip_until(prog->line, &prog->i, ":% \t");
 	}
 	if (prog->line[prog->i])

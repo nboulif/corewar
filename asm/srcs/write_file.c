@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 14:39:04 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 15:01:22 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 15:09:46 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static int		get_output_file_name(t_prog *prog)
 	while (i >= 0 && prog->file_name[i] != '.')
 		i--;
 	if (!i)
-		prog->file_name = ".cor";
+		prog->file_name = EXTENSION;
 	else
-		ft_strcpy(&prog->file_name[i], ".cor");
+		ft_strcpy(&prog->file_name[i], EXTENSION);
 	return (0);
 }
 

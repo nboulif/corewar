@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 15:10:31 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 13:44:39 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 16:48:55 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ int				main(int argc, char **argv)
 	if (!program_parser(prog, data))
 	{
 		if (!prog->i)
+		{
 			return (printf("%s[%0.3d:%0.3d] %s\n",
 						SYNTAX, prog->nb_line, prog->i, END));
+		}
 		else if (prog->debug)
 			print_debug(prog);
 		else
