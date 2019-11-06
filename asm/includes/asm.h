@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:30:09 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 16:48:58 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:09:19 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_data	*init_data_label(int nb_line, char *label);
 int		program_parser(t_prog *prog, t_data	*data);
 
 int print_error_lexical(t_prog *prog, int i);
-int print_error_tokken(t_prog *prog, int i, int o, char *error_type);
+int print_error_token(t_prog *prog, int i, int o, char *error_type);
 int print_error(t_prog *prog, int i, int o, char *error_type);
 
 int print_data(t_data *data);

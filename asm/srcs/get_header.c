@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 17:07:57 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:10:03 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		get_valid_name_comment(t_prog *p, int max_len, char **name_comment)
 	p->i += len_type;
 	skip_chars(p->line, &p->i, " \t");
 	if (!(p->line[p->i]))
-		return (print_error_tokken(p, p->i, 0, "ENDLINE"));
+		return (print_error_token(p, p->i, 0, "ENDLINE"));
 	if (p->line[p->i] != '"')
 		return (manage_errors(p, p->i));
 	p->i++;
@@ -102,14 +102,14 @@ int		get_header(t_prog *p)
 		if (!ft_strncmp(&p->line[p->i], NAME_CMD_STRING, NAME))
 		{
 			if (p->name)
-				return (print_error_tokken(p, 0, NAME, "COMMAND_NAME"));
+				return (print_error_token(p, 0, NAME, "COMMAND_NAME"));
 			if (get_valid_name_comment(p, PROG_NAME_LENGTH, &p->name))
 				return (1);
 		}
 		else if (!ft_strncmp(&p->line[p->i], COMMENT_CMD_STRING, COMMENT))
 		{
 			if (p->comment)
-				return (print_error_tokken(p, 0, COMMENT, "COMMAND_COMMENT"));
+				return (print_error_token(p, 0, COMMENT, "COMMAND_COMMENT"));
 			if (get_valid_name_comment(p, COMMENT_LENGTH, &p->comment))
 				return (1);
 		}

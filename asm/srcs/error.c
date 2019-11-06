@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/05 19:48:56 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:10:41 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int		manage_errors_header(t_prog *prog, int i)
 {
 	if (!ft_strncmp(prog->full_line + i, NAME_CMD_STRING, 5))
-		return (print_error_tokken(prog, i, 5, "COMMAND_NAME"));
+		return (print_error_token(prog, i, 5, "COMMAND_NAME"));
 	else if (!ft_strncmp(prog->full_line + i, COMMENT_CMD_STRING, 8))
-		return (print_error_tokken(prog, i, 8, "COMMAND_COMMENT"));
+		return (print_error_token(prog, i, 8, "COMMAND_COMMENT"));
 	else
 		return (print_error_lexical(prog, i));
 }

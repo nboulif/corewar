@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/29 11:44:31 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 17:15:26 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int print_error_lexical(t_prog *prog, int i)
 	return (printf("Lexical error at [%d:%d]\n", prog->nb_line, i + 1));
 }
 
-int print_error_tokken(t_prog *prog, int i, int o, char *error_type)
+int print_error_token(t_prog *prog, int i, int o, char *error_type)
 {
 	printf("Syntax error at token [TOKEN][%0.3d:%0.3d] %s",
 					   prog->nb_line, i + 1, error_type);
@@ -35,5 +35,5 @@ int print_error(t_prog *prog, int i, int o, char *error_type)
 	if (*(prog->full_line + i + o + a) && !ft_strchr(", \t", *(prog->full_line + i + o + a)) && !ft_strchr(LABEL_CHARS, *(prog->full_line + i + o + a)))
 		return (print_error_lexical(prog, 1 + i + o + a - 1));
 	else
-		return (print_error_tokken(prog, i, o, error_type));
+		return (print_error_token(prog, i, o, error_type));
 }
