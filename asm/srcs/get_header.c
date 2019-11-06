@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/05 22:50:29 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 13:44:37 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,37 @@
 ** line vide ou commentaire attendu apres, sinon erreur
 */
 
+char	*search_next_line(t_prog *p, int max_len)
+{
+	int		len;
+	char	*name_comment_continue;
+
+	len = 0;
+	if (!((name_comment_continue) = ft_strnew(max_len)))
+	{
+		printf("MALLOC PROBLEM\n");
+		return (NULL);
+	}
+	while (get_next_line(p->fd, &p->line) > 0)
+	{
+		p->nb_line++;
+		p->i = 0;
+		len = skip_until(p->line, &p->i, "\"");
+		ft_strcat(name_comment_continue, "\n");
+		ft_strncat(name_comment_continue, &p->line[p->i - len], len);
+		if (p->line[p->i] == '"')
+			break ;
+	}
+	if (p->line[p->i] != '"')
+		return (NULL);
+	return (name_comment_continue);
+}
+
 int		get_valid_name_comment(t_prog *p, int max_len, char **name_comment)
 {
-	int len_type;
-	int len;
+	int		len_type;
+	int		len;
+	char	*name_comment_continue;
 
 	len_type = max_len == PROG_NAME_LENGTH ? NAME : COMMENT;
 	p->i += len_type;
@@ -43,13 +70,22 @@ int		get_valid_name_comment(t_prog *p, int max_len, char **name_comment)
 		return (manage_errors(p, p->i));
 	p->i++;
 	len = skip_until(p->line, &p->i, "\"");
-	if (p->line[p->i] != '"')
-		return (manage_errors(p, p->i));
-	if (len >= max_len)
-		return (printf("%s (Max length %d)\n", LONG_NAME, max_len));
 	if (!((*name_comment) = ft_strnew(max_len)))
 		return (printf("MALLOC PROBLEM\n"));
 	ft_strncpy(*name_comment, &p->line[p->i - len], len);
+	if (p->line[p->i] != '"')
+	{
+		name_comment_continue = search_next_line(p, max_len);
+		if (!name_comment_continue)
+			return (manage_errors(p, p->i));
+		else
+		{
+			len += ft_strlen(name_comment_continue);
+			ft_strcat(*name_comment, name_comment_continue);
+		}
+	}
+	if (len >= max_len)
+		return (printf("%s (Max length %d)\n", LONG_NAME, max_len));
 	p->i++;
 	skip_chars(p->line, &p->i, " \t");
 	return ((!(p->line[p->i]) || p->line[p->i] == '#') ? 0 : manage_errors(p, p->i));
