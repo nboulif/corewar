@@ -5,8 +5,20 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/06 14:45:45 by nsondag           #+#    #+#             */
+/*   Updated: 2019/11/06 14:55:00 by nsondag          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_params.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 15:08:16 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/05 22:31:25 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 14:45:39 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +45,7 @@ int		parse_register(t_data *data, int i)
 	data->val_param[i] = ft_atoi(&data->params[i][data->i]);
 	if (!(data->val_param[i] >= 0 && data->val_param[i] <= 99))
 		return (1);
-	data->i += count_digit_string(&data->params[i][data->i]) + 1;
+	data->i += count_digit_string(&data->params[i][data->i]);
 	data->codage_octal |= REG_CODE << (2 * (3 - i));
 	data->nb_octet++;
 	return (0);
@@ -49,7 +61,7 @@ int		parse_non_register(t_data *d, int i, int type)
 	else if (d->params[i][d->i] == '-' || ft_isdigit(d->params[i][d->i]))
 	{
 		d->val_param[i] = ft_atoi(&d->params[i][d->i]);
-		d->i += count_digit_string(&d->params[i][d->i]) + 1;
+		d->i += count_digit_string(&d->params[i][d->i]);
 	}
 	else
 		return (1);
