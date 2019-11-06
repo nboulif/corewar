@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 14:39:04 by nsondag           #+#    #+#             */
-/*   Updated: 2019/10/23 12:20:35 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/06 15:01:22 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int				write_file(t_prog *prog)
 
 	get_output_file_name(prog);
 	printf("Writing output program to %s\n", prog->file_name);
-	fd = open(prog->file_name, O_CREAT | O_RDWR, 0644);
+	fd = open(prog->file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	write_header(prog, fd);
 	write_program(prog->list_data, fd);
 	close(fd);
