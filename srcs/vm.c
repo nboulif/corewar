@@ -68,15 +68,15 @@ clock_t time = 0;
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU && !(total_cycle % 3))
+		if (all->flag & FLAG_VISU && !(total_cycle % 5))
 		{
 			// if (time + CLOCKS_PER_SEC * 0.01 > clock())
 			// 	usleep((time + CLOCKS_PER_SEC * 0.01 - clock()) / (CLOCKS_PER_SEC * 0.000001));
-			while (time + CLOCKS_PER_SEC * 0.01 > clock())
-				;
-			time = clock();
+			// while (time + CLOCKS_PER_SEC * 0.01 > clock())
+			// 	;
+			// time = clock();
 			moveTo(10, 64 * 3 + 20);
-			printf("nb_cycle %d", total_cycle);
+			printf("nb_cycle %d", total_cycle + 1);
 			hexdump_map_square(all);
 		}
 		int tmp = all->stack_proc->n_items;

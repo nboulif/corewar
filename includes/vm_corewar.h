@@ -153,6 +153,8 @@ extern unsigned int		flags[256];
 extern char				*flags_syn[256];
 extern t_op				op_tab[17];
 extern char				*text_color[256];
+extern char				*background_color[256];
+
 /*
 ** utils
 */

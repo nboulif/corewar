@@ -31,6 +31,7 @@ int		parse_arg_op(t_all *all, t_process *proc)
 	if (op_tab[all->map.character[proc->pc]].codage_octal)
 	{
 		move_pc(&proc->pc, 1);
+		ft_bzero(proc->op.type_of_params, sizeof(int) * 3);
 		while (++i < 3)
 		{
 			if ((((all->map.character[proc->pc] & 0b11000000) >> 6) == tab[i]))

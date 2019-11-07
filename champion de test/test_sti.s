@@ -7,7 +7,7 @@ l2:
     sti r1,%:live,%1
     sti r1,%:live,%6
     sti r1,%:fork_bcl,%1
-    fork %:fork_bcl
+    fork %1
 
 live: 
     live %1

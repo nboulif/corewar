@@ -81,6 +81,7 @@ int					main(int argc, char **argv)
 		else
 			parse_champ(&all, NULL, argv[i]);
 	}
+	printf("\e[?25l");
 	vm(&all);
 	//execute
 	//free_all
