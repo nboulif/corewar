@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 15:10:31 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 17:15:28 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/07 12:48:09 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 		prog->debug = 0;
 		if (!ft_strcmp("-a", argv[1]))
 			prog->debug = 1;
-		prog->fd = open(argv[2], O_RDONLY);
+		if (prog->debug == 1)
+			prog->fd = open(argv[2], O_RDONLY);
 		if (prog->fd < 0)
 			return (printf("Can't read source file %s\n", argv[2]));
 	}
