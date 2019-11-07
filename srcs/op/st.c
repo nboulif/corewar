@@ -3,23 +3,23 @@
 void    	op_st(t_all *all, t_process *proc)
 {
 	int	pc_to_write;
+	int p1;
 
-	if (!proc->to_do)
+	pc_to_write = proc->pc;
+	if (parse_arg_op(all, proc))
 	{
-		parse_arg_op(all, proc);
-		proc->wait = proc->op.cycles - 1;
+		if (proc->op.type_of_params[1] == T_IND)
+		{
+			move_pc(&pc_to_write, proc->op.params[1] % IDX_MOD);
+			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0xff000000) >> 24;
+			move_pc(&pc_to_write, 1);
+			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0x00ff0000) >> 16;
+			move_pc(&pc_to_write, 1);
+			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0x0000ff00) >> 8;
+			move_pc(&pc_to_write, 1);
+			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0x000000ff);
+		}
+		else
+			proc->reg[proc->op.params[1] - 1] = proc->reg[proc->op.params[0] - 1];
 	}
-	else
-	{
-		pc_to_write = 0;
-		move_pc(&pc_to_write, proc->op.params[1]);
-		all->map[pc_to_write] = proc->op.params[0] & 0xff000000;
-		move_pc(&pc_to_write, 1);
-		all->map[pc_to_write] = proc->op.params[0] & 0xff0000;
-		move_pc(&pc_to_write, 1);
-		all->map[pc_to_write] = proc->op.params[0] & 0xff00;
-		move_pc(&pc_to_write, 1);
-		all->map[pc_to_write] = proc->op.params[0] & 0xff;
-	}
-	proc->to_do = 1 - proc->to_do;
 }

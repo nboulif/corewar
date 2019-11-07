@@ -72,6 +72,7 @@
 # define FLAG_THREAD	2
 # define FLAG_VISU		4
 # define FLAG_NUMBER	8
+# define FLAG_RESUME	16
 
 typedef struct s_process	t_process;
 typedef struct s_all		t_all;
@@ -87,7 +88,7 @@ typedef struct s_op
 	int				cycles;
 	char			*comment;
 	unsigned char	codage_octal;
-	int				dir_size;
+	unsigned char	dir_size;
 }				t_op;
 
 typedef struct		s_champ
@@ -100,6 +101,7 @@ typedef struct		s_champ
 	size_t			size_comment;
 	size_t			size_exec;
     int				index;
+	int				index_player;
 	unsigned char	flag_index;
 	int				alive;
 	int				nb_live;
@@ -120,9 +122,17 @@ typedef struct		s_process
 	int 			to_do;
 }					t_process;
 
+typedef struct		s_map
+{
+	char			*character;
+	char			**color_in_map;
+}					t_map;
+
 typedef struct		s_all
 {
-	char			*map;
+	t_map			map;
+	// char			*map;
+	// char			*color_in_map;
 	size_t			nb_champ;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 	t_champ			champ[4];
@@ -142,7 +152,7 @@ typedef struct		s_all
 extern unsigned int		flags[256];
 extern char				*flags_syn[256];
 extern t_op				op_tab[17];
-
+extern char				*text_color[256];
 /*
 ** utils
 */
@@ -159,6 +169,9 @@ void		move_pc(int *pc, int incr);
 t_champ		*get_champ(int index, t_all *all);
 void		hexdump_map_square(t_all *all);
 void		print_bit(char nb);
+void		moveTo(int row, int col);
+int			read_int_in_map(t_all *all, int pc);
+void		change_color(t_all *all, t_process *proc, int i);
 
 /*
 ** parse_champ 
@@ -182,27 +195,35 @@ void		vm(t_all *all);
 ** op
 */
 
-void    op_live(t_all *all, t_process *proc);
-void    op_add(t_all *all, t_process *proc);
-void    op_aff(t_all *all, t_process *proc);
-void    op_and(t_all *all, t_process *proc);
-void    op_fork(t_all *all, t_process *proc);
-void    op_ld(t_all *all, t_process *proc);
-void    op_lld(t_all *all, t_process *proc);
-void    op_ldi(t_all *all, t_process *proc);
-void    op_longfork(t_all *all, t_process *proc);
-void    op_xor(t_all *all, t_process *proc);
-void    op_or(t_all *all, t_process *proc);
-void    op_zjmp(t_all *all, t_process *proc);
-void    op_sub(t_all *all, t_process *proc);
-void    op_sti(t_all *all, t_process *proc);
-void    op_st(t_all *all, t_process *proc);
-void    op_lldi(t_all *all, t_process *proc);
+void    	op_live(t_all *all, t_process *proc);
+void    	op_add(t_all *all, t_process *proc);
+void    	op_aff(t_all *all, t_process *proc);
+void    	op_and(t_all *all, t_process *proc);
+void    	op_fork(t_all *all, t_process *proc);
+void    	op_ld(t_all *all, t_process *proc);
+void    	op_lld(t_all *all, t_process *proc);
+void    	op_ldi(t_all *all, t_process *proc);
+void    	op_longfork(t_all *all, t_process *proc);
+void    	op_xor(t_all *all, t_process *proc);
+void    	op_or(t_all *all, t_process *proc);
+void    	op_zjmp(t_all *all, t_process *proc);
+void    	op_sub(t_all *all, t_process *proc);
+void    	op_sti(t_all *all, t_process *proc);
+void    	op_st(t_all *all, t_process *proc);
+void    	op_lldi(t_all *all, t_process *proc);
 
 /*
-** parse arg op
+** op_utils
 */
 
-void	parse_arg_op(t_all *all, t_process *proc);
+void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read);
+void		give_value_of_larg(t_all *all, t_process *proc, int pc, int index);
+void		give_value_of_arg(t_all *all, t_process *proc, int pc, int index);
+
+/*
+** parse_arg_op
+*/
+
+int			parse_arg_op(t_all *all, t_process *proc);
 
 #endif

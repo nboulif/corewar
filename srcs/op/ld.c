@@ -2,17 +2,18 @@
 
 void    	op_ld(t_all *all, t_process *proc)
 {
-	if (!proc->to_do)
+	int pc_to_read;
+
+	pc_to_read = proc->pc;
+	if (parse_arg_op(all, proc))
 	{
-		parse_arg_op(all, proc);
-		proc->wait = proc->op.cycles - 1;
-	}
-	else
-	{
-		if ((unsigned int)proc->op.params[1] > REG_NUMBER)
-			proc->carry = 0;
+		if (proc->op.type_of_params[0] == T_IND)
+		{
+			move_pc(&pc_to_read, proc->op.params[0] % IDX_MOD);
+			proc->reg[proc->op.params[1] - 1] = read_int_in_map(all, pc_to_read);
+		}
 		else
-			proc->reg[proc->op.params[1] - 1] = proc->op.params[0] % IDX_MOD;
+			proc->reg[proc->op.params[1] - 1] = proc->op.params[0];
+		proc->carry = !proc->reg[proc->op.params[1] - 1];
 	}
-	proc->to_do = 1 - proc->to_do;
 }

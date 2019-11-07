@@ -1,6 +1,5 @@
 #include "vm_corewar.h"
 
-char *text_color[256] = {"\033[0m", "\033[0;31m", "\033[0;32m", "\033[0;33m","\033[0;34m", "\033[0;35m"}; //Set the text to the color red
 
 void moveUp(int positions) {
  	printf("\x1b[%dA", positions);
@@ -34,6 +33,12 @@ void	print_bit(char nb)
 	printf("\n");
 }
 
+void	change_color(t_all *all, t_process *proc, int i)
+{
+	// changer le background si c un pc
+	all->map.color_in_map[i] = text_color[proc->origin_champ->index_player];
+}
+
 int		is_a_process(t_all *all, int pc)
 {
 	int			i;
@@ -44,29 +49,66 @@ int		is_a_process(t_all *all, int pc)
 	{
 		proc = (t_process*)ft_array_get(all->stack_proc, i);
 		if (pc == proc->pc)
-		{
-			return ((unsigned int)proc->origin_champ->index % 4 + 1);
-		}
+			return ((unsigned int)proc->origin_champ->index_player + 1);
 	}
 	return (0);
 }
 
+char		*give_color(t_champ *champ)
+{
+	return (text_color[champ->index_player + 4]);
+}
+
 void					hexdump_map_square(t_all *all)
 {
-	int i;
+	int			i;
+	// static char map_save[MEM_SIZE] = "";
+	static char flag = 0;
+	char *last_color;
 
+	if (!(all->flag & FLAG_VISU))
+		return ;
 	i = -1;
+	last_color = NULL;
 	moveTo(0, 0);
 	while (++i < MEM_SIZE)
 	{
-		printf("%s", text_color[is_a_process(all, i)]);
-		if (!((i + 1) % 64))
-			printf("%.2hhx\n", all->map[i]);
+		int proc = is_a_process(all, i);
+
+		if (proc)
+		{
+			if (last_color != text_color[proc])
+				printf("%s", last_color = text_color[proc]);
+		}
 		else
-			printf("%.2hhx ", all->map[i]);
+		{
+			if (last_color != all->map.color_in_map[i])
+				printf("%s", last_color = all->map.color_in_map[i]);
+		}
+		if (!((i + 1) % 64))
+			printf("%.2hhx\n", all->map.character[i]);
+		else
+			printf("%.2hhx ", all->map.character[i]);
 	}
-	// printf("\n");
-	read(0, &i, 4);
+	// ft_memcpy(map_save, all->map.character, MEM_SIZE);
+	flag = 1;
+	// read(0, &i, 4);
+}
+
+int read_int_in_map(t_all *all, int pc)
+{
+	int ret;
+
+	ret = 0;
+	move_pc(&pc, 0);
+	ret |= ((int)(unsigned char)all->map.character[pc]) << 24;
+	move_pc(&pc, 1);
+	ret |= ((int)(unsigned char)all->map.character[pc]) << 16;
+	move_pc(&pc, 1);
+	ret |= ((int)(unsigned char)all->map.character[pc]) << 8;
+	move_pc(&pc, 1);
+	ret |= (int)(unsigned char)all->map.character[pc];
+	return (ret);
 }
 
 void				config_flags(void)
@@ -75,6 +117,7 @@ void				config_flags(void)
 	flags['n'] = FLAG_NUMBER;
 	flags['t'] = FLAG_THREAD;
 	flags['v'] = FLAG_VISU;
+	flags['r'] = FLAG_RESUME;
 }
 
 void				config_flags_syn(void)
@@ -167,13 +210,9 @@ void		move_pc(int *pc, int incr)
 {
 	if (incr >= MEM_SIZE || incr <= -MEM_SIZE)
 		incr %= MEM_SIZE;
-	if (incr < 0)
-	{
-		if ((*pc += incr) < 0)
-			*pc = MEM_SIZE - *pc;
-	}
-	else
-		*pc = (*pc + incr) % MEM_SIZE;
+	*pc = (*pc + incr) % MEM_SIZE;
+	if (*pc < 0)
+		*pc = MEM_SIZE + *pc;
 }
 
 t_champ		*get_champ(int index, t_all *all)

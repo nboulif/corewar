@@ -43,6 +43,36 @@ void	qsort_proc(t_array *stack_proc, int start_ind, int size)
 	qsort_proc(stack_proc, pivot_i + 1, size);
 }
 
+void		init_map(t_all *all)
+{
+	int i;
+
+	i = -1;
+	if (!(all->map.character = malloc(sizeof(char) * MEM_SIZE)) ||
+		!(all->map.color_in_map = malloc(sizeof(char*) * MEM_SIZE)))
+		print_error_and_exit(MALLOC_ERROR);
+	ft_bzero(all->map.character, sizeof(char) * MEM_SIZE);
+	while (++i < MEM_SIZE)
+		all->map.color_in_map[i] = text_color[9];
+}
+
+void		init_color_in_map(t_all *all)
+{
+	int			i;
+	int			x;
+	int			start_code;
+	t_process	*proc;
+
+	i = -1;
+	while (++i < all->nb_champ)
+	{
+		x = -1;
+		proc = ft_array_get(all->stack_proc, i);
+		while (++x < proc->origin_champ->size_exec)
+			all->map.color_in_map[x + proc->pc] = text_color[proc->origin_champ->index_player];
+	}
+}
+
 void		init_vm(t_all *all)
 {
 	int			i;
@@ -53,17 +83,18 @@ void		init_vm(t_all *all)
 	i_undif = 0;
 	min_ind = 127;
 	i = -1;
+	init_map(all);
 	if (!(all->stack_proc = ft_array_construct(all->nb_champ, sizeof(t_process))))
 		print_error_and_exit(MALLOC_ERROR);
-	ft_bzero(all->map, MEM_SIZE);
+	ft_bzero(all->map.character, MEM_SIZE);
 	while (++i < all->nb_champ)
 	{
-		ft_memcpy(all->map + i * (MEM_SIZE / all->nb_champ), all->champ[i].exec_code, all->champ[i].size_exec);
+		ft_memcpy(all->map.character + i * (MEM_SIZE / all->nb_champ), all->champ[i].exec_code, all->champ[i].size_exec);
 		ft_bzero((proc = ft_array_inject(all->stack_proc)), sizeof(t_process));
 		ft_bzero(proc->reg, sizeof(int) * REG_NUMBER);
 		proc->origin_champ = &all->champ[i];
 		proc->pc = i * (MEM_SIZE / all->nb_champ);
-		proc->carry = 1;
+		proc->carry = 0;
 		if (all->champ[i].flag_index && min_ind > all->champ[i].index)
 			min_ind = all->champ[i].index;
 	}
@@ -77,7 +108,13 @@ void		init_vm(t_all *all)
 	}
 	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	i = -1;
+	t_process *cur;
 	while (++i < all->nb_champ)
-		ft_printf("|%s| |%d|\n", ((t_process*)ft_array_get(all->stack_proc, i))->origin_champ->name,
-				((t_process*)ft_array_get(all->stack_proc, i))->origin_champ->index);
+	{
+		cur = (t_process*)ft_array_get(all->stack_proc, i);
+		cur->origin_champ->index_player = i + 1;
+		printf("|%s| |%d|\n", (cur)->origin_champ->name,
+				(cur)->origin_champ->index);
+	}
+	init_color_in_map(all);
 }
