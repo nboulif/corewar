@@ -5,6 +5,8 @@
 > :label %direct (%: = direct label) rx[x] regitre
 > pour un indriect on va lire 4 bytes
 
+-> ldi et lldi doivent modifier le carry ?
+
 ## operations
 
 ### add
@@ -83,9 +85,11 @@
 
 ### ld
 
-> loading
->> **structure** -> 
+> load
+>> **structure** -> 5 - 7 bytes
 >>> operation code -> 1 byte
+>>
+>>> codage octal -> 1 byte
 >>
 >>> arguments
 >>>> T_DIR [d1] -> 4 bytes
@@ -94,14 +98,39 @@
 >>>> T_REG [r2] -> 1 byte
 >
 >> **action**
+>>> direct
 >>> [r2] = [d1]
 >>
+>>> indirect
 >>> [r2] = [position + ([i1] % IDX_MOD)]
 >
 >> **carry**
 >>> ([r3] == 0) ? 1 : 0
 
 ### ldi
+
+> load from index
+>> **structure** -> 5 - 7 bytes
+>>> operation code -> 1 byte
+>>
+>>> codage octal -> 1 byte
+>>
+>>> arguments
+>>>> T_REG [r1] -> 1 byte
+>>>> T_DIR [d1] -> 2 bytes
+>>>> T_IND [i1] -> 2 bytes
+>>>
+>>>> T_REG [r2] -> 1 byte
+>>>> T_DIR [d2] -> 2 bytes
+>>>
+>>>> T_REG [r3] -> 1 byte
+>
+>> **action** 
+>>> direct
+>>> [r3] = [([1] + [2]) % IDX_MOD]
+>>
+>>> indirect
+>>> [r3] = [([i1 % IDX_MOD] + [2]) % IDX_MOD]
 
 ### live
 
