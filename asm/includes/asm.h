@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:30:09 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/08 14:56:57 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/08 16:28:11 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define NO_LABEL		"No such label"
 # define DEREF			"while attempting to dereference token"
 # define EXTENSION		".mycor"
+# define OK				0
+# define ERROR			1 
 
 typedef struct		s_op	t_op;
 typedef struct		s_data	t_data;
