@@ -6,7 +6,7 @@
 /*   By: zaz <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/11/06 16:07:30 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/08 14:56:54 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 
 # define NAME_CMD_STRING		".name"
 # define COMMENT_CMD_STRING		".comment"
+# define NAME_TYPE				1
+# define COMMENT_TYPE			2
 
 # define REG_NUMBER				16
 
