@@ -6,11 +6,34 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/08 16:28:06 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/08 18:05:00 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+static int	manage_header_errors(t_prog *p, int i)
+{
+	int tmp_i;
+
+	tmp_i = i;
+	printf("INVALID HEADER, ERROR line %d: ", p->nb_line);
+	if (p->line[i++] == '.')
+	{
+		skip_chars(p->line, &i, LABEL_CHARS);
+		return (printf("unknown command \"%.*s\"\n",
+					i - tmp_i, &p->line[tmp_i]));
+	}
+	printf("%s\n", &p->line[i]);
+	printf("line %d: ", p->nb_line);
+	if (!p->name && !p->comment)
+		return (printf("program name and comment not found\n"));
+	else if (!p->name)
+		return (printf("program name not found\n"));
+	else if (!p->comment)
+		return (printf("program comment not found\n"));
+	return (0);
+}
 
 static int	search_next_line(t_prog *p, char **content, int *content_len)
 {
@@ -66,7 +89,7 @@ static int	get_header_content(t_prog *p, char **content,
 	if (!(p->line[p->i]))
 		return (print_error_token(p, p->i, 0, "ENDLINE"));
 	if (p->line[p->i++] != '"')
-		return (manage_errors(p, p->i - 1));
+		return (print_error_lexical(p, p->i - 1));
 	content_len = skip_until(p->line, &p->i, "\"");
 	if (!((*content) = ft_strnew(max_len)))
 		return (printf("MALLOC PROBLEM\n"));
@@ -77,16 +100,9 @@ static int	get_header_content(t_prog *p, char **content,
 	if (content_len > max_len)
 		return (printf("%s (Max length %d)\n", error2long, max_len));
 	skip_chars(p->line, &p->i, " \t");
-	return (!p->line[p->i] || p->line[p->i] == '#' ?
-			OK : manage_errors(p, p->i));
+	return (!p->line[p->i] || p->line[p->i] == '#' ? OK :
+			print_error_lexical(p, p->i));
 }
-
-/*
-** type_len:	length of *_CMD_STRING (".name" or ".comment")
-** ret:			return value, 0 if no error
-**
-** return:		ret
-*/
 
 int			get_header(t_prog *p)
 {
@@ -109,7 +125,7 @@ int			get_header(t_prog *p)
 					COMMENT_CMD_STRING, type_len))
 			ret = get_header_content(p, &p->comment, type_len, COMMENT_TYPE);
 		else
-			return (manage_errors(p, 0));
+			return (manage_header_errors(p, p->i - type_len));
 		if ((p->name && p->comment) || ret)
 			break ;
 	}
