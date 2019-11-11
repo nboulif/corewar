@@ -3,6 +3,7 @@
 int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 {
 	int arg;
+	int tmp;
 	int i;
 
 	i = 0;
@@ -10,8 +11,9 @@ int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 	move_pc(&proc->pc, 1);
 	while (++i < size_arg)
 	{
-		arg = arg << 8;
-		arg |= all->map.character[proc->pc];
+		arg = arg << 8; 
+		tmp = all->map.character[proc->pc] & 0x000000FF;
+		arg |= tmp;
 		move_pc(&proc->pc, 1);
 	}
 	// il faut pas reverse, le int est legal
@@ -56,7 +58,6 @@ int		parse_arg_op(t_all *all, t_process *proc)
 		else
 			size_cur_arg = size_arg[proc->op.type_of_params[i]];
 		proc->op.params[i] = give_next_arg(all, size_cur_arg, proc);
-		// printf("proc->op.params[%d] %d proc->op.type_of_params[i] %d\n", i, proc->op.params[i], proc->op.type_of_params[i]);
 		if (proc->op.type_of_params[i] == T_REG)
 			if (proc->op.params[i] > REG_NUMBER || proc->op.params[i] < 1)
 				ret = 0;
