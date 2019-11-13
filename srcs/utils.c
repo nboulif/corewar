@@ -59,6 +59,25 @@ char		*give_color(t_champ *champ)
 	return (text_color[champ->index_player + 4]);
 }
 
+void					simple_hexdump(t_all *all)
+{
+	int	octet;
+
+	octet = 0;
+	printf("0x%04x : ", octet);
+	while (octet < MEM_SIZE)
+	{ 
+		printf("%.2hhx ", all->map.character[octet]);
+		if (octet && !((octet + 1) % 64) && octet + 1 < MEM_SIZE)
+		{
+			printf("\n");
+			printf("0x%04x : ", octet + 1);
+		}
+		octet++;
+	}
+	printf("\n");
+}
+
 void					hexdump_map_square(t_all *all)
 {
 	int			i;

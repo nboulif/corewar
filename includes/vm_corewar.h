@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/10/08 15:25:20 by dabeloos         ###   ########.fr       */
+/*   Updated: 2019/11/13 14:41:46 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int			rev_int_byte(int nbr);
 void		move_pc(int *pc, int incr);
 t_champ		*get_champ(int index, t_all *all);
 void		hexdump_map_square(t_all *all);
+void		simple_hexdump(t_all *all);
 void		print_bit(char nb);
 void		moveTo(int row, int col);
 int			read_int_in_map(t_all *all, int pc);
