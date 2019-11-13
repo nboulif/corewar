@@ -87,7 +87,7 @@ clock_t time = 0;
 			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
 			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
 			{
-				printf("opc : %d\n", tmp_proc->op.opc);
+				//printf("opc : %d\n", tmp_proc->op.opc);
 				i++;
 				tmp++;
 			}
