@@ -57,6 +57,7 @@ int		check_nb_live(t_all *all)
 #include <time.h>
 void		vm(t_all *all)
 {
+	t_all	*tmp_all;
 	int 	cycle;
 	int		i;
 	int		total_cycle;
@@ -79,6 +80,7 @@ clock_t time = 0;
 			printf("nb_cycle %d", total_cycle + 1);
 			hexdump_map_square(all);
 		}
+		tmp_all = all;
 		int tmp = all->stack_proc->n_items;
 		while (i < tmp)
 			next_action(all, (t_process*)ft_array_get(all->stack_proc, i++));
@@ -98,7 +100,9 @@ clock_t time = 0;
 			cycle = 0;
 		}
 	}
-	if (all->last_player_alive)
+	if (all->flag & FLAG_DUMP)
+		simple_hexdump(all);
+	else if (all->last_player_alive)
 		ft_printf("le joueur %d(%s) a gagne\n", all->last_player_alive->index, all->last_player_alive->name);
 	else
 		ft_printf("tout le monde a perdu\n");
