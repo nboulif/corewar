@@ -83,7 +83,17 @@ clock_t time = 0;
 		tmp_all = all;
 		int tmp = all->stack_proc->n_items;
 		while (i < tmp)
-			next_action(all, (t_process*)ft_array_get(all->stack_proc, i++));
+		{
+			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
+			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
+			{
+				printf("opc : %d\n", tmp_proc->op.opc);
+				i++;
+				tmp++;
+			}
+			next_action(all, tmp_proc);
+		}
+			
 		total_cycle++;
 		// printf("cycle %d all->cycle_to_die %d total_cycle %d\n", cycle, all->cycle_to_die, total_cycle);
 		if (cycle++ == all->cycle_to_die)
