@@ -7,7 +7,7 @@ void    	op_lld(t_all *all, t_process *proc)
 	pc_to_read = proc->pc;
 	if (parse_arg_op(all, proc))
 	{
-		if (proc->op.type_of_params[0] == F_IND)
+		if (proc->op.type_of_params[0] == T_IND)
 		{	
 			// a tester :
 			// give_value_of_arg(all, proc, pc_to_read, 0);

@@ -8,7 +8,7 @@ void    	op_st(t_all *all, t_process *proc)
 	pc_to_write = proc->pc;
 	if (parse_arg_op(all, proc))
 	{
-		if (proc->op.type_of_params[1] == F_IND)
+		if (proc->op.type_of_params[1] == T_IND)
 		{
 			move_pc(&pc_to_write, proc->op.params[1] % IDX_MOD);
 			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0xff000000) >> 24;

@@ -3,7 +3,6 @@
 int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 {
 	int arg;
-	int tmp;
 	int i;
 
 	i = 0;
@@ -12,7 +11,6 @@ int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 	while (++i < size_arg)
 	{
 		arg = arg << 8; 
-		// tmp = ;
 		arg |= all->map.character[proc->pc] & 0x000000FF;
 		move_pc(&proc->pc, 1);
 	}
@@ -37,28 +35,37 @@ int		parse_arg_op(t_all *all, t_process *proc)
 		while (++i < 3)
 		{
 			if ((((all->map.character[proc->pc] & 0b11000000) >> 6) == tab[i]))
-				proc->op.type_of_params[0] = tab[i + 3];
+			{
+				proc->op.flags_params[0] = tab[i + 3];
+				proc->op.type_of_params[0] = tab[i];
+			}
 			if ((((all->map.character[proc->pc] & 0b110000) >> 4) == tab[i]))
-				proc->op.type_of_params[1] = tab[i + 3];
+			{
+				proc->op.flags_params[1] = tab[i + 3];
+				proc->op.type_of_params[1] = tab[i];
+			}
 			if ((((all->map.character[proc->pc] & 0b1100) >> 2) == tab[i]))
-				proc->op.type_of_params[2] = tab[i + 3];
+			{
+				proc->op.flags_params[2] = tab[i + 3];
+				proc->op.type_of_params[2] = tab[i];
+			}
 		}
 		i = -1;
 	}
 	// si jms codage octal pourri
-	if ((!(proc->op.type_of_params[0] & op_tab[proc->op.opc].flags_params[0]) && op_tab[proc->op.opc].nb_params > 0) ||
-		(!(proc->op.type_of_params[1] & op_tab[proc->op.opc].flags_params[1]) && op_tab[proc->op.opc].nb_params > 1) ||
-		(!(proc->op.type_of_params[2] & op_tab[proc->op.opc].flags_params[2])  && op_tab[proc->op.opc].nb_params > 2))
+	if ((!(proc->op.flags_params[0] & op_tab[proc->op.opc].flags_params[0]) && op_tab[proc->op.opc].nb_params > 0) ||
+		(!(proc->op.flags_params[1] & op_tab[proc->op.opc].flags_params[1]) && op_tab[proc->op.opc].nb_params > 1) ||
+		(!(proc->op.flags_params[2] & op_tab[proc->op.opc].flags_params[2]) && op_tab[proc->op.opc].nb_params > 2))
 		ret = 0;
 	move_pc(&proc->pc, 1);
 	while (++i < proc->op.nb_params)
 	{
-		if (proc->op.type_of_params[i] == F_DIR)
+		if (proc->op.type_of_params[i] == T_DIR)
 			size_cur_arg = 2 + 2 * (!proc->op.dir_size);
 		else
 			size_cur_arg = size_arg[proc->op.type_of_params[i]];
 		proc->op.params[i] = give_next_arg(all, size_cur_arg, proc);
-		if (proc->op.type_of_params[i] == F_REG)
+		if (proc->op.type_of_params[i] == T_REG)
 			if (proc->op.params[i] > REG_NUMBER || proc->op.params[i] < 1)
 				ret = 0;
 	}
