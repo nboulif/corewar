@@ -83,6 +83,7 @@ typedef struct s_op
 	char			*name;
 	int				nb_params;
 	char			type_of_params[3];
+	char			flags_params[3];
 	int				params[3];
 	int				opc;
 	int				cycles;

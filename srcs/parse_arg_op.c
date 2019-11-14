@@ -22,8 +22,8 @@ int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 
 int		parse_arg_op(t_all *all, t_process *proc)
 {
-	static int	tab[3] = {T_REG, T_DIR, T_IND};
-	static int 	size_arg[4] = {0, 1, 0, 2};
+	static int	tab[6] = {T_REG, T_DIR, T_IND, F_REG, F_DIR, F_IND};
+	static int 	size_arg[5] = {0, 1, 0, 0, 2};
 	int size_cur_arg;
 	int i;
 	int ret;
@@ -37,28 +37,28 @@ int		parse_arg_op(t_all *all, t_process *proc)
 		while (++i < 3)
 		{
 			if ((((all->map.character[proc->pc] & 0b11000000) >> 6) == tab[i]))
-				proc->op.type_of_params[0] = tab[i];
+				proc->op.type_of_params[0] = tab[i + 3];
 			if ((((all->map.character[proc->pc] & 0b110000) >> 4) == tab[i]))
-				proc->op.type_of_params[1] = tab[i];
+				proc->op.type_of_params[1] = tab[i + 3];
 			if ((((all->map.character[proc->pc] & 0b1100) >> 2) == tab[i]))
-				proc->op.type_of_params[2] = tab[i];
+				proc->op.type_of_params[2] = tab[i + 3];
 		}
 		i = -1;
 	}
 	// si jms codage octal pourri
-	if ((!(proc->op.type_of_params[0] & op_tab[proc->op.opc].type_of_params[0]) && op_tab[proc->op.opc].nb_params > 0) ||
-		(!(proc->op.type_of_params[1] & op_tab[proc->op.opc].type_of_params[1]) && op_tab[proc->op.opc].nb_params > 1) ||
-		(!(proc->op.type_of_params[2] & op_tab[proc->op.opc].type_of_params[2])  && op_tab[proc->op.opc].nb_params > 2))
+	if ((!(proc->op.type_of_params[0] & op_tab[proc->op.opc].flags_params[0]) && op_tab[proc->op.opc].nb_params > 0) ||
+		(!(proc->op.type_of_params[1] & op_tab[proc->op.opc].flags_params[1]) && op_tab[proc->op.opc].nb_params > 1) ||
+		(!(proc->op.type_of_params[2] & op_tab[proc->op.opc].flags_params[2])  && op_tab[proc->op.opc].nb_params > 2))
 		ret = 0;
 	move_pc(&proc->pc, 1);
 	while (++i < proc->op.nb_params)
 	{
-		if (proc->op.type_of_params[i] == T_DIR)
+		if (proc->op.type_of_params[i] == F_DIR)
 			size_cur_arg = 2 + 2 * (!proc->op.dir_size);
 		else
 			size_cur_arg = size_arg[proc->op.type_of_params[i]];
 		proc->op.params[i] = give_next_arg(all, size_cur_arg, proc);
-		if (proc->op.type_of_params[i] == T_REG)
+		if (proc->op.type_of_params[i] == F_REG)
 			if (proc->op.params[i] > REG_NUMBER || proc->op.params[i] < 1)
 				ret = 0;
 	}

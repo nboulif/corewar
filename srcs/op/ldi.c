@@ -2,9 +2,9 @@
 
 void		config_arg_ldi(t_all *all, t_process *proc, int *p0, int *p1)
 {
-	if (proc->op.type_of_params[0] == T_REG)
+	if (proc->op.type_of_params[0] == F_REG)
 		*p0 = proc->reg[proc->op.params[0] - 1];
-	else if (proc->op.params[0] == T_IND)
+	else if (proc->op.params[0] == F_IND)
 	{
 		*p0 = proc->pc;
 		move_pc(p0, proc->op.params[0] % IDX_MOD);
@@ -12,9 +12,9 @@ void		config_arg_ldi(t_all *all, t_process *proc, int *p0, int *p1)
 	}
 	else
 		*p0 = proc->op.params[0];
-	if (proc->op.type_of_params[1] == T_REG)
+	if (proc->op.type_of_params[1] == F_REG)
 		*p1 = proc->reg[proc->op.params[1] - 1];
-	else if (proc->op.params[1] == T_IND)
+	else if (proc->op.params[1] == F_IND)
 	{
 		*p1 = proc->pc;
 		move_pc(p1, proc->op.params[1] % IDX_MOD);

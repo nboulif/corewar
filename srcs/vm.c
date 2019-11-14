@@ -31,6 +31,8 @@ void		next_action(t_all *all, t_process *current_process)
 	// if (!(all->flag & FLAG_RESUME))
 	// 	printf(""); // phrase pour print l'action dans le terminal
 	// hexdump_map_square(all);
+	// if (current_process->op.name)
+	// 	printf("name |%s|\n", current_process->op.name);
 	ft_memcpy(&current_process->op, &op_tab[all->map.character[current_process->pc]], sizeof(t_op));
 	current_process->wait = current_process->op.cycles - 1;
 	// op_tab[all->map.character[current_process->pc]].op(all, current_process);
@@ -82,6 +84,7 @@ clock_t time = 0;
 			hexdump_map_square(all);
 		}
 		tmp_all = all;
+		// printf("nb_cycle %d\n", total_cycle + 1);
 		while (i < all->stack_proc->n_items)
 		{
 			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
