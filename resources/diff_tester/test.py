@@ -18,8 +18,7 @@ def generate_diff(dump_nb):
 parser = argparse.ArgumentParser(description='Process some strings.')
 parser.add_argument('strings', type=str, nargs='+',
                     help='name n_champs [champ_file ...]')
-args = parser.parse_args()
-args = args.strings
+args = parser.parse_args().strings
 print("args.strings -> |{}|".format(args))
 name = args[0]
 n = int(args[1])
