@@ -127,7 +127,7 @@ void					hexdump_map_square(t_all *all)
 	// }
 	// ft_memcpy(map_save, all->map.character, MEM_SIZE);
 	flag = 1;
-	// read(0, &i, 4);
+	read(0, &i, 4);
 }
 
 int read_int_in_map(t_all *all, int pc)

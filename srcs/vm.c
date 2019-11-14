@@ -46,12 +46,13 @@ int		check_nb_live(t_all *all)
 	while (++i < all->stack_proc->n_items)
 	{
 		process = (t_process*)ft_array_get(all->stack_proc, i);
-		if (!process->flag_live && first_test)
+		if (!process->flag_live && process->to_die)
 			ft_array_remove(all->stack_proc, i--, NULL);
 		else
 			process->flag_live = 0;
+			process->to_die = 1;
 	}
-	first_test = 1;
+	// first_test = 1;
 	return (all->stack_proc->n_items);
 }
 #include <time.h>
@@ -69,7 +70,7 @@ clock_t time = 0;
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU && !(total_cycle % 5))
+		if (all->flag & FLAG_VISU && total_cycle >= 3683)//!(total_cycle % 5))
 		{
 			// if (time + CLOCKS_PER_SEC * 0.01 > clock())
 			// 	usleep((time + CLOCKS_PER_SEC * 0.01 - clock()) / (CLOCKS_PER_SEC * 0.000001));
@@ -81,19 +82,16 @@ clock_t time = 0;
 			hexdump_map_square(all);
 		}
 		tmp_all = all;
-		int tmp = all->stack_proc->n_items;
-		while (i < tmp)
+		while (i < all->stack_proc->n_items)
 		{
 			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
 			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
 			{
 				//printf("opc : %d\n", tmp_proc->op.opc);
 				i++;
-				tmp++;
 			}
 			next_action(all, tmp_proc);
 		}
-			
 		total_cycle++;
 		// printf("cycle %d all->cycle_to_die %d total_cycle %d\n", cycle, all->cycle_to_die, total_cycle);
 		if (cycle++ == all->cycle_to_die)
