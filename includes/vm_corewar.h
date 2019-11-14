@@ -119,7 +119,7 @@ typedef struct		s_process
 	int				carry;
 	// current operation
 	t_op			op;
-	int 			to_do;
+	int 			to_die;
 }					t_process;
 
 typedef struct		s_map

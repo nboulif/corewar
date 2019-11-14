@@ -36,7 +36,8 @@ void    	op_ldi(t_all *all, t_process *proc)
 		give_value_of_arg(all, proc, pc, 0);
 		give_value_of_arg(all, proc, pc, 1);
 		proc->reg[proc->op.params[2] - 1] = 0;
-		config_arg_ldi(all, proc, &p0, &p1);
+		// config_arg_ldi(all, proc, &p0, &p1);
+		// p0 = 
 		// move_pc(&pc, ((long)proc->op.params[0] + (long)proc->op.params[1]) % IDX_MOD);
 		// proc->reg[proc->op.params[2] - 1] |= ((int)(unsigned char)all->map.character[pc]) << 24;
 		// pc = proc->pc;
@@ -52,6 +53,6 @@ void    	op_ldi(t_all *all, t_process *proc)
 		// pc = 0;
 		// move_pc(&pc, proc->op.params[0]);
 		// move_pc(&pc, proc->op.params[1]);
-		proc->reg[proc->op.params[2] - 1] = read_int_in_map(all, pc + p0 + p1);
+		proc->reg[proc->op.params[2] - 1] = read_int_in_map(all, pc + proc->op.params[0] + proc->op.params[1]);
 	}
 }

@@ -13,11 +13,9 @@ void    	op_fork(t_all *all, t_process *proc)
 	new_proc.origin_champ = proc->origin_champ;
 	new_proc.carry = proc->carry;
 	new_proc.pc = old_pc;
-	new_proc.to_do = 0;
+	new_proc.to_die = 0;
 	move_pc(&new_proc.pc, proc->op.params[0] % IDX_MOD);
-	proc->to_do = 0;
 	//ft_array_add(all->stack_proc, &new_proc);
-	//ft_array_extend_size(all->stack_proc, all->stack_proc->n_items + 1);
 	ft_array_insert(all->stack_proc, 0, &new_proc);
 	//printf("size %d\n", all->stack_proc->size);
 }

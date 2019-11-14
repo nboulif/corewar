@@ -12,8 +12,8 @@ int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 	while (++i < size_arg)
 	{
 		arg = arg << 8; 
-		tmp = all->map.character[proc->pc] & 0x000000FF;
-		arg |= tmp;
+		// tmp = ;
+		arg |= all->map.character[proc->pc] & 0x000000FF;
 		move_pc(&proc->pc, 1);
 	}
 	// il faut pas reverse, le int est legal
