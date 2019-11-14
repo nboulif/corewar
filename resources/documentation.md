@@ -134,6 +134,15 @@
 
 ### live
 
+> inform the vm that the current process is alive, and the player with index [d1] is alive
+>> **strucutre** ->
+>>> operation code -> 1 byte
+>>
+>>> arguments
+>>>>
+>
+>> **action**
+
 ### lld
 
 ### lldi
