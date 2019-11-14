@@ -65,7 +65,7 @@ void		vm(t_all *all)
 clock_t time = 0;
 	cycle = 0;
 	total_cycle = 0;
-	
+
 	init_vm(all);
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
