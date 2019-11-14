@@ -6,6 +6,8 @@ int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 	int i;
 
 	i = 0;
+	if (!size_arg)
+		return (0);
 	arg = all->map.character[proc->pc];
 	move_pc(&proc->pc, 1);
 	while (++i < size_arg)
@@ -32,6 +34,7 @@ int		parse_arg_op(t_all *all, t_process *proc)
 	{
 		move_pc(&proc->pc, 1);
 		ft_bzero(proc->op.type_of_params, sizeof(int) * 3);
+		ft_bzero(proc->op.flags_params, sizeof(int) * 3);
 		while (++i < 3)
 		{
 			if ((((all->map.character[proc->pc] & 0b11000000) >> 6) == tab[i]))

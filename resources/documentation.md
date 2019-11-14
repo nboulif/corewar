@@ -3,9 +3,15 @@
 ## divers
 
 > :label %direct (%: = direct label) rx[x] regitre
-> pour un indriect on va lire 4 bytes
+> pour un indirect on va lire 4 bytes
 
--> ldi et lldi doivent modifier le carry ?
+-> ldi est le seul type [ld] qui ne modifie pas le carry
+
+> choix arbitraires a verifier :
+
+* ordre assigne aux nouveaux processus (choix actuel = debut de la liste des processus)
+	* possibilite envisagee : pas d'ordre (les processus qui doivent s'executer lisent leurs arguments, et ensuite on reparcourt la liste pour l'execution)
+* verification qu'un processus est en vie (choix actuel = 1ere verification ignoree meme sans live)
 
 ## operations
 
@@ -85,7 +91,9 @@
 
 ### ld
 
-> load
+> sauvegarde dans un registre 
+> * positionnement de lecture sans acces registre
+> * contrainte de distance de lecture par IDX_MOD
 >> **structure** -> 5 - 7 bytes
 >>> operation code -> 1 byte
 >>
@@ -97,7 +105,7 @@
 >>>
 >>>> T_REG [r2] -> 1 byte
 >
->> **action**
+>> **action** -> 5 cycles
 >>> direct
 >>> [r2] = [d1]
 >>
@@ -109,7 +117,10 @@
 
 ### ldi
 
-> load from index
+> sauvegarde dans un registre
+> * possibilite d'acceder aux registre pour le positionnement de lecture
+> * contrainte de distance de lecture par IDX_MOD
+> * ne modifie pas le carry
 >> **structure** -> 5 - 7 bytes
 >>> operation code -> 1 byte
 >>
@@ -125,7 +136,7 @@
 >>>
 >>>> T_REG [r3] -> 1 byte
 >
->> **action** 
+>> **action** -> 25 cycles
 >>> direct
 >>> [r3] = [([1] + [2]) % IDX_MOD]
 >>
@@ -134,18 +145,67 @@
 
 ### live
 
-> inform the vm that the current process is alive, and the player with index [d1] is alive
->> **strucutre** ->
+> signal de vie de processus et de champion
+>> **structure** -> 5 bytes
 >>> operation code -> 1 byte
 >>
 >>> arguments
->>>>
+>>>> T_DIR [d1] -> 4 bytes
 >
->> **action**
+>> **action** -> 10 cycles
+>>> indique que le processus courant est en vie
+>>> indique que le joueur d'index = [d1] est en vie
 
 ### lld
 
+> sauvegarde dans un registre 
+> * positionnement de lecture sans acces registre
+>> **structure** -> 5 - 7 bytes
+>>> operation code -> 1 byte
+>>
+>>> codage octal -> 1 byte
+>>
+>>> arguments
+>>>> T_DIR [d1] -> 4 bytes
+>>>> T_IND [i1] -> 2 bytes
+>>>
+>>>> T_REG [r2] -> 1 byte
+>
+>> **action** -> 10 cycles
+>>> direct
+>>> [r2] = [d1]
+>>
+>>> indirect
+>>> [r2] = [position + [i1]]
+>
+>> **carry**
+>>> ([r3] == 0) ? 1 : 0
+
 ### lldi
+
+> sauvegarde dans un registre
+> * possibilite d'acceder aux registre pour le positionnement de lecture
+>> **structure** -> 5 - 7 bytes
+>>> operation code -> 1 byte
+>>
+>>> codage octal -> 1 byte
+>>
+>>> arguments
+>>>> T_REG [r1] -> 1 byte
+>>>> T_DIR [d1] -> 2 bytes
+>>>> T_IND [i1] -> 2 bytes
+>>>
+>>>> T_REG [r2] -> 1 byte
+>>>> T_DIR [d2] -> 2 bytes
+>>>
+>>>> T_REG [r3] -> 1 byte
+>
+>> **action** -> 25 cycles
+>>> direct
+>>> [r3] = [\[1] + [2]]
+>>
+>>> indirect
+>>> [r3] = [\[i1 % IDX_MOD] + [2]]
 
 ### lfork
 
