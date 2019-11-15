@@ -76,7 +76,7 @@ clock_t time = 0;
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU && total_cycle >= 2)//!(total_cycle % 5))
+		if (all->flag & FLAG_VISU && total_cycle >= 800)//!(total_cycle % 5))
 		{
 			// if (time + CLOCKS_PER_SEC * 0.01 > clock())
 			// 	usleep((time + CLOCKS_PER_SEC * 0.01 - clock()) / (CLOCKS_PER_SEC * 0.000001));
@@ -92,7 +92,7 @@ clock_t time = 0;
 		//printf("nb_cycle %d die %d\n", total_cycle, all->cycle_to_die);
 		//printf("lives %d\n", all->nb_live);
 		//printf("cycle %d\n", cycle);
-		// printf("nb_cycle %d\n", total_cycle + 1);
+		printf("nb_cycle %d\n", total_cycle);
 		while (i < all->stack_proc->n_items)
 		{
 			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);

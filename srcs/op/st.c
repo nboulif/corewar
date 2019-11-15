@@ -6,10 +6,15 @@ void    	op_st(t_all *all, t_process *proc)
 	int p1;
 
 	pc_to_write = proc->pc;
+	printf("cycle %d\n", proc->op.cycles);
+	printf("avant %d\n", proc->pc);
+	printf("type %d\n", proc->op.type_of_params[1]);
 	if (parse_arg_op(all, proc))
 	{
+		printf("param\n");
 		if (proc->op.type_of_params[1] == T_IND)
 		{
+			printf("ind\n");
 			move_pc(&pc_to_write, proc->op.params[1] % IDX_MOD);
 			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0xff000000) >> 24;
 			change_color(all, proc, pc_to_write);
@@ -26,4 +31,5 @@ void    	op_st(t_all *all, t_process *proc)
 		else
 			proc->reg[proc->op.params[1] - 1] = proc->reg[proc->op.params[0] - 1];
 	}
+	printf("apres %d\n", proc->pc);
 }
