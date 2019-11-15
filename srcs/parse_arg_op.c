@@ -66,7 +66,7 @@ int		parse_arg_op(t_all *all, t_process *proc)
 		if (proc->op.type_of_params[i] == T_DIR)
 			size_cur_arg = 2 + 2 * (!proc->op.dir_size);
 		else
-			size_cur_arg = size_arg[proc->op.type_of_params[i]];
+			size_cur_arg = size_arg[proc->op.flags_params[i]];
 		proc->op.params[i] = give_next_arg(all, size_cur_arg, proc);
 		if (proc->op.type_of_params[i] == T_REG)
 			if (proc->op.params[i] > REG_NUMBER || proc->op.params[i] < 1)
