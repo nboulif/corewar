@@ -12,21 +12,6 @@
 
 #include "asm.h"
 
-t_op	*identify_opc(char *line)
-{
-	int i;
-
-	i = -1;
-	if (!*line)
-		return (&g_op_tab[16]);
-	while (++i < 16)
-	{
-		if (!ft_strcmp(line, g_op_tab[i].name))
-			return (&g_op_tab[i]);
-	}
-	return (NULL);
-}
-
 int		parse_register(t_prog *prog, t_data *data, int i)
 {
 	data->i++;

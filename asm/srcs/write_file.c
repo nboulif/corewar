@@ -22,6 +22,17 @@ static	size_t	convert_to_big_endian(size_t x, int dir_size)
 				((x << 8) & 0xff00)));
 }
 
+static void		prepar_params(t_data *data, int *size, size_t *byte, int i)
+{
+	(*size) = (data->codage_octal >> (2 * (3 - i))) & 3;
+	if ((*size) == 2 && !data->op->dir_size && ((*size) = 4))
+		(*byte) = convert_to_big_endian(data->val_param[i], 0);
+	else if (((*size) == 2 || (*size) == 3) && ((*size) = 2))
+		(*byte) = convert_to_big_endian(data->val_param[i], 1);
+	else
+		(*byte) = data->val_param[i];
+}
+
 static int		write_program(t_data *data, int fd)
 {
 	int		i;
@@ -40,31 +51,11 @@ static int		write_program(t_data *data, int fd)
 			write(fd, &data->codage_octal, 1);
 		while (++i < 3)
 		{
-			size = (data->codage_octal >> (2 * (3 - i))) & 3;
-			if (size == 2 && !data->op->dir_size && (size = 4))
-				byte = convert_to_big_endian(data->val_param[i], 0);
-			else if ((size == 2 || size == 3) && (size = 2))
-				byte = convert_to_big_endian(data->val_param[i], 1);
-			else
-				byte = data->val_param[i];
+			prepar_params(data, &size, &byte, i);
 			write(fd, &byte, size);
 		}
 		data = data->next;
 	}
-	return (0);
-}
-
-static int		get_output_file_name(t_prog *prog)
-{
-	int	i;
-
-	i = ft_strlen(prog->file_name) - 1;
-	while (i >= 0 && prog->file_name[i] != '.')
-		i--;
-	if (!i)
-		prog->file_name = EXTENSION;
-	else
-		ft_strcpy(&prog->file_name[i], EXTENSION);
 	return (0);
 }
 
@@ -98,8 +89,15 @@ int				write_header(t_prog *prog, int fd)
 int				write_file(t_prog *prog)
 {
 	int		fd;
+	int		i;
 
-	get_output_file_name(prog);
+	i = ft_strlen(prog->file_name) - 1;
+	while (i >= 0 && prog->file_name[i] != '.')
+		i--;
+	if (!i)
+		prog->file_name = EXTENSION;
+	else
+		ft_strcpy(&prog->file_name[i], EXTENSION);
 	printf("Writing output program to %s\n", prog->file_name);
 	fd = open(prog->file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	write_header(prog, fd);

@@ -12,52 +12,6 @@
 
 #include "asm.h"
 
-t_data			*init_data_label(int nb_line, char *label)
-{
-	t_data	*data;
-
-	if (!(data = (t_data*)malloc(sizeof(t_data))))
-		return (printf(ERROR_MALOC, "init data label", nb_line) ? NULL : NULL);
-	data->op = NULL;
-	data->nb_line = nb_line;
-	if (label && *label)
-		data->label = label;
-	else
-		data->label = NULL;
-	data->next = NULL;
-	return (data);
-}
-
-static int		tab_len(char **tab)
-{
-	int i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-t_data			*init_data(char *str_para, int nb_line,
-		char *label, t_op *op)
-{
-	t_data	*data;
-
-	if (!(data = init_data_label(nb_line, label)))
-		return (NULL);
-	data->op = op;
-	data->codage_octal = 0;
-	data->params = ft_strsplit(str_para, SEPARATOR_CHAR);
-	if (tab_len(data->params) != op->nb_params)
-		return (printf(ERROR_WRONG_NB_PARAMS,
-			nb_line, tab_len(data->params), op->nb_params) ? NULL : NULL);
-	data->val_param[0] = 0;
-	data->val_param[1] = 0;
-	data->val_param[2] = 0;
-	data->nb_octet = 0;
-	return (data);
-}
-
 static int		check_in_label_list(t_prog *prog, int i,
 	t_data **tmp, t_data *d)
 {
@@ -116,17 +70,6 @@ static int		get_label(t_prog *prog)
 	return (0);
 }
 
-static t_data	*get_pc(t_prog *prog, t_data *tmp_data, t_data *data)
-{
-	tmp_data->pc = data->pc + data->nb_octet;
-	(!prog->list_data) ? prog->list_data = tmp_data : 0;
-	data->next = tmp_data;
-	if (tmp_data->op && tmp_data->op->opc)
-		data->next->pc = data->pc + data->nb_octet;
-	data->nb_line = prog->nb_line;
-	return (data);
-}
-
 int				program_parser(t_prog *prog, t_data *data)
 {
 	t_data	*tmp_data;
@@ -148,7 +91,8 @@ int				program_parser(t_prog *prog, t_data *data)
 		if (prog->line[prog->i] == '.')
 			return (printf(ERROR_COMMAND_IN_PROG, prog->nb_line, prog->i));
 		if (!(tmp_data = parse_commands(prog)))
-			return (printf("test\n"));
+			return (ERROR);
+			// return (printf("test\n"));
 		if ((tmp_data->op && tmp_data->op->opc) || tmp_data->label)
 			data = get_pc(prog, tmp_data, data)->next;
 	}

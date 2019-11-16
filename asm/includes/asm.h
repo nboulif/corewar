@@ -85,31 +85,38 @@ typedef struct		s_prog
 
 extern t_op g_op_tab[17];
 
-int get_header(t_prog *prog);
-int write_file(t_prog *header);
+int 			get_header(t_prog *prog);
+int 			write_file(t_prog *header);
 
-int get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line);
+int 			get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line);
 
-int	manage_errors_inexisting_label(t_data *data, int label_error_line);
+int				manage_errors_inexisting_label(t_data *data, int label_error_line);
 
-t_op	*identify_opc(char *line);
-int		parse_indirect(t_data *line, int i);
-int		parse_register(t_prog *prog, t_data *line, int i);
-int		parse_non_register(t_prog *prog, t_data *d, int i, int type);
-int		parse_direct_char(t_data *line, int i);
-int		parse_params(t_prog *prog, t_data *line);
-t_data	*parse_commands(t_prog *prog);
+int				parse_indirect(t_data *line, int i);
+int				parse_register(t_prog *prog, t_data *line, int i);
+int				parse_non_register(t_prog *prog, t_data *d, int i, int type);
+int				parse_direct_char(t_data *line, int i);
+int				parse_params(t_prog *prog, t_data *line);
+t_data			*parse_commands(t_prog *prog);
 
-t_data	*init_data(char *str_params, int nb_line, char *label, t_op* op);
-t_data	*init_data_label(int nb_line, char *label);
-int		program_parser(t_prog *prog, t_data	*data);
+t_data			*init_data(char *str_params, int nb_line, char *label, t_op* op);
+t_data			*init_data_label(int nb_line, char *label);
+t_prog			*init_prog(int argc, char **argv);
 
-int print_data(t_data *data);
-int print_debug(t_prog *prog);
+int				program_parser(t_prog *prog, t_data	*data);
 
-char	*skip_chars2(char *s, char *charset);
-int		skip_chars(char *line, int *i, char *charset);
-int		skip_until(char *line, int *i, char *charset);
+int 			print_data(t_data *data);
+int 			print_debug(t_prog *prog);
 
-int	count_digit_string(char *s);
+char			*skip_chars2(char *s, char *charset);
+int				skip_chars(char *line, int *i, char *charset);
+int				skip_until(char *line, int *i, char *charset);
+
+int				count_digit_string(char *s);
+
+
+int				tab_len(char **tab);
+t_data			*get_pc(t_prog *prog, t_data *tmp_data, t_data *data);
+t_op			*identify_opc(char *line);
+
 #endif
