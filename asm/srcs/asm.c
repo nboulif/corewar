@@ -27,13 +27,13 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 		if (prog->debug == 1)
 			prog->fd = open(argv[2], O_RDONLY);
 		if (prog->fd < 0)
-			return (printf("Can't read source file %s\n", argv[2]));
+			return (printf(ERROR_WRONG_FD, argv[2]));
 	}
 	else
 	{
 		prog->fd = open(argv[1], O_RDONLY);
 		if (prog->fd < 0)
-			return (printf("Can't read source file %s\n", argv[1]));
+			return (printf(ERROR_WRONG_FD, argv[1]));
 	}
 	return (0);
 }
@@ -43,11 +43,11 @@ static t_prog	*init_prog(int argc, char **argv)
 	t_prog	*prog;
 
 	if (!(prog = (t_prog *)malloc(sizeof(t_prog))))
-		return (NULL);
+		return (printf(ERROR_MALOC, "prog", 0) ? NULL : NULL);
 	if (!(prog->line = (char *)malloc(sizeof(*prog->line) * 1)))
 	{
 		free(prog);
-		return (NULL);
+		return (printf(ERROR_MALOC, "prog->line", 0) ? NULL : NULL);
 	}
 	if (open_file(prog, argc, argv))
 	{
@@ -72,17 +72,16 @@ int				main(int argc, char **argv)
 	if (get_header(prog))
 		return (1);
 	if (prog->nb_line <= 0)
-		return (printf("%s[001:001] %s\n", SYNTAX, END));
+		return (printf(ERROR_EMPTY_PROG));
 	data = (t_data*)malloc(sizeof(t_data));
 	data->pc = 0;
 	data->nb_octet = 0;
 	prog->file_name = argv[1];
 	if (!program_parser(prog, data))
 	{
-		if (!prog->i)
-			return (printf("%s[%0.3d:%0.3d] %s\n",
-						SYNTAX, prog->nb_line, prog->i, END));
-		else if (prog->debug)
+		if (prog->prog_size == 0)
+			return (printf(ERROR_EMPTY_PROG));
+		if (prog->debug)
 			print_debug(prog);
 		else
 			write_file(prog);

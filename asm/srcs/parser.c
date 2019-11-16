@@ -17,7 +17,7 @@ t_data			*init_data_label(int nb_line, char *label)
 	t_data	*data;
 
 	if (!(data = (t_data*)malloc(sizeof(t_data))))
-		return (NULL);
+		return (printf(ERROR_MALOC, "init data label", nb_line) ? NULL : NULL);
 	data->op = NULL;
 	data->nb_line = nb_line;
 	if (label && *label)
@@ -28,22 +28,52 @@ t_data			*init_data_label(int nb_line, char *label)
 	return (data);
 }
 
+static int		tab_len(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
+
 t_data			*init_data(char *str_para, int nb_line,
-		char *label, char *str_opc)
+		char *label, t_op *op)
 {
 	t_data	*data;
 
 	if (!(data = init_data_label(nb_line, label)))
 		return (NULL);
-	if (!(data->op = identify_opc(str_opc)))
-		return (NULL);
+	data->op = op;
 	data->codage_octal = 0;
 	data->params = ft_strsplit(str_para, SEPARATOR_CHAR);
+	if (tab_len(data->params) != op->nb_params)
+		return (printf(ERROR_WRONG_NB_PARAMS,
+			nb_line, tab_len(data->params), op->nb_params) ? NULL : NULL);
 	data->val_param[0] = 0;
 	data->val_param[1] = 0;
 	data->val_param[2] = 0;
 	data->nb_octet = 0;
 	return (data);
+}
+
+static int		check_in_label_list(t_prog *prog, int i,
+	t_data **tmp, t_data *d)
+{
+	d->i++;
+	while (*tmp)
+	{
+		if ((*tmp)->label && !ft_strcmp((*tmp)->label, &d->params[i][d->i]))
+		{
+			d->val_param[i] = (*tmp)->pc - d->pc;
+			break ;
+		}
+		else if (!((*tmp) = (*tmp)->next))
+			return (d->nb_line);
+	}
+	*tmp = prog->list_data;
+	return (0);
 }
 
 /*
@@ -65,6 +95,7 @@ static int		get_label(t_prog *prog)
 	t_data	*d;
 	t_data	*tmp;
 	int		i;
+	int		nb_line;
 
 	d = prog->list_data;
 	tmp = d;
@@ -76,18 +107,8 @@ static int		get_label(t_prog *prog)
 			skip_until(d->params[i], &d->i, ":");
 			if (d->params[i][d->i] == ':')
 			{
-				d->i++;
-				while (tmp)
-				{
-					if (tmp->label && !ft_strcmp(tmp->label, &d->params[i][d->i]))
-					{
-						d->val_param[i] = tmp->pc - d->pc;
-						break ;
-					}
-					else if (!(tmp = tmp->next))
-						return (d->nb_line);
-				}
-				tmp = prog->list_data;
+				if ((nb_line = check_in_label_list(prog, i, &tmp, d)))
+					return (nb_line);
 			}
 		}
 		d = d->next;
@@ -125,12 +146,9 @@ int				program_parser(t_prog *prog, t_data *data)
 			continue;
 		}
 		if (prog->line[prog->i] == '.')
-			return (manage_errors(prog, 0));
+			return (printf(ERROR_COMMAND_IN_PROG, prog->nb_line, prog->i));
 		if (!(tmp_data = parse_commands(prog)))
-		{
-			printf("test\n");
-			return (1);
-		}
+			return (printf("test\n"));
 		if ((tmp_data->op && tmp_data->op->opc) || tmp_data->label)
 			data = get_pc(prog, tmp_data, data)->next;
 	}

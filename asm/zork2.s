@@ -19,9 +19,11 @@
 .comment"bbbbbbbbbbb" 
 #.comment"bbbbbbbbbbb"
 
-l2:		sti r1, %:live, %1456
-		and r1, %0, r1
+		
 
+l2: sti r1, %:live, %1456 #dasd
+		and r1,%0,r1
+ 
 #tir:stir1,%:tirb,%1  		SEPARATOR
 
 #.comment"bbbbbbbbbbb"

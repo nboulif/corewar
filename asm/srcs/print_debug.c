@@ -12,6 +12,46 @@
 
 #include "asm.h"
 
+void	print_params_net(t_data *data, int i, int y)
+{
+	printf("\n%20s %-4d", "", data->op->opc);
+	data->op->codage_octal ? printf(" %-6d",
+		data->codage_octal) : printf(" %-6s", "");
+	i = 0;
+	while (i < data->op->nb_params)
+	{
+		if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_DIR)
+		{
+			y = 0;
+			while (y < 4)
+			{
+				if (y < (data->op->dir_size ? 2 : 4))
+					printf("%-4u", (uint8_t)(data->val_param[i]
+						>> (8 * ((data->op->dir_size ? 1 : 3) - y))));
+				else
+					printf("    ");
+				y++;
+			}
+			printf("  ");
+		}
+		else
+			printf("%-18d", data->val_param[i]);
+		i++;
+	}
+}
+
+void	print_params_brut(t_data *data)
+{
+	int i;
+
+	printf("\n%20s %-4d", "", data->op->opc);
+	data->op->codage_octal ? printf(" %-6d",
+		data->codage_octal) : printf(" %-6s", "");
+	i = 0;
+	while (i < data->op->nb_params)
+		printf("%-18d", data->val_param[i++]);
+}
+
 int		print_data(t_data *data)
 {
 	int i;
@@ -21,46 +61,20 @@ int		print_data(t_data *data)
 		printf("%-11d :    %s:\n", data->pc, data->label);
 	if (data->op && data->op->opc)
 	{
-		printf("%-5d (%-3d) :        %-10s ", data->pc, data->nb_octet, data->op->name);
+		printf("%-5d (%-3d) :        %-10s ", data->pc,
+			data->nb_octet, data->op->name);
 		i = 0;
 		while (i < data->op->nb_params)
 		{
 			y = 0;
-			while (data->params[i][y] && data->params[i][y] != ' ' && data->params[i][y] != '\t')
+			while (data->params[i][y] && data->params[i][y] != ' ' &&
+				data->params[i][y] != '\t')
 				y++;
 			printf("%-18.*s", y, data->params[i++]);
 		}
-		printf("\n");
-		printf("%20s %-4d", "", data->op->opc);
-		data->op->codage_octal ? printf(" %-6d", data->codage_octal) : printf(" %-6s", "");
-		i = 0;
-		while (i < data->op->nb_params)
-		{
-			if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_DIR)
-			{
-				y = 0;
-				while (y < 4)
-				{
-					if (y < (data->op->dir_size ? 2 : 4))
-						printf("%-4u", (uint8_t)(data->val_param[i] >> (8 * ((data->op->dir_size ? 1 : 3) - y))));
-					else
-						printf("    ");
-					y++;
-				}
-				printf("  ");
-			}
-			else
-				printf("%-18d", data->val_param[i]);
-			i++;
-		}
-		printf("\n");
-		printf("%20s %-4d", "", data->op->opc);
-		data->op->codage_octal ? printf(" %-6d", data->codage_octal) : printf(" %-6s", "");
-		i = 0;
-		while (i < data->op->nb_params)
-			printf("%-18d", data->val_param[i++]);
-		printf("\n");
-		printf("\n");
+		print_params_net(data, 0, 0);
+		print_params_brut(data);
+		printf("\n\n");
 		data = data->next;
 	}
 	return (0);

@@ -35,7 +35,8 @@ static int	manage_header_errors(t_prog *p, int i)
 	return (0);
 }
 
-static int	search_next_line(t_prog *p, char **content, int *content_len)
+static int	search_next_line(t_prog *p, char **content,
+	int *content_len, char *error_type)
 {
 	int		len;
 
@@ -49,59 +50,56 @@ static int	search_next_line(t_prog *p, char **content, int *content_len)
 		ft_strncat(*content, &p->line[p->i - len], len);
 		*content_len += len;
 		if (p->line[p->i] == '"')
-			break ;
+		{
+			p->i++;
+			return (OK);
+		}
 	}
-	if (p->line[p->i] != '"')
-		return (ERROR);
-	return (OK);
+	return (printf(ERROR_MISSING_QUOTE, "end", error_type, p->nb_line));
 }
 
-static int	set_type(int type, char **error_type,
-		char **error2long, int *max_len)
+static int	set_type(int type, char **error_type, int *max_len)
 {
 	if (type == NAME_TYPE)
 	{
 		*error_type = "COMMAND_NAME";
-		*error2long = "Champion name too long";
 		*max_len = PROG_NAME_LENGTH;
 	}
 	else if (type == COMMENT_TYPE)
 	{
 		*error_type = "COMMAND_COMMENT";
-		*error2long = "Champion comment too long";
 		*max_len = COMMENT_LENGTH;
 	}
 	return (OK);
 }
 
-static int	get_header_content(t_prog *p, char **content,
-		int type_len, int type)
+static int	get_header_content(t_prog *p, char **content, int type)
 {
 	char	*error_type;
 	int		max_len;
 	int		content_len;
-	char	*error2long;
 
-	set_type(type, &error_type, &error2long, &max_len);
+	set_type(type, &error_type, &max_len);
 	if (*content)
-		return (print_error_token(p, 0, type_len, error_type));
+		return (printf(ERROR_DOUBLE_NAME_COMMENT, error_type, p->nb_line));
 	skip_chars(p->line, &p->i, " \t");
 	if (!(p->line[p->i]))
-		return (print_error_token(p, p->i, 0, "ENDLINE"));
+		return (printf(ERROR_EMPTY_NAME_COMMENT, error_type, p->nb_line));
 	if (p->line[p->i++] != '"')
-		return (print_error_lexical(p, p->i - 1));
+		return (printf(ERROR_MISSING_QUOTE, "start", error_type, p->nb_line));
 	content_len = skip_until(p->line, &p->i, "\"");
 	if (!((*content) = ft_strnew(max_len)))
-		return (printf("MALLOC PROBLEM\n"));
+		return (printf(ERROR_MALOC, error_type, p->nb_line));
 	ft_strncpy(*content, &p->line[p->i - content_len], content_len);
 	if (p->line[p->i++] != '"')
-		if (search_next_line(p, content, &content_len) != OK)
+		if (search_next_line(p, content, &content_len, error_type) != OK)
 			return (ERROR);
 	if (content_len > max_len)
-		return (printf("%s (Max length %d)\n", error2long, max_len));
+		return (printf(ERROR_MAX_LENGTH,
+			error_type, p->nb_line, content_len, max_len));
 	skip_chars(p->line, &p->i, " \t");
 	return (!p->line[p->i] || p->line[p->i] == '#' ? OK :
-			print_error_lexical(p, p->i));
+		printf(ERROR_LEXICAL, 36, p->nb_line, p->i));
 }
 
 int			get_header(t_prog *p)
@@ -120,10 +118,10 @@ int			get_header(t_prog *p)
 		p->i++;
 		type_len = skip_chars(p->line, &p->i, LABEL_CHARS) + 1;
 		if (!ft_strncmp(&p->line[p->i - type_len], NAME_CMD_STRING, type_len))
-			ret = get_header_content(p, &p->name, type_len, NAME_TYPE);
+			ret = get_header_content(p, &p->name, NAME_TYPE);
 		else if (!ft_strncmp(&p->line[p->i - type_len],
 					COMMENT_CMD_STRING, type_len))
-			ret = get_header_content(p, &p->comment, type_len, COMMENT_TYPE);
+			ret = get_header_content(p, &p->comment, COMMENT_TYPE);
 		else
 			return (manage_header_errors(p, p->i - type_len));
 		if ((p->name && p->comment) || ret)
