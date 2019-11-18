@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 15:10:31 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/18 17:10:00 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/18 17:58:49 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,13 @@ void			free_data(t_data *data, t_prog *prog)
 	int i;
 
 	i = 0;
-	while (data->next)
+	while (data)
 	{
 		free(data->line);
 		free(data->label);
-		data = data->next;
 		free(data->params);
+		data = data->next;
 	}
-	data = NULL;
 	free(data);
 	free(prog->line);
 	free(prog->name);
