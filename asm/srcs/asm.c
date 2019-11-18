@@ -6,11 +6,31 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/14 15:10:31 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/08 16:28:08 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/18 17:10:00 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+void			free_data(t_data *data, t_prog *prog)
+{
+	int i;
+
+	i = 0;
+	while (data->next)
+	{
+		free(data->line);
+		free(data->label);
+		data = data->next;
+		free(data->params);
+	}
+	data = NULL;
+	free(data);
+	free(prog->line);
+	free(prog->name);
+	free(prog->comment);
+	free(prog);
+}
 
 int				main(int argc, char **argv)
 {
@@ -35,5 +55,6 @@ int				main(int argc, char **argv)
 		else
 			write_file(prog);
 	}
+	free_data(data, prog);
 	return (0);
 }

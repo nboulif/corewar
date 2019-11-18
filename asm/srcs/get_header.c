@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/22 17:50:32 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/08 18:05:00 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/18 15:08:08 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static int	get_header_content(t_prog *p, char **content, int type)
 	if (content_len > max_len)
 		return (printf(ERROR_MAX_LENGTH,
 			error_type, p->nb_line, content_len, max_len));
-	skip_chars(p->line, &p->i, " \t");
+		skip_chars(p->line, &p->i, " \t");
 	return (!p->line[p->i] || p->line[p->i] == '#' ? OK :
 		printf(ERROR_LEXICAL, 36, p->nb_line, p->i));
 }

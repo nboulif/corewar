@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 16:48:53 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/18 17:00:40 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ t_data			*init_data(char *str_para, int nb_line,
 	data->codage_octal = 0;
 	data->params = ft_strsplit(str_para, SEPARATOR_CHAR);
 	if (tab_len(data->params) != op->nb_params)
+	{
 		return (printf(ERROR_WRONG_NB_PARAMS,
 			nb_line, tab_len(data->params), op->nb_params) ? NULL : NULL);
+	}
 	data->val_param[0] = 0;
 	data->val_param[1] = 0;
 	data->val_param[2] = 0;
@@ -68,7 +70,7 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 			prog->file_name = argv[i];
 			if (prog->fd < 0)
 				return (printf(ERROR_WRONG_FD, argv[i]));
-			break;
+			break ;
 		}
 	}
 	return (0);
@@ -91,6 +93,7 @@ t_prog			*init_prog(int argc, char **argv)
 		free(prog);
 		return (NULL);
 	}
+	prog->debug = 0;
 	prog->nb_line = 0;
 	prog->name = NULL;
 	prog->comment = NULL;
