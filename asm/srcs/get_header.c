@@ -32,7 +32,7 @@ static int	manage_header_errors(t_prog *p, int i)
 		return (printf("program name not found\n"));
 	else if (!p->comment)
 		return (printf("program comment not found\n"));
-	return (0);
+	return (ERROR);
 }
 
 static int	search_next_line(t_prog *p, char **content,
@@ -40,6 +40,7 @@ static int	search_next_line(t_prog *p, char **content,
 {
 	int		len;
 
+	free_str(p->line);
 	len = 0;
 	while (get_next_line(p->fd, &p->line) > 0)
 	{
@@ -54,8 +55,9 @@ static int	search_next_line(t_prog *p, char **content,
 			p->i++;
 			return (OK);
 		}
+		free_str(p->line);
 	}
-	return (printf(ERROR_MISSING_QUOTE, "end", error_type, p->nb_line));
+	return (err_missing_quotes(p, error_type, 0));
 }
 
 static int	set_type(int type, char **error_type, int *max_len)
@@ -81,25 +83,25 @@ static int	get_header_content(t_prog *p, char **content, int type)
 
 	set_type(type, &error_type, &max_len);
 	if (*content)
-		return (printf(ERROR_DOUBLE_NAME_COMMENT, error_type, p->nb_line));
+		return (err_header_divers(p, ERROR_DOUBLE_NAME_COMMENT, error_type));
 	skip_chars(p->line, &p->i, " \t");
 	if (!(p->line[p->i]))
-		return (printf(ERROR_EMPTY_NAME_COMMENT, error_type, p->nb_line));
+		return (err_header_divers(p, ERROR_EMPTY_NAME_COMMENT, error_type));
 	if (p->line[p->i++] != '"')
-		return (printf(ERROR_MISSING_QUOTE, "start", error_type, p->nb_line));
+		return (err_missing_quotes(p, error_type, 1));
 	content_len = skip_until(p->line, &p->i, "\"");
 	if (!((*content) = ft_strnew(max_len)))
-		return (printf(ERROR_MALOC, error_type, p->nb_line));
+		return (err_malloc(error_type, p->nb_line));
 	ft_strncpy(*content, &p->line[p->i - content_len], content_len);
 	if (p->line[p->i++] != '"')
 		if (search_next_line(p, content, &content_len, error_type) != OK)
 			return (ERROR);
 	if (content_len > max_len)
-		return (printf(ERROR_MAX_LENGTH,
-			error_type, p->nb_line, content_len, max_len));
+		return (printf(err_msgs[ERROR_MAX_LENGTH],
+			error_type, p->nb_line, content_len, max_len) + free_str(p->line));
 	skip_chars(p->line, &p->i, " \t");
 	return (!p->line[p->i] || p->line[p->i] == '#' ? OK :
-		printf(ERROR_LEXICAL, 36, p->nb_line, p->i));
+		err_lexical(p, 36, p->i) + free_str(p->line));
 }
 
 int			get_header(t_prog *p)
@@ -113,7 +115,8 @@ int			get_header(t_prog *p)
 		p->nb_line++;
 		p->i = 0;
 		skip_chars(p->line, &p->i, " \t");
-		if (!p->line || !p->line[p->i] || p->line[p->i] == '#')
+		if ((!p->line || !p->line[p->i] ||
+			p->line[p->i] == '#') && !free_str(p->line))
 			continue;
 		p->i++;
 		type_len = skip_chars(p->line, &p->i, LABEL_CHARS) + 1;
@@ -123,8 +126,9 @@ int			get_header(t_prog *p)
 					COMMENT_CMD_STRING, type_len))
 			ret = get_header_content(p, &p->comment, COMMENT_TYPE);
 		else
-			return (manage_header_errors(p, p->i - type_len));
-		if ((p->name && p->comment) || ret)
+			ret = manage_header_errors(p, p->i - type_len);
+		free_str(p->line);
+		if (((p->name && p->comment) || ret))
 			break ;
 	}
 	return (ret);

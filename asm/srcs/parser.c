@@ -62,7 +62,8 @@ static int		get_label(t_prog *prog)
 			if (d->params[i][d->i] == ':')
 			{
 				if ((nb_line = check_in_label_list(prog, i, &tmp, d)))
-					return (nb_line);
+					return (manage_errors_inexisting_label(prog->list_data,
+						nb_line - 1));
 			}
 		}
 		d = d->next;
@@ -85,19 +86,20 @@ int				program_parser(t_prog *prog, t_data *data)
 		skip_chars(prog->line, &prog->i, " \t");
 		if (!prog->line || prog->line[prog->i] == '#' || !prog->line[prog->i])
 		{
+			data->line = NULL;
+			free_str(prog->line);
 			prog->i = 1;
 			continue;
 		}
 		if (prog->line[prog->i] == '.')
-			return (printf(ERROR_COMMAND_IN_PROG, prog->nb_line, prog->i));
+			return (err_default(prog, ERROR_COMMAND_IN_PROG) + free_str(prog->line));
 		if (!(tmp_data = parse_commands(prog)))
-			return (ERROR);
-			// return (printf("test\n"));
+			return (ERROR + free_str(prog->line));
 		if ((tmp_data->op && tmp_data->op->opc) || tmp_data->label)
 			data = get_pc(prog, tmp_data, data)->next;
 	}
 	if ((label_error = get_label(prog)))
-		return (manage_errors_inexisting_label(begin_data, label_error - 1));
+		return (ERROR);
 	prog->prog_size = data->pc + data->nb_octet;
 	close(prog->fd);
 	return (0);

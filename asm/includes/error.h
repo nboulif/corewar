@@ -13,23 +13,25 @@
 #ifndef ERROR_H
 # define ERROR_H
 
-# define ERROR_MALOC							"Malloc error (%s) on line : %d\n"
-# define ERROR_INDENTIFY_OPC					"Can't identify operation code on line %d : %s\n"
-# define ERROR_EMPTY_PROG						"Empty program\n"
-# define ERROR_WRONG_ARGC						"Wrong number of arguments : %d\n"
-# define ERROR_WRONG_FD							"Can't read source file %s\n"
-# define ERROR_MISSING_LABEL					"Missing label : %s\n"
-# define ERROR_UNKNOW_COMMAND					"Unknown command : %s\n"
-# define ERROR_DOUBLE_NAME_COMMENT				"Double %s on line %d.\n"
-# define ERROR_EMPTY_NAME_COMMENT				"Empty %s on line %d\n"
-# define ERROR_MISSING_QUOTE					"Missig %s quote for %s on line %d.\n"
-# define ERROR_MAX_LENGTH						"Max length exceeded for %s on line %d : %d (max: %d)\n"
-# define ERROR_LEXICAL							"Lexical error (%d) on [%0.3d:%0.3d].\n"
-# define ERROR_INVALID_REG_NUMBER				"Invalid register number on line %d : r%d \n"
-# define ERROR_INVALID_IND_DIR					"Invalid value (\"%s\") of type %s on line %d, param number %d.\n"
-# define ERROR_EMPTY_PARAM						"Empty param number %d on line %d.\n"
-# define ERROR_WRONG_NB_PARAMS					"Wrong number of params on line %d : %d vs %d\n"
-# define ERROR_PARAM_TYPE					    "Invalid param on line %d.\nReceived %s type for the param number %d\n"
-# define ERROR_COMMAND_IN_PROG					"Command in program at [%0.3d:%0.3d]."
+# define ERROR_MALOC					1
+# define ERROR_INDENTIFY_OPC			2
+// # define ERROR_EMPTY_PROG				3
+# define ERROR_WRONG_ARGC				4
+# define ERROR_WRONG_FD					5
+# define ERROR_MISSING_LABEL			6
+# define ERROR_UNKNOW_COMMAND			7
+# define ERROR_DOUBLE_NAME_COMMENT		8
+# define ERROR_EMPTY_NAME_COMMENT		9
+# define ERROR_MISSING_QUOTE			10
+# define ERROR_MAX_LENGTH				11
+# define ERROR_LEXICAL					12
+# define ERROR_INVALID_REG_NUMBER		13
+# define ERROR_INVALID_IND_DIR			14
+# define ERROR_EMPTY_PARAM				15
+# define ERROR_WRONG_NB_PARAMS			16
+# define ERROR_PARAM_TYPE				17
+# define ERROR_COMMAND_IN_PROG			18
+
+extern char *err_msgs[19];
 
 #endif

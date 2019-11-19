@@ -119,4 +119,19 @@ int				tab_len(char **tab);
 t_data			*get_pc(t_prog *prog, t_data *tmp_data, t_data *data);
 t_op			*identify_opc(char *line);
 
+
+
+
+int				err_default(t_prog *p, int error_nb);
+int				err_lexical(t_prog *p, int error_nb, int i);
+int				err_malloc(char *str, int nb_line);
+int				err_param_type(t_prog *p, char *str, int indice);
+int				err_missing_quotes(t_prog *p, char *error_type, int start);
+int				err_header_divers(t_prog *p, int error_nb, char *error_type);
+
+int		free_data(t_data *begin_data);
+int		free_data_params(t_data *d, int i);
+int		free_str(char *str);
+int		free_prog(t_prog* p);
+
 #endif

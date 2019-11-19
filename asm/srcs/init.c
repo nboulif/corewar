@@ -17,7 +17,7 @@ t_data			*init_data_label(int nb_line, char *label)
 	t_data	*data;
 
 	if (!(data = (t_data*)malloc(sizeof(t_data))))
-		return (printf(ERROR_MALOC, "init data label", nb_line) ? NULL : NULL);
+		return (err_malloc("init data label", nb_line)? NULL : NULL);
 	data->op = NULL;
 	data->nb_line = nb_line;
 	if (label && *label)
@@ -32,15 +32,20 @@ t_data			*init_data(char *str_para, int nb_line,
 		char *label, t_op *op)
 {
 	t_data	*data;
+	int		nb_param;
 
 	if (!(data = init_data_label(nb_line, label)))
 		return (NULL);
 	data->op = op;
 	data->codage_octal = 0;
 	data->params = ft_strsplit(str_para, SEPARATOR_CHAR);
-	if (tab_len(data->params) != op->nb_params)
-		return (printf(ERROR_WRONG_NB_PARAMS,
-			nb_line, tab_len(data->params), op->nb_params) ? NULL : NULL);
+	nb_param = tab_len(data->params);
+	if (!data->params || nb_param != op->nb_params)
+	{
+		free_data(data);
+		return (printf(err_msgs[ERROR_WRONG_NB_PARAMS],
+			nb_line, nb_param, op->nb_params) ? NULL : NULL);
+	}
 	data->val_param[0] = 0;
 	data->val_param[1] = 0;
 	data->val_param[2] = 0;
@@ -67,7 +72,7 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 			prog->fd = open(argv[i], O_RDONLY);
 			prog->file_name = argv[i];
 			if (prog->fd < 0)
-				return (printf(ERROR_WRONG_FD, argv[i]));
+				return (printf(err_msgs[ERROR_WRONG_FD], argv[i]));
 			break;
 		}
 	}
@@ -79,12 +84,7 @@ t_prog			*init_prog(int argc, char **argv)
 	t_prog	*prog;
 
 	if (!(prog = (t_prog *)malloc(sizeof(t_prog))))
-		return (printf(ERROR_MALOC, "prog", 0) ? NULL : NULL);
-	if (!(prog->line = (char *)malloc(sizeof(*prog->line) * 1)))
-	{
-		free(prog);
-		return (printf(ERROR_MALOC, "prog->line", 0) ? NULL : NULL);
-	}
+		return (err_malloc("prog", 0) ? NULL : NULL);
 	if (open_file(prog, argc, argv))
 	{
 		free(prog->line);
