@@ -76,6 +76,7 @@ SRC =	ft_atoi.c\
 		ft_issorted.c\
 		ft_isrevsorted.c\
 		get_next_line.c\
+		get_next_line_sc.c\
 		count_digit.c\
 
 NAME = libft.a

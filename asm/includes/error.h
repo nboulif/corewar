@@ -15,7 +15,6 @@
 
 # define ERROR_MALOC					1
 # define ERROR_INDENTIFY_OPC			2
-// # define ERROR_EMPTY_PROG				3
 # define ERROR_WRONG_ARGC				4
 # define ERROR_WRONG_FD					5
 # define ERROR_MISSING_LABEL			6
@@ -32,6 +31,6 @@
 # define ERROR_PARAM_TYPE				17
 # define ERROR_COMMAND_IN_PROG			18
 
-extern char *err_msgs[19];
+extern char *g_err_msgs[19];
 
 #endif

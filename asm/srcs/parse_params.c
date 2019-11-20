@@ -17,12 +17,15 @@ int		parse_register(t_prog *prog, t_data *data, int i)
 	data->i++;
 	data->val_param[i] = ft_atoi(&data->params[i][data->i]);
 	if (!(data->val_param[i] >= 0 && data->val_param[i] <= 99))
-		return (printf(err_msgs[ERROR_INVALID_REG_NUMBER],
+		return (printf(g_err_msgs[ERROR_INVALID_REG_NUMBER],
 			prog->nb_line, data->val_param[i]));
-	data->i += count_digit_string(&data->params[i][data->i]);
-	data->codage_octal |= REG_CODE << (2 * (3 - i));
-	data->nb_octet++;
-	return (OK);
+	else
+	{
+		data->i += count_digit_string(&data->params[i][data->i]);
+		data->codage_octal |= REG_CODE << (2 * (3 - i));
+		data->nb_octet++;
+		return (OK);
+	}
 }
 
 int		parse_non_register(t_prog *prog, t_data *d, int i, int type)
@@ -42,9 +45,9 @@ int		parse_non_register(t_prog *prog, t_data *d, int i, int type)
 		d->i += count_digit_string(&d->params[i][d->i]);
 	}
 	else
-		return (printf(err_msgs[ERROR_INVALID_IND_DIR], d->params[i],
-		(type == T_IND) ? "T_IND" : "T_DIR", prog->nb_line, i + 1));
-	code = type == T_IND ? IND_CODE : DIR_CODE;
+		return (printf(g_err_msgs[ERROR_INVALID_IND_DIR], d->params[i],
+			(type == T_IND) ? "T_IND" : "T_DIR", prog->nb_line, i + 1));
+			code = type == T_IND ? IND_CODE : DIR_CODE;
 	d->codage_octal |= code << (2 * (3 - i));
 	if (d->op->dir_size == 1 || type == T_IND)
 		d->nb_octet += 2;
@@ -58,7 +61,7 @@ int		parse_one_param(t_prog *prog, t_data *d, int i)
 	int res;
 
 	if (!d->params[i] || !d->params[i][d->i])
-		return (printf(err_msgs[ERROR_EMPTY_PARAM], i + 1, prog->nb_line));
+		return (printf(g_err_msgs[ERROR_EMPTY_PARAM], i + 1, prog->nb_line));
 	res = OK;
 	if (d->params[i][d->i] == 'r')
 	{
@@ -123,20 +126,19 @@ t_data	*parse_opc(t_prog *prog, int skip_len, char *label)
 	op = identify_opc(str_opc);
 	free_str(str_opc);
 	if (!(op))
-		return (printf(err_msgs[ERROR_INDENTIFY_OPC], prog->nb_line, str_opc)
+		return (printf(g_err_msgs[ERROR_INDENTIFY_OPC], prog->nb_line, str_opc)
 			? NULL : NULL);
-	if (!(data = init_data(&prog->line[prog->i], prog->nb_line, label, op)))
+	else if (!(data = init_data(prog, &prog->line[prog->i], label, op)))
 		return (NULL);
-	if (prog->line[prog->i])
-		return (parse_params(prog, data) && free_data(data) ? NULL : data);
-	else
-		return (err_lexical(prog, 32, prog->i) && free_data(data)  ? NULL : NULL);
+	else if (prog->line[prog->i])
+		return (parse_params(prog, data) && !free_data(data) ? NULL : data);
+	return (err_lexical(prog, 32, prog->i) && !free_data(data) ? NULL : NULL);
 }
 
 t_data	*parse_label(t_prog *prog, int *skip_len)
 {
 	char	*label;
-	t_data 	*data;
+	t_data	*data;
 
 	if (!(label = ft_strsub(prog->line, prog->i - *skip_len, *skip_len)))
 		return (err_malloc("str_sub_label", prog->nb_line) ? NULL : NULL);
@@ -144,17 +146,17 @@ t_data	*parse_label(t_prog *prog, int *skip_len)
 	skip_chars(prog->line, &prog->i, " \t");
 	if (!prog->line[prog->i] || prog->line[prog->i] == '#')
 	{
-		data = init_data_label(prog->nb_line, label);
+		data = init_data_label(prog, label);
 		if (!data)
-			return (!free_str(label)? NULL : NULL);
+			return (NULL);
 		return (data);
 	}
-	*skip_len = skip_until(prog->line, &prog->i, ":% \t");	
+	*skip_len = skip_until(prog->line, &prog->i, ":% \t");
 	if (prog->line[prog->i])
 	{
 		data = parse_opc(prog, *skip_len, label);
 		if (!data)
-			return (!free_str(label) ? NULL : NULL);
+			return (NULL);
 		return (data);
 	}
 	free_str(label);
@@ -170,8 +172,9 @@ t_data	*parse_commands(t_prog *prog)
 	skip_chars(prog->line, &prog->i, " \t");
 	skip_len = skip_until(prog->line, &prog->i, ":% \t");
 	if (!prog->line[prog->i])
-		return (err_lexical(prog, 65, prog->i) ? NULL : NULL);
-	if (prog->line[prog->i] == ':')
+		return ((void*)(long)!(err_lexical(prog, 65, prog->i) +
+		free_str(prog->line)));
+	else if (prog->line[prog->i] == ':')
 		return (parse_label(prog, &skip_len));
 	return (parse_opc(prog, skip_len, NULL));
 }

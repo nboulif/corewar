@@ -61,8 +61,7 @@ st      r2, -494
 st      r2, -493
 st      r2, -492
 live2:
-live    %1;
-st      r16, -262
+live    %1;st      r16, -262
 st      r16, -245
 st      r16, -244
 st      r16, -243

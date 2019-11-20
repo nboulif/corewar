@@ -95,13 +95,13 @@ static int	get_header_content(t_prog *p, char **content, int type)
 	ft_strncpy(*content, &p->line[p->i - content_len], content_len);
 	if (p->line[p->i++] != '"')
 		if (search_next_line(p, content, &content_len, error_type) != OK)
-			return (ERROR);
+			return (ERROR + free_str(*content));
 	if (content_len > max_len)
-		return (printf(err_msgs[ERROR_MAX_LENGTH],
-			error_type, p->nb_line, content_len, max_len) + free_str(p->line));
-	skip_chars(p->line, &p->i, " \t");
+		return (printf(g_err_msgs[ERROR_MAX_LENGTH], error_type, p->nb_line,
+			content_len, max_len) + free_str(p->line) + free_str(*content));
+		skip_chars(p->line, &p->i, " \t");
 	return (!p->line[p->i] || p->line[p->i] == '#' ? OK :
-		err_lexical(p, 36, p->i) + free_str(p->line));
+		err_lexical(p, 36, p->i) + free_str(p->line) + free_str(*content));
 }
 
 int			get_header(t_prog *p)
@@ -116,9 +116,8 @@ int			get_header(t_prog *p)
 		p->i = 0;
 		skip_chars(p->line, &p->i, " \t");
 		if ((!p->line || !p->line[p->i] ||
-			p->line[p->i] == '#') && !free_str(p->line))
+			p->line[p->i++] == '#') && !free_str(p->line))
 			continue;
-		p->i++;
 		type_len = skip_chars(p->line, &p->i, LABEL_CHARS) + 1;
 		if (!ft_strncmp(&p->line[p->i - type_len], NAME_CMD_STRING, type_len))
 			ret = get_header_content(p, &p->name, NAME_TYPE);

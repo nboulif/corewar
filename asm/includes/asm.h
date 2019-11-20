@@ -32,106 +32,112 @@
 # define DEREF			"while attempting to dereference token"
 # define EXTENSION		".mycor"
 # define OK				0
-# define ERROR			1 
+# define ERROR			1
 
-typedef struct		s_op	t_op;
-typedef struct		s_data	t_data;
+typedef struct s_data	t_data;
+typedef struct s_op		t_op;
 
-typedef struct		s_op
+struct					s_op
 {
-	char			*name;
-	int				nb_params;
-	char			params[3];
-	int				opc;
-	int				cycles;
-	char			*comment;
-	unsigned char	codage_octal;
-	int				dir_size;
-}					t_op;
+	char				*name;
+	int					nb_params;
+	char				params[3];
+	int					opc;
+	int					cycles;
+	char				*comment;
+	unsigned char		codage_octal;
+	int					dir_size;
+};
 
-typedef struct		s_data
+struct					s_data
 {
-	char	*line;
-	int		pc;
-	char	*label;
-	int		nb_octet;
-	int		nb_line;
-	t_op	*op;
-	char	**params;
-	int		i;
-	int		val_param[3];
-	int		codage_octal;
-	t_data	*next;
-}					t_data;
+	char				*line;
+	int					pc;
+	char				*label;
+	int					nb_octet;
+	int					nb_line;
+	t_op				*op;
+	char				**params;
+	int					i;
+	int					val_param[3];
+	int					codage_octal;
+	t_data				*next;
+};
 
-typedef struct		s_prog
+/*
+** int					l_h; // counter for char in name or comment
+** int					i; // counter char passed in current line
+*/
+
+typedef struct			s_prog
 {
-	int				debug;
-	int				nb_line;
-	char			*name;
-	char			*comment;
-	t_data			*list_data;
+	int					debug;
+	int					nb_line;
+	char				*name;
+	char				*comment;
+	t_data				*list_data;
+	int					fd;
+	int					l_h;
+	t_op				*op;
+	char				*full_line;
+	char				*line;
+	int					i;
+	int					prog_size;
+	char				*file_name;
+}						t_prog;
 
-	int				fd;
+extern					t_op g_op_tab[17];
 
-	int				l_h; // counter for char in name or comment
-	t_op			*op;
-	char			*full_line;
-	char			*line;
-	int 			i; // counter char passed in current line
-	int				prog_size;
-	char			*file_name;
-}					t_prog;
+int						get_header(t_prog *prog);
+int						write_file(t_prog *header);
 
-extern t_op g_op_tab[17];
+int						get_valid_name_comment(t_prog *prog, int max_lenght,
+						char **final_line);
 
-int 			get_header(t_prog *prog);
-int 			write_file(t_prog *header);
+int						manage_errors_inexisting_label(t_data *data,
+						int label_error_line);
 
-int 			get_valid_name_comment(t_prog *prog, int max_lenght, char **final_line);
+int						parse_indirect(t_data *line, int i);
+int						parse_register(t_prog *prog, t_data *line, int i);
+int						parse_non_register(t_prog *prog, t_data *d, int i,
+						int type);
+int						parse_direct_char(t_data *line, int i);
+int						parse_params(t_prog *prog, t_data *line);
+t_data					*parse_commands(t_prog *prog);
 
-int				manage_errors_inexisting_label(t_data *data, int label_error_line);
+t_data					*init_data(t_prog *p, char *str_params, char *label,
+						t_op *op);
+t_data					*init_data_label(t_prog *p, char *label);
+t_prog					*init_prog(int argc, char **argv);
 
-int				parse_indirect(t_data *line, int i);
-int				parse_register(t_prog *prog, t_data *line, int i);
-int				parse_non_register(t_prog *prog, t_data *d, int i, int type);
-int				parse_direct_char(t_data *line, int i);
-int				parse_params(t_prog *prog, t_data *line);
-t_data			*parse_commands(t_prog *prog);
+int						program_parser(t_prog *prog);
 
-t_data			*init_data(char *str_params, int nb_line, char *label, t_op* op);
-t_data			*init_data_label(int nb_line, char *label);
-t_prog			*init_prog(int argc, char **argv);
+int						print_data(t_data *data);
+int						print_debug(t_prog *prog);
 
-int				program_parser(t_prog *prog, t_data	*data);
+char					*skip_chars2(char *s, char *charset);
+int						skip_chars(char *line, int *i, char *charset);
+int						skip_until(char *line, int *i, char *charset);
 
-int 			print_data(t_data *data);
-int 			print_debug(t_prog *prog);
+int						count_digit_string(char *s);
 
-char			*skip_chars2(char *s, char *charset);
-int				skip_chars(char *line, int *i, char *charset);
-int				skip_until(char *line, int *i, char *charset);
+int						tab_len(char **tab);
+t_data					*get_pc(t_prog *prog, t_data *tmp_data, t_data *data);
+t_op					*identify_opc(char *line);
 
-int				count_digit_string(char *s);
+int						err_default(t_prog *p, int error_nb);
+int						err_lexical(t_prog *p, int error_nb, int i);
+int						err_malloc(char *str, int nb_line);
+int						err_param_type(t_prog *p, char *str, int indice);
+int						err_missing_quotes(t_prog *p, char *error_type,
+						int start);
+int						err_header_divers(t_prog *p, int error_nb,
+						char *error_type);
 
-
-int				tab_len(char **tab);
-t_data			*get_pc(t_prog *prog, t_data *tmp_data, t_data *data);
-t_op			*identify_opc(char *line);
-
-
-
-
-int				err_default(t_prog *p, int error_nb);
-int				err_lexical(t_prog *p, int error_nb, int i);
-int				err_malloc(char *str, int nb_line);
-int				err_param_type(t_prog *p, char *str, int indice);
-int				err_missing_quotes(t_prog *p, char *error_type, int start);
-int				err_header_divers(t_prog *p, int error_nb, char *error_type);
-
-int		free_data(t_data *begin_data);
-int		free_data_params(t_data *d, int i);
-int		free_str(char *str);
-int		free_prog(t_prog* p);
+int						free_one_data(t_data *data);
+int						free_data(t_data *begin_data);
+int						free_data_params(t_data *d, int i);
+int						free_str(char *str);
+int						free_prog(t_prog *p);
 
 #endif

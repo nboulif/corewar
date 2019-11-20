@@ -12,14 +12,23 @@
 
 #include "asm.h"
 
-t_data			*init_data_label(int nb_line, char *label)
+t_data			*init_data_label(t_prog *p, char *label)
 {
 	t_data	*data;
 
 	if (!(data = (t_data*)malloc(sizeof(t_data))))
-		return (err_malloc("init data label", nb_line)? NULL : NULL);
+	{
+		if (label)
+			free_str(label);
+		return (err_malloc("init data label", p->nb_line)
+			&& !free_str(p->line) ? NULL : NULL);
+	}
+	data->pc = 0;
+	data->nb_octet = 0;
+	data->line = p->line;
+	data->params = NULL;
+	data->nb_line = p->nb_line;
 	data->op = NULL;
-	data->nb_line = nb_line;
 	if (label && *label)
 		data->label = label;
 	else
@@ -28,25 +37,23 @@ t_data			*init_data_label(int nb_line, char *label)
 	return (data);
 }
 
-t_data			*init_data(char *str_para, int nb_line,
+t_data			*init_data(t_prog *p, char *str_para,
 		char *label, t_op *op)
 {
 	t_data	*data;
 	int		nb_param;
 
-	if (!(data = init_data_label(nb_line, label)))
+	if (!(data = init_data_label(p, label)))
 		return (NULL);
 	data->op = op;
 	data->codage_octal = 0;
 	data->params = ft_strsplit(str_para, SEPARATOR_CHAR);
 	nb_param = tab_len(data->params);
 	if (!data->params || nb_param != op->nb_params)
-	{
-		free_data(data);
-		return (printf(err_msgs[ERROR_WRONG_NB_PARAMS],
-			nb_line, nb_param, op->nb_params) ? NULL : NULL);
-	}
-	data->val_param[0] = 0;
+		return (printf(g_err_msgs[ERROR_WRONG_NB_PARAMS],
+			p->nb_line, nb_param, op->nb_params) +
+			free_data(data) ? NULL : NULL);
+		data->val_param[0] = 0;
 	data->val_param[1] = 0;
 	data->val_param[2] = 0;
 	data->nb_octet = 0;
@@ -72,8 +79,8 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 			prog->fd = open(argv[i], O_RDONLY);
 			prog->file_name = argv[i];
 			if (prog->fd < 0)
-				return (printf(err_msgs[ERROR_WRONG_FD], argv[i]));
-			break;
+				return (printf(g_err_msgs[ERROR_WRONG_FD], argv[i]));
+			break ;
 		}
 	}
 	return (0);

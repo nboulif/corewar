@@ -17,19 +17,18 @@ int				tab_len(char **tab)
 	int i;
 
 	i = 0;
-	while (tab[i])
+	while (tab && tab[i])
 		i++;
 	return (i);
 }
 
-t_data			*get_pc(t_prog *prog, t_data *tmp_data, t_data *data)
+t_data			*get_pc(t_prog *prog, t_data *old_data, t_data *data)
 {
-	tmp_data->pc = data->pc + data->nb_octet;
-	(!prog->list_data) ? prog->list_data = tmp_data : 0;
-	data->next = tmp_data;
-	if (tmp_data->op && tmp_data->op->opc)
-		data->next->pc = data->pc + data->nb_octet;
-	data->nb_line = prog->nb_line;
+	data->pc = old_data ? old_data->pc + old_data->nb_octet : 0;
+	if (old_data)
+		old_data->next = data;
+	if (!prog->list_data)
+		prog->list_data = data;
 	return (data);
 }
 

@@ -49,19 +49,15 @@ int		free_data(t_data *begin_data)
 	return (0);
 }
 
-int		free_prog(t_prog* p)
+int		free_prog(t_prog *p)
 {
-
-
 	p->name ? free_str(p->name) : 0;
 	p->comment ? free_str(p->comment) : 0;
-	p->line ? free_str(p->line) : 0;
 	if (p->list_data)
 		free_data(p->list_data);
 	free(p);
 	return (0);
 }
-
 
 int		free_str(char *str)
 {
