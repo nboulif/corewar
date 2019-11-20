@@ -13,7 +13,7 @@
 #ifndef ERROR_H
 # define ERROR_H
 
-# define ERROR_MALOC					1
+# define ERROR_MALLOC					1
 # define ERROR_INDENTIFY_OPC			2
 # define ERROR_WRONG_ARGC				4
 # define ERROR_WRONG_FD					5

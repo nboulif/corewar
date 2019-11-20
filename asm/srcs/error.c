@@ -47,7 +47,7 @@ int		err_lexical(t_prog *p, int error_nb, int i)
 
 int		err_malloc(char *str, int nb_line)
 {
-	return (printf(g_err_msgs[ERROR_MALOC], str, nb_line));
+	return (printf(g_err_msgs[ERROR_MALLOC], str, nb_line));
 }
 
 int		err_param_type(t_prog *p, char *str, int indice)

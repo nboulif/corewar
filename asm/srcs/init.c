@@ -73,6 +73,9 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 		{
 			if (!ft_strcmp("-a", argv[i]))
 				prog->debug = 1;
+			else
+				return (printf("%s%s%s%s", USAGE1,
+					USAGE2, USAGE3, USAGE4));
 		}
 		else
 		{
