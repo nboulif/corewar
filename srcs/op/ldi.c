@@ -36,6 +36,8 @@ void    	op_ldi(t_all *all, t_process *proc)
 	{
 		give_value_of_arg(all, proc, pc, 0);
 		give_value_of_arg(all, proc, pc, 1);
-		proc->reg[proc->op.params[2] - 1] = read_int_in_map(all, pc + proc->op.params[0] + proc->op.params[1]);
+		move_pc(&pc, proc->op.params[0]);
+		move_pc(&pc, proc->op.params[1]);
+		proc->reg[proc->op.params[2] - 1] = read_int_in_map(all, pc);
 	}
 }

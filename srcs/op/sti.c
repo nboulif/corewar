@@ -37,4 +37,6 @@ void    	op_sti(t_all *all, t_process *proc)
 		all->map.character[pc_to_write] = proc->op.params[0] & 0xff;
 		change_color(all, proc, pc_to_write);
 	}
+	// if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
+	// 	printf("P%5d | sti r%d %d %d\n%7| -> store to %d + %d = %d (with pc and mod %d)\n",proc->index, , , );
 }

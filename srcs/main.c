@@ -60,6 +60,10 @@ the order of execution.\n");
 	exit(1);
 }
 
+#include <signal.h>
+
+void signal_handler(int sig);
+
 int					main(int argc, char **argv)
 {
 	t_all			all;
@@ -67,6 +71,7 @@ int					main(int argc, char **argv)
 
 	if (argc == 1)
 		usage();
+	signal(SIGINT, signal_handler);
 	ft_bzero(&all, sizeof(t_all));
 	all.nb_alive = -1;
 	all.cycle_to_die = CYCLE_TO_DIE;

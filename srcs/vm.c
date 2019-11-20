@@ -76,7 +76,7 @@ clock_t time = 0;
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU && total_cycle >= 8200)//!(total_cycle % 5))
+		if (all->flag & FLAG_VISU && total_cycle >= 16000)//!(total_cycle % 5))
 		{
 			// if (time + CLOCKS_PER_SEC * 0.01 > clock())
 			// 	usleep((time + CLOCKS_PER_SEC * 0.01 - clock()) / (CLOCKS_PER_SEC * 0.000001));
@@ -119,7 +119,7 @@ clock_t time = 0;
 			cycle = 1;
 		}
 	}
-	if (all->flag & FLAG_DUMP)
+	if (all->flag & FLAG_DUMP && total_cycle == all->cycles_before_exit)
 		simple_hexdump(all);
 	else if (all->last_player_alive)
 		ft_printf("le joueur %d(%s) a gagne\n", all->last_player_alive->index, all->last_player_alive->name);
