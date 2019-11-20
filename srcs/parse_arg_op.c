@@ -36,7 +36,6 @@ int		parse_arg_op(t_all *all, t_process *proc)
 	if (proc->op.codage_octal)
 	{
 		move_pc(&proc->pc, 1);
-		octal = all->map.character[proc->pc];
 		ft_bzero(proc->op.type_of_params, sizeof(int) * 3);
 		ft_bzero(proc->op.flags_params, sizeof(int) * 3);
 		while (++i < 3)
