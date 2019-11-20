@@ -16,7 +16,7 @@ void    	op_fork(t_all *all, t_process *proc)
 		new_proc.pc = old_pc;
 		new_proc.to_die = 0;
 		proc->to_die = 0;
-		// new_proc.flag_live = proc->flag_live;
+		//new_proc.flag_live = proc->flag_live;
 		move_pc(&new_proc.pc, proc->op.params[0] % IDX_MOD);
 		//ft_array_add(all->stack_proc, &new_proc);
 		//ft_array_extend_size(all->stack_proc, all->stack_proc->size + 1);

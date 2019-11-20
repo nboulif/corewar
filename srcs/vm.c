@@ -114,12 +114,12 @@ clock_t time = 0;
 				if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
 					break;
 				all->nb_check = 0;
+				all->nb_live = 0;
 			}
-			all->nb_live = 0;
 			cycle = 1;
 		}
 	}
-	if (all->flag & FLAG_DUMP)
+	if (all->flag & FLAG_DUMP && total_cycle == all->cycles_before_exit)
 		simple_hexdump(all);
 	else if (all->last_player_alive)
 		ft_printf("le joueur %d(%s) a gagne\n", all->last_player_alive->index, all->last_player_alive->name);
