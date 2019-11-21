@@ -13,19 +13,19 @@ char	tab_of_printed_value_arg[16][3][3] =
 								**---|------|-------|------|
 								**	 |R D I | R D I | R D I|
 								*/	{{0,0,0},{0,0,0},{0,0,0}}, // 1  live
-									{{0,0,0},{0,0,0},{0,0,0}}, // 2  ld
-									{{0,0,0},{0,0,0},{0,0,0}}, // 3  st
-									{{0,0,0},{0,0,0},{0,0,0}}, // 4  add
-									{{0,0,0},{0,0,0},{0,0,0}}, // 5  sub
-									{{0,0,1},{0,0,1},{0,0,0}}, // 6  and
-									{{0,0,1},{0,0,1},{0,0,0}}, // 7  or
-									{{0,0,1},{0,0,1},{0,0,0}}, // 8  xor
+									{{0,0,1},{0,0,0},{0,0,0}}, // 2  ld
+									{{0,0,0},{1,0,1},{0,0,0}}, // 3  st
+									{{1,0,1},{1,0,1},{0,0,0}}, // 4  add
+									{{1,0,1},{1,0,1},{0,0,0}}, // 5  sub
+									{{1,0,1},{1,0,1},{0,0,0}}, // 6  and
+									{{1,0,1},{1,0,1},{0,0,0}}, // 7  or
+									{{1,0,1},{1,0,1},{0,0,0}}, // 8  xor
 									{{0,0,0},{0,0,0},{0,0,0}}, // 9  zjmp
-									{{0,0,0},{0,0,0},{0,0,0}}, // 10 ldi
-									{{0,0,0},{0,0,0},{0,0,0}}, // 11 sti
+									{{1,1,1},{1,1,1},{0,0,0}}, // 10 ldi
+									{{0,0,0},{1,0,1},{1,0,0}}, // 11 sti
 									{{0,0,0},{0,0,0},{0,0,0}}, // 12 fork
-									{{0,0,0},{0,0,0},{0,0,0}}, // 13 lld
-									{{0,0,0},{0,0,0},{0,0,0}}, // 14 lldi
+									{{0,0,1},{0,0,0},{0,0,0}}, // 13 lld
+									{{1,1,1},{1,1,1},{0,0,0}}, // 14 lldi
 									{{0,0,0},{0,0,0},{0,0,0}}, // 15 lfork
 									{{0,0,0},{0,0,0},{0,0,0}}  // 16 aff
 								};
@@ -57,6 +57,7 @@ int		parse_arg_op(t_all *all, t_process *proc)
 	int size_cur_arg;
 	int i;
 	int ret;
+
 	ret = 1;
 	i = -1;
 
@@ -108,7 +109,7 @@ int		parse_arg_op(t_all *all, t_process *proc)
 		(!(proc->op.flags_params[2] & op_tab[proc->op.opc].flags_params[2]) && op_tab[proc->op.opc].nb_params > 2))
 		ret = 0;
 	move_pc(&proc->pc, 1);
-	
+
 	while (++i < proc->op.nb_params)
 	{
 		if (proc->op.type_of_params[i] == T_DIR)
@@ -122,7 +123,7 @@ int		parse_arg_op(t_all *all, t_process *proc)
 			if (proc->op.params[i] > REG_NUMBER || proc->op.params[i] < 1)
 				ret = 0;
 	}
-	if (ret)
+	if (ret && proc->op.opc != 16)
 	{
 		i = -1;
 		if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
@@ -133,7 +134,8 @@ int		parse_arg_op(t_all *all, t_process *proc)
 			{
 				if (proc->op.type_of_params[i] == T_REG && !tab_of_printed_value_arg[proc->op.opc - 1][i][T_REG - 1])
 					printf("r");
-				printf(i == proc->op.nb_params - 1 ? "%d\n" : "%d ",
+				// printf("tab_of_printed_value_arg[%d][%d][%d]", proc->op.opc - 1,i,proc->op.type_of_params[i] - 1);
+				printf(i == proc->op.nb_params - 1 && proc->op.opc != 9 ? "%d\n" : "%d ",
 				tab_of_printed_value_arg[proc->op.opc - 1][i][proc->op.type_of_params[i] - 1] ?
 				value_of_arg(all, proc, pc_to_read, i) : proc->op.params[i]);
 			}
