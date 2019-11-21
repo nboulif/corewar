@@ -10,8 +10,11 @@ void    	op_sti(t_all *all, t_process *proc)
 	if (parse_arg_op(all, proc))
 	{
 		pc_to_write = old_pc;
+
 		if (proc->op.type_of_params[1] == T_REG)
+		{
 			proc->op.params[1] = proc->reg[proc->op.params[1] - 1];
+		}
 		// tester enlevant le else if
 		else if (proc->op.type_of_params[1] == T_IND)
 		{
@@ -20,7 +23,9 @@ void    	op_sti(t_all *all, t_process *proc)
 			proc->op.params[1] = read_int_in_map(all, pc_to_read);
 		}
 		if (proc->op.type_of_params[2] == T_REG)
+		{
 			proc->op.params[2] = proc->reg[proc->op.params[2] - 1];
+		}
 		proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
 		move_pc(&pc_to_write, ((long)proc->op.params[1] + (long)proc->op.params[2]) % IDX_MOD);
 		// moveTo(50, 64 * 3 + 20);

@@ -1,5 +1,35 @@
 # include "vm_corewar.h"
 
+/*
+** UNIQUEMENT POUR LE -r
+** tableau de boolean qui dis si il faut afficher la valeur des argument ou alors l'argument tel qu'il est lu (par exemple: r1 a ete lu mais la valeur sera -1 pareil pr les indirects)
+** tab_of_printed_value_arg[OPC - 1][INDEX_ARG][TYPE_OF_ARG]
+*/
+
+char	tab_of_printed_value_arg[16][3][3] =
+								{
+								/*
+								**   | arg1 | arg2  | arg3 |
+								**---|------|-------|------|
+								**	 |R D I | R D I | R D I|
+								*/	{{0,0,0},{0,0,0},{0,0,0}}, // 1  live
+									{{0,0,0},{0,0,0},{0,0,0}}, // 2  ld
+									{{0,0,0},{0,0,0},{0,0,0}}, // 3  st
+									{{0,0,0},{0,0,0},{0,0,0}}, // 4  add
+									{{0,0,0},{0,0,0},{0,0,0}}, // 5  sub
+									{{0,0,1},{0,0,1},{0,0,0}}, // 6  and
+									{{0,0,1},{0,0,1},{0,0,0}}, // 7  or
+									{{0,0,1},{0,0,1},{0,0,0}}, // 8  xor
+									{{0,0,0},{0,0,0},{0,0,0}}, // 9  zjmp
+									{{0,0,0},{0,0,0},{0,0,0}}, // 10 ldi
+									{{0,0,0},{0,0,0},{0,0,0}}, // 11 sti
+									{{0,0,0},{0,0,0},{0,0,0}}, // 12 fork
+									{{0,0,0},{0,0,0},{0,0,0}}, // 13 lld
+									{{0,0,0},{0,0,0},{0,0,0}}, // 14 lldi
+									{{0,0,0},{0,0,0},{0,0,0}}, // 15 lfork
+									{{0,0,0},{0,0,0},{0,0,0}}  // 16 aff
+								};
+
 int		give_next_arg(t_all *all, int size_arg, t_process *proc)
 {
 	int arg;
@@ -27,11 +57,11 @@ int		parse_arg_op(t_all *all, t_process *proc)
 	int size_cur_arg;
 	int i;
 	int ret;
-
 	ret = 1;
 	i = -1;
 
 // unsigned char octal = 0;
+	int pc_to_read = proc->pc;
 
 	if (proc->op.codage_octal)
 	{
@@ -78,6 +108,7 @@ int		parse_arg_op(t_all *all, t_process *proc)
 		(!(proc->op.flags_params[2] & op_tab[proc->op.opc].flags_params[2]) && op_tab[proc->op.opc].nb_params > 2))
 		ret = 0;
 	move_pc(&proc->pc, 1);
+	
 	while (++i < proc->op.nb_params)
 	{
 		if (proc->op.type_of_params[i] == T_DIR)
@@ -90,6 +121,23 @@ int		parse_arg_op(t_all *all, t_process *proc)
 		if (proc->op.type_of_params[i] == T_REG)
 			if (proc->op.params[i] > REG_NUMBER || proc->op.params[i] < 1)
 				ret = 0;
+	}
+	if (ret)
+	{
+		i = -1;
+		if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
+			printf("P%5d | %s ", proc->index, proc->op.name);
+		while (++i < proc->op.nb_params)
+		{
+			if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU) && ret)
+			{
+				if (proc->op.type_of_params[i] == T_REG && !tab_of_printed_value_arg[proc->op.opc - 1][i][T_REG - 1])
+					printf("r");
+				printf(i == proc->op.nb_params - 1 ? "%d\n" : "%d ",
+				tab_of_printed_value_arg[proc->op.opc - 1][i][proc->op.type_of_params[i] - 1] ?
+				value_of_arg(all, proc, pc_to_read, i) : proc->op.params[i]);
+			}
+		}
 	}
 	// moveTo(20, 64 * 3 + 20);
 	// printf("ret %d proc->op.nb_params %d\n", ret,proc->op.nb_params);

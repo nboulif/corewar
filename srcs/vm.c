@@ -76,7 +76,7 @@ clock_t time = 0;
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU && total_cycle >= 15680)//!(total_cycle % 5))
+		if (all->flag & FLAG_VISU)// && total_cycle >= 15680)//!(total_cycle % 5))
 		{
 			// if (time + CLOCKS_PER_SEC * 0.01 > clock())
 			// 	usleep((time + CLOCKS_PER_SEC * 0.01 - clock()) / (CLOCKS_PER_SEC * 0.000001));

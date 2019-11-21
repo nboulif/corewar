@@ -18,6 +18,18 @@ void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read)
 	}
 }
 
+int    value_of_arg(t_all *all, t_process *proc, int pc, int index)
+{
+	if (proc->op.type_of_params[index] == T_REG)
+		return (proc->reg[proc->op.params[index] - 1]);
+	else if (proc->op.params[index] == T_IND)
+	{
+		move_pc(&pc, proc->op.params[index] % IDX_MOD);
+		return (read_int_in_map(all, pc));
+	}
+	return (proc->op.params[index]);
+}
+
 void    give_value_of_arg(t_all *all, t_process *proc, int pc, int index)
 {
 	if ((unsigned int)index > 2)
