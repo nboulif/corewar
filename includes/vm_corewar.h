@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/11/19 15:39:51 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/20 18:34:51 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct		s_champ
 
 typedef struct		s_process
 {
+	int				i;
 	t_champ			*origin_champ;
 	int				step_in_exec;
 	int				flag_live;
