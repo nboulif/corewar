@@ -74,12 +74,16 @@ int					main(int argc, char **argv)
 	config_flags();
 	config_flags_syn();
 	i = 0;
+	printf("Introducing contestants...\n");
 	while (++i < argc)
 	{
 		if (*argv[i] == '-')
 			all.flag |= handle_flag(&i, argc, argv, &all);
 		else
+		{
 			parse_champ(&all, NULL, argv[i]);
+			printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n", all.nb_champ, all.champ[all.nb_champ - 1].size_exec, all.champ[all.nb_champ - 1].name, all.champ[all.nb_champ - 1].comment);
+		}
 	}
 	printf("\e[?25l");
 	vm(&all);

@@ -122,6 +122,7 @@ typedef struct		s_process
 	// current operation
 	t_op			op;
 	int 			to_die;
+	int				index;
 }					t_process;
 
 typedef struct		s_map
@@ -224,6 +225,7 @@ void    	op_lldi(t_all *all, t_process *proc);
 void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read);
 void		give_value_of_larg(t_all *all, t_process *proc, int pc, int index);
 void		give_value_of_arg(t_all *all, t_process *proc, int pc, int index);
+int			value_of_arg(t_all *all, t_process *proc, int pc, int index);
 
 /*
 ** parse_arg_op
