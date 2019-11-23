@@ -1,5 +1,7 @@
 
 
+
+# !!!!!!!!!! DESACTIVATE FSANITIZE FOR VALGRIND
 pb_players=("Backward" "Misaka_Mikoto" "Torpille" "tdc2" "tdc3" "tdc4" "sebc" "new" "mat" "leeloo" "Death")
 
 make
@@ -24,12 +26,42 @@ do
             echo "$DIFF"
         else echo "`tput setaf 2`OK`tput sgr0` => $arg"
         fi
+
+        leaks_definitely=''
+        leaks_indirectly=''
+        while read -r line ; do
+             if [[ "$line" == *"definitely lost"*  ]]; then 
+                leaks_definitely="$line"
+            elif [[ "$line" == *"indirectly lost"*  ]]; then 
+                leaks_indirectly="$line"
+            fi
+        done <<< "$(valgrind --leak-check=full --show-leak-kinds=all ./asm -a $arg 2>&1 | grep 'definitely\|indirectly')"
+
+        if [[ "$leaks_definitely" == *"0 bytes in 0 blocks"*  ]] && [[ "$leaks_indirectly" == *"0 bytes in 0 blocks"*  ]]; then 
+            echo "`tput setaf 2`OK`tput sgr0` => leaks"
+        else
+            if [[ "$leaks_definitely" != *"0 bytes in 0 blocks"* ]]; then echo "`tput setaf 1`$leaks_definitely`tput sgr0`" ;fi 
+            if [[ "$leaks_indirectly" != *"0 bytes in 0 blocks"* ]]; then echo "`tput setaf 1`$leaks_indirectly`tput sgr0`" ;fi 
+        fi
+
+
         diff "${arg%.*}.mycor" "${arg%.*}.cor"
         rm "${arg%.*}.mycor" "${arg%.*}.cor"
 
     else
         if [[ " ${pb_players[@]} " =~ " ${player_name} " ]]; then
-            echo "`tput setaf 4`Error compiling but its normal`tput sgr0`"
+            if [[ "${player_name}" == "tdc2" ]]; then echo "`tput setaf 5`Error compiling : (.extend)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "tdc3" ]]; then echo "`tput setaf 5`Error compiling : (.extend)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "tdc4" ]]; then echo "`tput setaf 5`Error compiling : (.extend/arithmetic)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "new" ]]; then echo "`tput setaf 5`Error compiling : (.extend/arithmetic)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "leeloo" ]]; then echo "`tput setaf 5`Error compiling : (arithmetic)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "Torpille" ]]; then echo "`tput setaf 5`Error compiling : (.extend/arithmetic)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "Backward" ]]; then echo "`tput setaf 5`Error compiling : (.extend/arithmetic)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "Death" ]]; then echo "`tput setaf 5`Error compiling : (.extend/arithmetic)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "mat" ]]; then echo "`tput setaf 5`Error compiling : (commad '.code 03 FF FF' ?)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "sebc" ]]; then echo "`tput setaf 5`Error compiling : (empty program)`tput sgr0` => $arg"
+            elif [[ "${player_name}" == "Misaka_Mikoto" ]]; then echo "`tput setaf 5`Error compiling : (';' as '#')`tput sgr0` => $arg"
+            else echo "`tput setaf 1`Error compiling but its normal...`tput sgr0` => $arg" ; fi
         else echo "`tput setaf 1`Error compiling`tput sgr0` => $arg" ;fi
         
         if [[ "$ASM_RESULT" == *"Writing output program to"* ]]; then

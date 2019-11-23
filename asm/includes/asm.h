@@ -124,6 +124,7 @@ int						count_digit_string(char *s);
 int						tab_len(char **tab);
 t_data					*get_pc(t_prog *prog, t_data *tmp_data, t_data *data);
 t_op					*identify_opc(char *line);
+int						valid_char(const char *str, int base);
 
 int						err_default(t_prog *p, int error_nb);
 int						err_lexical(t_prog *p, int error_nb, int i);

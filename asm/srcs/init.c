@@ -44,7 +44,9 @@ static int		split_params(t_prog *p, t_data *data,
 	char	*final_str;
 	int		nb_param;
 
-	skip_until(str_para, &i, "#");
+	i = 0;
+	while (str_para[i] && str_para[i] != COMMENT_CHAR)
+		i++;
 	if (!(final_str = ft_strsub(str_para, 0, i)))
 		return (err_malloc("ft_strsub on params", p->nb_line) +
 			free_data(data));

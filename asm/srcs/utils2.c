@@ -36,3 +36,23 @@ t_op			*identify_opc(char *line)
 	}
 	return (NULL);
 }
+
+int				valid_char(const char *str, int base)
+{
+	if (base < 11)
+	{
+		if (*str >= '0' && *str < '0' + base)
+			return (1);
+		else
+			return (0);
+	}
+	else
+	{
+		if ((*str >= 'a' && *str < 'a' + base - 10)
+			|| (*str >= 'A' && *str < 'A' + base - 10)
+			|| (*str >= '0' && *str <= '9'))
+			return (1);
+		else
+			return (0);
+	}
+}

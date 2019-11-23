@@ -43,7 +43,7 @@ t_data			*parse_label(t_prog *prog, int *skip_len)
 		return (err_malloc("str_sub_label", prog->nb_line) ? NULL : NULL);
 	prog->i++;
 	skip_chars(prog->line, &prog->i, " \t");
-	if (!prog->line[prog->i] || prog->line[prog->i] == '#')
+	if (!prog->line[prog->i] || prog->line[prog->i] == COMMENT_CHAR)
 	{
 		data = init_data_label(prog, label);
 		if (!data)
@@ -101,7 +101,7 @@ int				program_parser(t_prog *prog)
 		prog->nb_line++;
 		skip_chars(prog->line, &prog->i, " \t");
 		if ((!prog->line || !prog->line[prog->i] ||
-			prog->line[prog->i] == '#') && !free_str(prog->line))
+			prog->line[prog->i] == COMMENT_CHAR) && !free_str(prog->line))
 			continue;
 		else if (prog->line[prog->i] == '.')
 			return (err_default(prog,

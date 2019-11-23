@@ -12,7 +12,25 @@
 
 #include "asm.h"
 
-int		parse_register(t_prog *prog, t_data *data, int i)
+static void		parse_number(t_data *data, int i)
+{
+	if (!ft_strncmp(&data->params[i][data->i], "0x", 2) &&
+		data->params[i][data->i + 2] &&
+			valid_char(&data->params[i][data->i], 16))
+	{
+		data->val_param[i] = ft_atoi_base(&data->params[i][data->i + 2], 16);
+		data->i += 2;
+		while (valid_char(&data->params[i][data->i], 16))
+			data->i++;
+	}
+	else
+	{
+		data->val_param[i] = ft_atoi(&data->params[i][data->i]);
+		data->i += count_digit_string(&data->params[i][data->i]);
+	}
+}
+
+int				parse_register(t_prog *prog, t_data *data, int i)
 {
 	data->i++;
 	data->val_param[i] = ft_atoi(&data->params[i][data->i]);
@@ -28,7 +46,7 @@ int		parse_register(t_prog *prog, t_data *data, int i)
 	}
 }
 
-int		parse_non_register(t_prog *prog, t_data *d, int i, int type)
+int				parse_non_register(t_prog *prog, t_data *d, int i, int type)
 {
 	int code;
 
@@ -40,10 +58,7 @@ int		parse_non_register(t_prog *prog, t_data *d, int i, int type)
 	else if (ft_isdigit(d->params[i][d->i]) ||
 		(d->params[i][d->i + 1] && d->params[i][d->i] == '-'
 		&& ft_isdigit(d->params[i][d->i + 1])))
-	{
-		d->val_param[i] = ft_atoi(&d->params[i][d->i]);
-		d->i += count_digit_string(&d->params[i][d->i]);
-	}
+		parse_number(d, i);
 	else
 		return (printf(g_err_msgs[ERROR_INVALID_IND_DIR], d->params[i],
 			(type == T_IND) ? "T_IND" : "T_DIR", prog->nb_line, i + 1));
@@ -56,7 +71,7 @@ int		parse_non_register(t_prog *prog, t_data *d, int i, int type)
 	return (OK);
 }
 
-int		parse_one_param(t_prog *prog, t_data *d, int i)
+int				parse_one_param(t_prog *prog, t_data *d, int i)
 {
 	int res;
 
@@ -85,7 +100,7 @@ int		parse_one_param(t_prog *prog, t_data *d, int i)
 	return (res);
 }
 
-int		parse_params(t_prog *p, t_data *d)
+int				parse_params(t_prog *p, t_data *d)
 {
 	int		i;
 	int		to_delete;
@@ -102,7 +117,7 @@ int		parse_params(t_prog *p, t_data *d)
 			return (ERROR);
 		to_delete = skip_chars(d->params[i], &d->i, " \t");
 		if (d->params[i][d->i] &&
-			(i + 1 < d->op->nb_params || d->params[i][d->i] != '#'))
+			(i + 1 < d->op->nb_params || d->params[i][d->i] != COMMENT_CHAR))
 			return (err_lexical(p, 98, p->i + d->i));
 		tmp_params = d->params[i];
 		d->params[i] = ft_strsub(d->params[i], 0, d->i - to_delete);

@@ -100,7 +100,7 @@ static int	get_header_content(t_prog *p, char **content, int type)
 		return (printf(g_err_msgs[ERROR_MAX_LENGTH], error_type, p->nb_line,
 			content_len, max_len));
 		skip_chars(p->line, &p->i, " \t");
-	return (!p->line[p->i] || p->line[p->i] == '#' ? OK :
+	return (!p->line[p->i] || p->line[p->i] == COMMENT_CHAR ? OK :
 		err_lexical(p, 36, p->i));
 }
 
@@ -116,7 +116,7 @@ int			get_header(t_prog *p)
 		p->i = 0;
 		skip_chars(p->line, &p->i, " \t");
 		if ((!p->line || !p->line[p->i] ||
-			p->line[p->i++] == '#') && !free_str(p->line))
+			p->line[p->i++] == COMMENT_CHAR) && !free_str(p->line))
 			continue;
 		type_len = skip_chars(p->line, &p->i, LABEL_CHARS) + 1;
 		if (!ft_strncmp(&p->line[p->i - type_len], NAME_CMD_STRING, type_len))
