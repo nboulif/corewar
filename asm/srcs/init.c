@@ -37,23 +37,40 @@ t_data			*init_data_label(t_prog *p, char *label)
 	return (data);
 }
 
+static int		split_params(t_prog *p, t_data *data,
+	char *str_para, t_op *op)
+{
+	int		i;
+	char	*final_str;
+	int		nb_param;
+
+	i = skip_until(str_para, &i, "#");
+	if (!(final_str = ft_strsub(str_para, 0, i)))
+		return (err_malloc("ft_strsub on params", p->nb_line) +
+			free_data(data));
+		data->params = ft_strsplit(final_str, SEPARATOR_CHAR);
+	free_str(final_str);
+	nb_param = tab_len(data->params);
+	if (!data->params || nb_param != op->nb_params)
+		return (printf(g_err_msgs[ERROR_WRONG_NB_PARAMS],
+			p->nb_line, nb_param, op->nb_params) +
+			free_data(data));
+	else
+		return (0);
+}
+
 t_data			*init_data(t_prog *p, char *str_para,
 		char *label, t_op *op)
 {
 	t_data	*data;
-	int		nb_param;
 
 	if (!(data = init_data_label(p, label)))
 		return (NULL);
 	data->op = op;
 	data->codage_octal = 0;
-	data->params = ft_strsplit(str_para, SEPARATOR_CHAR);
-	nb_param = tab_len(data->params);
-	if (!data->params || nb_param != op->nb_params)
-		return (printf(g_err_msgs[ERROR_WRONG_NB_PARAMS],
-			p->nb_line, nb_param, op->nb_params) +
-			free_data(data) ? NULL : NULL);
-		data->val_param[0] = 0;
+	if (split_params(p, data, str_para, op))
+		return (NULL);
+	data->val_param[0] = 0;
 	data->val_param[1] = 0;
 	data->val_param[2] = 0;
 	data->nb_octet = 0;

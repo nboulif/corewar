@@ -160,7 +160,7 @@ t_data	*parse_label(t_prog *prog, int *skip_len)
 		return (data);
 	}
 	free_str(label);
-	return (err_lexical(prog, 36, prog->i - *skip_len) ? NULL : NULL);
+	return (err_lexical(prog, 39, prog->i - *skip_len) ? NULL : NULL);
 }
 
 t_data	*parse_commands(t_prog *prog)

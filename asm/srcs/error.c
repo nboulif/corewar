@@ -30,7 +30,7 @@ char	*g_err_msgs[19] =
 	"Invalid register number on line %d : r%d \n",
 	"Invalid value (\"%s\") of type %s on line %d, param number %d.\n",
 	"Empty param number %d on line %d.\n",
-	"Wrong number of params on line %d : %d vs %d\n",
+	"Wrong number of params on line %d : %d vs %d (found vs expected)\n",
 	"Invalid param on line %d.\nReceived %s type for the param number %d\n",
 	"Command in program at [%0.3d:%0.3d].",
 };

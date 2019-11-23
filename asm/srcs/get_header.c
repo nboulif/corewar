@@ -95,13 +95,13 @@ static int	get_header_content(t_prog *p, char **content, int type)
 	ft_strncpy(*content, &p->line[p->i - content_len], content_len);
 	if (p->line[p->i++] != '"')
 		if (search_next_line(p, content, &content_len, error_type) != OK)
-			return (ERROR + free_str(*content));
+			return (ERROR);
 	if (content_len > max_len)
 		return (printf(g_err_msgs[ERROR_MAX_LENGTH], error_type, p->nb_line,
-			content_len, max_len) + free_str(p->line) + free_str(*content));
+			content_len, max_len));
 		skip_chars(p->line, &p->i, " \t");
 	return (!p->line[p->i] || p->line[p->i] == '#' ? OK :
-		err_lexical(p, 36, p->i) + free_str(p->line) + free_str(*content));
+		err_lexical(p, 36, p->i));
 }
 
 int			get_header(t_prog *p)
