@@ -1,4 +1,4 @@
-;basic.s
+#basic.s
 
 .name		"basic"
 .comment	"this is a basic stuff"
