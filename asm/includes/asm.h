@@ -30,7 +30,7 @@
 # define TYPE_REG		"type register for instruction"
 # define NO_LABEL		"No such label"
 # define DEREF			"while attempting to dereference token"
-# define EXTENSION		".mycor"
+# define EXTENSION		".cor"
 # define OK				0
 # define ERROR			1
 

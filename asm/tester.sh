@@ -14,6 +14,7 @@ do
     printf "`tput setaf 3`#########   ${player_name}   ##########`tput sgr0`\n"
 
     ASM_RESULT=$(./asm $arg)
+    if [[ "$ASM_RESULT" == *"Writing output program to"* ]]; then mv ${arg%.*}.cor ${arg%.*}.mycor ;fi
     ASM_RES_RESULT=$(./asm_res $arg)
     
     if [[ "$ASM_RESULT" == *"Writing output program to"* ]] && [[ "$ASM_RES_RESULT" == *"Writing output program to"* ]]; then
