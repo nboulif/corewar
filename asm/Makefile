@@ -28,8 +28,9 @@ HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./srcs/
-SOURCES_LIST = asm.c op.c parser.c parse_params.c get_header.c error.c\
-			   print_debug.c write_file.c utiles.c utils2.c init.c free.c
+SOURCES_LIST = asm.c op.c parser.c parse_params.c get_header.c error_1.c\
+			error_2.c\
+			print_debug.c write_file.c utiles.c utils2.c init.c free.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
 
 OBJECTS_DIRECTORY = objs/

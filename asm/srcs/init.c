@@ -44,13 +44,13 @@ static int		split_params(t_prog *p, t_data *data,
 	char	*final_str;
 	int		nb_param;
 
-	i = skip_until(str_para, &i, "#");
+	skip_until(str_para, &i, "#");
 	if (!(final_str = ft_strsub(str_para, 0, i)))
 		return (err_malloc("ft_strsub on params", p->nb_line) +
 			free_data(data));
 		data->params = ft_strsplit(final_str, SEPARATOR_CHAR);
-	free_str(final_str);
 	nb_param = tab_len(data->params);
+	free_str(final_str);
 	if (!data->params || nb_param != op->nb_params)
 		return (printf(g_err_msgs[ERROR_WRONG_NB_PARAMS],
 			p->nb_line, nb_param, op->nb_params) +

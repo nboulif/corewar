@@ -97,19 +97,19 @@ int						get_valid_name_comment(t_prog *prog, int max_lenght,
 int						manage_errors_inexisting_label(t_data *data,
 						int label_error_line);
 
-int						parse_indirect(t_data *line, int i);
 int						parse_register(t_prog *prog, t_data *line, int i);
 int						parse_non_register(t_prog *prog, t_data *d, int i,
 						int type);
-int						parse_direct_char(t_data *line, int i);
 int						parse_params(t_prog *prog, t_data *line);
-t_data					*parse_commands(t_prog *prog);
+t_data					*parse_label(t_prog *prog, int *skip_len);
+t_data					*parse_opc(t_prog *prog, int skip_len, char *label);
 
 t_data					*init_data(t_prog *p, char *str_params, char *label,
 						t_op *op);
 t_data					*init_data_label(t_prog *p, char *label);
 t_prog					*init_prog(int argc, char **argv);
 
+t_data					*parse_commands(t_prog *prog);
 int						program_parser(t_prog *prog);
 
 int						print_data(t_data *data);

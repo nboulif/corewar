@@ -14,7 +14,7 @@
 
 void	print_params_net(t_data *data, int i, int y)
 {
-	printf("\n%20s %-4d", "", data->op->opc);
+	printf("\n%20s%-3d", "", data->op->opc);
 	data->op->codage_octal ? printf(" %-6d",
 		data->codage_octal) : printf(" %-6s", "");
 	i = 0;
@@ -44,12 +44,39 @@ void	print_params_brut(t_data *data)
 {
 	int i;
 
-	printf("\n%20s %-4d", "", data->op->opc);
+	printf("\n%20s%-3d", "", data->op->opc);
 	data->op->codage_octal ? printf(" %-6d",
 		data->codage_octal) : printf(" %-6s", "");
 	i = 0;
 	while (i < data->op->nb_params)
 		printf("%-18d", data->val_param[i++]);
+}
+
+void	print_params_as_read(t_data *data, int i, int y)
+{
+	int l;
+
+	if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_DIR
+		&& data->params[i][y] == DIRECT_CHAR
+		&& data->params[i][y + 1] == LABEL_CHAR)
+	{
+		l = 0;
+		while (data->params[i][l + y] && data->params[i][l + y] != ' ' &&
+			data->params[i][l + y] != '\t')
+			l++;
+		printf("%-18.*s", l, (data->params[i] + y));
+	}
+	else
+	{
+		l = (int)count_digit(data->val_param[i]) -
+			(data->val_param[i] < 0 ? 1 : 0);
+		if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_REG)
+			printf("r%-17.*d", l, data->val_param[i]);
+		else if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_IND)
+			printf("%-18.*d", l, data->val_param[i]);
+		else if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_DIR)
+			printf("%%%-17.*d", l, data->val_param[i]);
+	}
 }
 
 int		print_data(t_data *data)
@@ -58,20 +85,16 @@ int		print_data(t_data *data)
 	int y;
 
 	if (data->label)
-		printf("%-11d :    %s:\n", data->pc, data->label);
+		printf("%-11d:    %s:\n", data->pc, data->label);
 	if (data->op && data->op->opc)
 	{
-		printf("%-5d (%-3d) :        %-10s ", data->pc,
+		printf("%-5d(%-3d) :        %-10s", data->pc,
 			data->nb_octet, data->op->name);
 		i = 0;
+		y = 0;
+		skip_chars(data->params[i], &y, " \t");
 		while (i < data->op->nb_params)
-		{
-			y = 0;
-			while (data->params[i][y] && data->params[i][y] != ' ' &&
-				data->params[i][y] != '\t')
-				y++;
-			printf("%-18.*s", y, data->params[i++]);
-		}
+			print_params_as_read(data, i++, y);
 		print_params_net(data, 0, 0);
 		print_params_brut(data);
 		printf("\n\n");

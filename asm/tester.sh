@@ -4,7 +4,7 @@ pb_players=("Backward" "Misaka_Mikoto" "Torpille" "tdc2" "tdc3" "tdc4" "sebc" "n
 
 make
 
-for arg in $(find .  -name "*.s")
+for arg in $(find vm_champs -name "*.s")
 do
     player_name_tmp=$(basename $arg)
     player_name=${player_name_tmp%.*}

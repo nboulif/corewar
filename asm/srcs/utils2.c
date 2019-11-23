@@ -22,16 +22,6 @@ int				tab_len(char **tab)
 	return (i);
 }
 
-t_data			*get_pc(t_prog *prog, t_data *old_data, t_data *data)
-{
-	data->pc = old_data ? old_data->pc + old_data->nb_octet : 0;
-	if (old_data)
-		old_data->next = data;
-	if (!prog->list_data)
-		prog->list_data = data;
-	return (data);
-}
-
 t_op			*identify_opc(char *line)
 {
 	int i;
