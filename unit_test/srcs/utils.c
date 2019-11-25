@@ -130,21 +130,21 @@ void					hexdump_map_square(t_all *all)
 	read(0, &i, 4);
 }
 
-int read_int_in_map(t_all *all, int pc)
-{
-	int ret;
+// int read_int_in_map(t_all *all, int pc)
+// {
+// 	int ret;
 
-	ret = 0;
-	move_pc(&pc, 0);
-	ret |= ((int)(unsigned char)all->map.character[pc]) << 24;
-	move_pc(&pc, 1);
-	ret |= ((int)(unsigned char)all->map.character[pc]) << 16;
-	move_pc(&pc, 1);
-	ret |= ((int)(unsigned char)all->map.character[pc]) << 8;
-	move_pc(&pc, 1);
-	ret |= (int)(unsigned char)all->map.character[pc];
-	return (ret);
-}
+// 	ret = 0;
+// 	move_pc(&pc, 0);
+// 	ret |= ((int)(unsigned char)all->map.character[pc]) << 24;
+// 	move_pc(&pc, 1);
+// 	ret |= ((int)(unsigned char)all->map.character[pc]) << 16;
+// 	move_pc(&pc, 1);
+// 	ret |= ((int)(unsigned char)all->map.character[pc]) << 8;
+// 	move_pc(&pc, 1);
+// 	ret |= (int)(unsigned char)all->map.character[pc];
+// 	return (ret);
+// }
 
 void				config_flags(void)
 {

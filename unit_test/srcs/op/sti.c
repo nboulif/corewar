@@ -16,8 +16,9 @@ void    	op_sti(t_all *all, t_process *proc)
 		else if (proc->op.type_of_params[1] == T_IND)
 		{
 			pc_to_read = old_pc;
-			move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
-			proc->op.params[1] = read_int_in_map(all, pc_to_read);
+			// move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
+			// proc->op.params[1] = read_int_in_map(all, pc_to_read);
+			proc->op.params[0] = read_int_in_map(all, pc_to_read, IDX_MOD, proc->op.params[1]);
 		}
 		if (proc->op.type_of_params[2] == T_REG)
 			proc->op.params[2] = proc->reg[proc->op.params[2] - 1];

@@ -8,8 +8,9 @@ void		config_arg_ldi(t_all *all, t_process *proc, int *p0, int *p1)
 	else if (proc->op.params[0] == T_IND)
 	{
 		*p0 = proc->pc;
-		move_pc(p0, proc->op.params[0] % IDX_MOD);
-		*p0 = read_int_in_map(all, *p0);
+		// move_pc(p0, proc->op.params[0] % IDX_MOD);
+		// *p0 = read_int_in_map(all, *p0);
+		*p0 = read_int_in_map(all, *p0, IDX_MOD, proc->op.params[0]);
 	}
 	else
 		*p0 = proc->op.params[0];
@@ -18,8 +19,9 @@ void		config_arg_ldi(t_all *all, t_process *proc, int *p0, int *p1)
 	else if (proc->op.params[1] == T_IND)
 	{
 		*p1 = proc->pc;
-		move_pc(p1, proc->op.params[1] % IDX_MOD);
-		*p1 = read_int_in_map(all, *p0);
+		// move_pc(p1, proc->op.params[1] % IDX_MOD);
+		// *p1 = read_int_in_map(all, *p0);
+		*p1 = read_int_in_map(all, *p0, IDX_MOD, proc->op.params[1]);
 	}
 	else
 		*p1 = proc->op.params[1];
@@ -40,7 +42,8 @@ void    	op_ldi(t_all *all, t_process *proc)
 			printf("       | -> load from %d + %d = %d (with pc and mod %d)\n",
 				proc->op.params[0], proc->op.params[1],
 				proc->op.params[0] + proc->op.params[1], (pc + (proc->op.params[0] + proc->op.params[1]) % IDX_MOD) % MEM_SIZE);
-		move_pc(&pc, (proc->op.params[0] + proc->op.params[1]) % IDX_MOD);
-		proc->reg[proc->op.params[2] - 1] = read_int_in_map(all, pc);
+		// move_pc(&pc, (proc->op.params[0] + proc->op.params[1]) % IDX_MOD);
+		// proc->reg[proc->op.params[2] - 1] = read_int_in_map(all, pc);
+		p1 = read_int_in_map(all, pc, IDX_MOD, (proc->op.params[0] + proc->op.params[1]));
 	}
 }

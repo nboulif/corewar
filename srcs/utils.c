@@ -130,19 +130,42 @@ void					hexdump_map_square(t_all *all)
 	read(0, &i, 4);
 }
 
-int read_int_in_map(t_all *all, int pc)
+// int read_int_in_map(t_all *all, int pc)
+// {
+// 	int ret;
+
+// 	ret = 0;
+// 	move_pc(&pc, 0);
+// 	ret |= ((int)(unsigned char)all->map.character[pc]) << 24;
+// 	move_pc(&pc, 1);
+// 	ret |= ((int)(unsigned char)all->map.character[pc]) << 16;
+// 	move_pc(&pc, 1);
+// 	ret |= ((int)(unsigned char)all->map.character[pc]) << 8;
+// 	move_pc(&pc, 1);
+// 	ret |= (int)(unsigned char)all->map.character[pc];
+// 	return (ret);
+// }
+
+
+// prend en compte le modulo
+int read_int_in_map(t_all *all, int pc, int mod, long move)
 {
 	int ret;
+	int pc_to_read;
 
 	ret = 0;
-	move_pc(&pc, 0);
-	ret |= ((int)(unsigned char)all->map.character[pc]) << 24;
-	move_pc(&pc, 1);
-	ret |= ((int)(unsigned char)all->map.character[pc]) << 16;
-	move_pc(&pc, 1);
-	ret |= ((int)(unsigned char)all->map.character[pc]) << 8;
-	move_pc(&pc, 1);
-	ret |= (int)(unsigned char)all->map.character[pc];
+	pc_to_read = pc;
+	move_pc(&pc_to_read, (move) % mod);
+	ret |= ((int)(unsigned char)all->map.character[pc_to_read]) << 24;
+	pc_to_read = pc;
+	move_pc(&pc_to_read, (move + 1) % mod);
+	ret |= ((int)(unsigned char)all->map.character[pc_to_read]) << 16;
+	pc_to_read = pc;
+	move_pc(&pc_to_read, (move + 2) % mod);
+	ret |= ((int)(unsigned char)all->map.character[pc_to_read]) << 8;
+	pc_to_read = pc;
+	move_pc(&pc_to_read, (move + 3) % mod);
+	ret |= (int)(unsigned char)all->map.character[pc_to_read];
 	return (ret);
 }
 
@@ -241,7 +264,7 @@ int		rev_int_byte(int nbr)
 		(nbr & 0xff00) << 8 | (nbr & 0xff000000) >> 24);
 }
 
-void		move_pc(int *pc, int incr)
+void		move_pc(int *pc, long incr)
 {
 	if (incr >= MEM_SIZE || incr <= -MEM_SIZE)
 		incr %= MEM_SIZE;

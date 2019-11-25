@@ -170,13 +170,14 @@ int			read_all(char **str, int fd);
 void		print_error_and_exit(int type_of_error);
 int			check_index(char *index);
 int			rev_int_byte(int nbr);
-void		move_pc(int *pc, int incr);
+void		move_pc(int *pc, long incr);
 t_champ		*get_champ(int index, t_all *all);
 void		hexdump_map_square(t_all *all);
 void		simple_hexdump(t_all *all);
 void		print_bit(char nb);
 void		moveTo(int row, int col);
-int			read_int_in_map(t_all *all, int pc);
+// int			read_int_in_map(t_all *all, int pc);
+int			read_int_in_map(t_all *all, int pc, int mod, long move);
 void		change_color(t_all *all, t_process *proc, int i);
 
 /*

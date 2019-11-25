@@ -8,8 +8,10 @@ void    	op_st(t_all *all, t_process *proc)
 	pc_to_write = proc->pc;
 	if (parse_arg_op(all, proc))
 	{
+		// give_value_of_arg();
 		if (proc->op.type_of_params[1] == T_IND)
 		{
+			// pc_to_write = proc->pc;
 			move_pc(&pc_to_write, proc->op.params[1] % IDX_MOD);
 			all->map.character[pc_to_write] = (proc->reg[proc->op.params[0] - 1] & 0xff000000) >> 24;
 			change_color(all, proc, pc_to_write);

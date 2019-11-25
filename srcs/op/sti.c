@@ -19,28 +19,32 @@ void    	op_sti(t_all *all, t_process *proc)
 		else if (proc->op.type_of_params[1] == T_IND)
 		{
 			pc_to_read = old_pc;
-			move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
-			proc->op.params[1] = read_int_in_map(all, pc_to_read);
+			// move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
+			// proc->op.params[1] = read_int_in_map(all, pc_to_read);
+			proc->op.params[1] = read_int_in_map(all, pc_to_read, IDX_MOD, proc->op.params[1]);
 		}
 		if (proc->op.type_of_params[2] == T_REG)
 		{
 			proc->op.params[2] = proc->reg[proc->op.params[2] - 1];
 		}
 		proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
-		printf("       | -> store to %d + %d = %d (with pc and mod %d)\n", proc->op.params[1] , proc->op.params[2], proc->op.params[1] + proc->op.params[2], (pc_to_write + proc->op.params[1] + proc->op.params[2]) % IDX_MOD);
+		if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
+			printf("       | -> store to %d + %d = %d (with pc and mod %d)\n",
+				proc->op.params[1] , proc->op.params[2], proc->op.params[1] + proc->op.params[2],
+				pc_to_write + (proc->op.params[1] + proc->op.params[2]) % IDX_MOD);
 		move_pc(&pc_to_write, ((long)proc->op.params[1] + (long)proc->op.params[2]) % IDX_MOD);
 		// moveTo(50, 64 * 3 + 20);
 		// printf("pc_to_write %d proc->op.params[0] %x\n", pc_to_write, proc->op.params[0]);
 		all->map.character[pc_to_write] = (proc->op.params[0] & 0xff000000) >> 24;
 		change_color(all, proc, pc_to_write);
 		move_pc(&pc_to_write, 1);
-		all->map.character[pc_to_write] = (proc->op.params[0] & 0xff0000) >> 16;
+		all->map.character[pc_to_write] = (proc->op.params[0] & 0x00ff0000) >> 16;
 		change_color(all, proc, pc_to_write);		
 		move_pc(&pc_to_write, 1);
-		all->map.character[pc_to_write] = (proc->op.params[0] & 0xff00) >> 8;
+		all->map.character[pc_to_write] = (proc->op.params[0] & 0x0000ff00) >> 8;
 		change_color(all, proc, pc_to_write);		
 		move_pc(&pc_to_write, 1);
-		all->map.character[pc_to_write] = proc->op.params[0] & 0xff;
+		all->map.character[pc_to_write] = (proc->op.params[0] & 0x000000ff);
 		change_color(all, proc, pc_to_write);
 	}
 }

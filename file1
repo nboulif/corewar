@@ -1,0 +1,6 @@
+args.strings -> |['a.out', 'resources/vm_champs/corewar', 'champion_de_test/ld.cor']|
+first line with diff is 1 :
+a.out:
+tout le monde a perdu
+resources/vm_champs/corewar:
+Introducing contestants...

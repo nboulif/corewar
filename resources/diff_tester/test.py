@@ -6,11 +6,12 @@ from platform import system
 import argparse
 
 def generate_diff(dump_nb):
-	os.system(" ".join(["./a.out -d", str(dump_nb), p, ">", our, "&& ./resources/vm_champs/corewar -d", str(dump_nb), p, ">", real]))
+	os.system(" ".join(["./corewar_hv -dump", str(dump_nb), p, ">", our, "&& ./resources/vm_champs/corewar -d", str(dump_nb), p, ">", real]))
 	our_file = open(our, 'r').read().split(sep="0x")
 	real_file = open(real, 'r').read().split(sep="0x")
 	our_file.pop(0)
 	real_file.pop(0)
+	real_file = [i[0:-2] + '\n' for i in real_file]
 	open(our, 'w').write("".join(our_file))
 	open(real, 'w').write("".join(real_file))
 	os.system(" ".join(["diff", our, real, ">", diff]))
