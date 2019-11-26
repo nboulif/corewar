@@ -49,14 +49,13 @@ int		check_nb_live(t_all *all)
 	{
 		process = (t_process*)ft_array_get(all->stack_proc, i);
 		//printf("flag_live %d to_die %d %d\n", process->flag_live, process->to_die, process->pc);
-		if (!process->flag_live && process->to_die)
+		if (!process->flag_live)
 		{
 			//printf("removed\n");
 			ft_array_remove(all->stack_proc, i--, NULL);
 		}
 		else
 			process->flag_live = 0;
-		process->to_die = 1;
 	}
 	// first_test = 1;
 	return (all->stack_proc->n_items);
@@ -71,12 +70,13 @@ void		vm(t_all *all)
 clock_t time = 0;
 	cycle = 1;
 	total_cycle = 0;
+	int max;
 
 	init_vm(all);
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU && total_cycle >= 15250)//!(total_cycle % 5))
+		if (all->flag & FLAG_VISU && total_cycle >= 1500)//!(total_cycle % 5))
 		{
 			// if (time + CLOCKS_PER_SEC * 0.01 > clock())
 			// 	usleep((time + CLOCKS_PER_SEC * 0.01 - clock()) / (CLOCKS_PER_SEC * 0.000001));
@@ -92,16 +92,19 @@ clock_t time = 0;
 		//printf("nb_cycle %d die %d\n", total_cycle, all->cycle_to_die);
 		//printf("lives %d\n", all->nb_live);
 		//printf("cycle %d\n", cycle);
+		//printf("max %d\n", max);
+
 		while (i < all->stack_proc->n_items)
 		{
 			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
 			tmp_proc->i = i;
-			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15) && !tmp_proc->boucle)
+			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
 			{
 				//printf("opc : %d\n", tmp_proc->op.opc);
 				i++;
 			}
 			next_action(all, tmp_proc);
+			//printf("i %d\n", i);
 		}
 		total_cycle++;
 		//printf("It is now cycle %d\n", total_cycle);
@@ -116,8 +119,8 @@ clock_t time = 0;
 				//printf("lives %d, check %d\n", all->nb_live, all->nb_check);
 				if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
 				{
-					//printf("Cycle to die is now %d\n", all->cycle_to_die);
-					break;
+						//printf("Cycle to die is now %d\n", all->cycle_to_die);
+						break;
 				}
 				//printf("Cycle to die is now %d\n", all->cycle_to_die);
 				all->nb_check = 1;
@@ -133,6 +136,6 @@ clock_t time = 0;
 		printf("tout le monde a perdu\n");
 	if (all->flag & FLAG_DUMP && total_cycle == all->cycles_before_exit)
 		simple_hexdump(all);
-	while (all->flag & FLAG_VISU)
-		;
+	//while (all->flag & FLAG_VISU)
+		//;
 }

@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/11/26 15:30:04 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/26 17:31:57 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,7 @@ typedef struct		s_process
 	int				carry;
 	// current operation
 	t_op			op;
-	int 			to_die;
 	int				index;
-	int				boucle;
 }					t_process;
 
 typedef struct		s_map
@@ -147,6 +145,7 @@ typedef struct		s_all
 	int				nb_live;
 	int				nb_alive;
 	int				nb_check;
+	int				max;
 }					t_all;
 
 /*

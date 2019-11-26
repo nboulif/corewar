@@ -7,8 +7,6 @@ void    	op_fork(t_all *all, t_process *proc)
 	static int	old_pc;
 
 	old_pc = proc->pc;
-	if (proc->boucle)
-		return ;
 	if (parse_arg_op(all, proc))
 	{
 		if (all->flag & FLAG_RESUME)
@@ -18,14 +16,8 @@ void    	op_fork(t_all *all, t_process *proc)
 		new_proc.origin_champ = proc->origin_champ;
 		new_proc.carry = proc->carry;
 		new_proc.pc = old_pc;
-		new_proc.to_die = 0;
-		proc->to_die = 0;
-		if (proc->op.params[0] == 0)
-			new_proc.boucle = 1;
-		else
-			new_proc.boucle = 0;
-		new_proc.index = all->stack_proc->n_items + 1;
-		//new_proc.flag_live = proc->flag_live;
+		new_proc.index = ++all->max;
+		new_proc.flag_live = proc->flag_live;
 		move_pc(&new_proc.pc, proc->op.params[0] % IDX_MOD);
 		//ft_array_add(all->stack_proc, &new_proc);
 		//ft_array_extend_size(all->stack_proc, all->stack_proc->size + 1);

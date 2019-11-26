@@ -113,7 +113,7 @@ void		init_vm(t_all *all)
 	{
 		cur = (t_process*)ft_array_get(all->stack_proc, i);
 		cur->origin_champ->index_player = i + 1;
-		cur->index = i + 1;
+		cur->index = ++all->max;
 	}
 	init_color_in_map(all);
 }
