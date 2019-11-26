@@ -82,10 +82,11 @@ int					main(int argc, char **argv)
 		else
 		{
 			parse_champ(&all, NULL, argv[i]);
+			//if (all.flag & FLAG_RESUME)
 			printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n", all.nb_champ, all.champ[all.nb_champ - 1].size_exec, all.champ[all.nb_champ - 1].name, all.champ[all.nb_champ - 1].comment);
 		}
 	}
-	printf("\e[?25l");
+	//printf("\e[?25l");
 	vm(&all);
 	//execute
 	//free_all

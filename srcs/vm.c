@@ -76,7 +76,7 @@ clock_t time = 0;
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU)// && total_cycle >= 15680)//!(total_cycle % 5))
+		if (all->flag & FLAG_VISU && total_cycle >= 15250)//!(total_cycle % 5))
 		{
 			// if (time + CLOCKS_PER_SEC * 0.01 > clock())
 			// 	usleep((time + CLOCKS_PER_SEC * 0.01 - clock()) / (CLOCKS_PER_SEC * 0.000001));
@@ -96,7 +96,7 @@ clock_t time = 0;
 		{
 			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
 			tmp_proc->i = i;
-			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
+			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15) && !tmp_proc->boucle)
 			{
 				//printf("opc : %d\n", tmp_proc->op.opc);
 				i++;
@@ -104,6 +104,7 @@ clock_t time = 0;
 			next_action(all, tmp_proc);
 		}
 		total_cycle++;
+		//printf("It is now cycle %d\n", total_cycle);
 		// printf("cycle %d all->cycle_to_die %d total_cycle %d\n", cycle, all->cycle_to_die, total_cycle);
 		if (cycle++ == all->cycle_to_die)
 		{
@@ -112,20 +113,26 @@ clock_t time = 0;
 			all->nb_check++;
 			if (all->nb_live >= NBR_LIVE  || all->nb_check > MAX_CHECKS)
 			{
+				//printf("lives %d, check %d\n", all->nb_live, all->nb_check);
 				if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
+				{
+					//printf("Cycle to die is now %d\n", all->cycle_to_die);
 					break;
-				all->nb_check = 0;
-				all->nb_live = 0;
+				}
+				//printf("Cycle to die is now %d\n", all->cycle_to_die);
+				all->nb_check = 1;
 			}
+			all->nb_live = 0;
 			cycle = 1;
 		}
 	}
+	//printf("It is now cycle %d\n", total_cycle);
+	if (all->last_player_alive)
+		printf("Contestant %d, \"%s\", has won !\n", (-1) * all->last_player_alive->index, all->last_player_alive->name);
+	else
+		printf("tout le monde a perdu\n");
 	if (all->flag & FLAG_DUMP && total_cycle == all->cycles_before_exit)
 		simple_hexdump(all);
-	else if (all->last_player_alive)
-		ft_printf("le joueur %d(%s) a gagne\n", all->last_player_alive->index, all->last_player_alive->name);
-	else
-		ft_printf("tout le monde a perdu\n");
 	while (all->flag & FLAG_VISU)
 		;
 }

@@ -7,10 +7,12 @@ void    	op_longfork(t_all *all, t_process *proc)
 	static int	old_pc;
 
 	old_pc = proc->pc;
+	if (proc->boucle)
+		return ;
 	if (parse_arg_op(all, proc))
 	{
 		if (all->flag & FLAG_RESUME)
-			printf("P%5d | lfork %d (%d)\n", proc->i, proc->op.params[0], proc->op.params[0] + old_pc);
+			printf("(%d)\n", proc->op.params[0] + old_pc);
 		ft_bzero(&new_proc, sizeof(new_proc));
 		ft_memcpy((void*)new_proc.reg, proc->reg, sizeof(int) * REG_NUMBER);
 		new_proc.origin_champ = proc->origin_champ;
@@ -19,6 +21,10 @@ void    	op_longfork(t_all *all, t_process *proc)
 		new_proc.to_die = 0;
 		proc->to_die = 0;
 		new_proc.index = all->stack_proc->n_items + 1;
+		if (proc->op.params[0] == 0)
+			new_proc.boucle = 1;
+		else
+			new_proc.boucle = 0;
 		//new_proc.flag_live = proc->flag_live;
 		move_pc(&new_proc.pc, proc->op.params[0]);
 		//ft_array_add(all->stack_proc, &new_proc);

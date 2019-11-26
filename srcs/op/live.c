@@ -4,8 +4,8 @@ void    	op_live(t_all *all, t_process *proc)
 {
 	t_champ	*champ;
 
-	if (all->flag & FLAG_RESUME)
-		printf("P%5d | live %d\n", proc->i, proc->origin_champ->index);
+	//if (all->flag & FLAG_RESUME)
+	//	printf("P%5d | live %d\n", proc->i, proc->origin_champ->index);
 	parse_arg_op(all, proc);
 	champ = get_champ(proc->op.params[0], all);
 	// printf("live for champ (%p) %d proc->op.params[0] %d\n", champ, champ ? champ->index : 0, proc->op.params[0]);

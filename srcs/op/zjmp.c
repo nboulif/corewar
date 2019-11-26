@@ -9,9 +9,6 @@ void    	op_zjmp(t_all *all, t_process *proc)
 	old_pc = proc->pc;
 	if (parse_arg_op(all, proc))
 	{
-		to_print = proc->carry ? "OK" : "FAILED";
-		if (all->flag & FLAG_RESUME)
-			printf("P%5d | zjmp %d %s\n", proc->i, proc->op.params[0], to_print);
 		if (proc->carry)
 		{
 			proc->pc = old_pc;
