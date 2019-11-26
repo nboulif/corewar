@@ -19,9 +19,6 @@ void    	op_longfork(t_all *all, t_process *proc)
 		new_proc.index = ++all->max;
 		new_proc.flag_live = proc->flag_live;
 		move_pc(&new_proc.pc, proc->op.params[0]);
-		//ft_array_add(all->stack_proc, &new_proc);
-		//ft_array_extend_size(all->stack_proc, all->stack_proc->size + 1);
 		ft_array_insert(all->stack_proc, 0, &new_proc);
-		//printf("size %d\n", all->stack_proc->size);
 	}
 }

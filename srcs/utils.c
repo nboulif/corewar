@@ -153,6 +153,7 @@ void				config_flags(void)
 	flags['t'] = FLAG_THREAD;
 	flags['v'] = FLAG_VISU;
 	flags['r'] = FLAG_RESUME;
+	flags['c'] = FLAG_CYCLE;
 }
 
 void				config_flags_syn(void)
