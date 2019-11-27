@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/11/26 18:23:01 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/27 14:29:47 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@
 # define FLAG_NUMBER	8
 # define FLAG_RESUME	16
 # define FLAG_CYCLE		32
+# define FLAG_DEATH		64
 
 typedef struct s_process	t_process;
 typedef struct s_all		t_all;

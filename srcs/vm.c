@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/26 18:32:37 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/27 14:58:43 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ int		check_nb_live(t_all *all)
 	{
 		process = (t_process*)ft_array_get(all->stack_proc, i);
 		if (!process->flag_live)
+		{
+			printf("Process %d hasn't lived for x cycles (CTD %d)\n", process->index, all->cycle_to_die);
 			ft_array_remove(all->stack_proc, i--, NULL);
+		}
 		else
 			process->flag_live = 0;
 	}

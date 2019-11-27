@@ -154,6 +154,7 @@ void				config_flags(void)
 	flags['v'] = FLAG_VISU;
 	flags['r'] = FLAG_RESUME;
 	flags['c'] = FLAG_CYCLE;
+	flags['x'] = FLAG_DEATH;
 }
 
 void				config_flags_syn(void)
