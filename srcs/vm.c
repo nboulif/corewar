@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/27 15:23:34 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/27 16:04:39 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		check_nb_live(t_all *all, int total_cycle)
 		if (!process->flag_live)
 		{
 			if (all->flag & FLAG_DEATH)
-				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index, total_cycle - process->last_live, all->cycle_to_die);
+				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index, total_cycle - process->last_live, all->cycle_to_die - CYCLE_DELTA);
 			ft_array_remove(all->stack_proc, i--, NULL);
 		}
 		else
@@ -88,9 +88,8 @@ void		vm(t_all *all)
 			if (!check_nb_live(all, total_cycle))
 				break ;
 			all->nb_check++;
-			if (all->nb_live >= NBR_LIVE  || all->nb_check > MAX_CHECKS)
+			if (all->nb_live >= NBR_LIVE  || all->nb_check >= MAX_CHECKS)
 			{
-
 				if (all->flag & FLAG_CYCLE)
 					printf("Cycle to die is now %d\n", all->cycle_to_die - CYCLE_DELTA);
 				if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
@@ -99,7 +98,7 @@ void		vm(t_all *all)
 						printf("It is now cycle %d\n", total_cycle + 1);
 					break;
 				}
-				all->nb_check = 1;
+				all->nb_check = 0;
 				all->nb_live = 0;
 			}
 			cycle = 1;
