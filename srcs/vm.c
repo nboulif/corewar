@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/27 14:58:43 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/27 15:23:34 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		next_action(t_all *all, t_process *current_process)
 	current_process->wait = current_process->op.cycles - 1;
 }
 
-int		check_nb_live(t_all *all)
+int		check_nb_live(t_all *all, int total_cycle)
 {
 	static int		first_test = 0;
 	t_process		*process;
@@ -41,7 +41,8 @@ int		check_nb_live(t_all *all)
 		process = (t_process*)ft_array_get(all->stack_proc, i);
 		if (!process->flag_live)
 		{
-			printf("Process %d hasn't lived for x cycles (CTD %d)\n", process->index, all->cycle_to_die);
+			if (all->flag & FLAG_DEATH)
+				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index, total_cycle - process->last_live, all->cycle_to_die);
 			ft_array_remove(all->stack_proc, i--, NULL);
 		}
 		else
@@ -75,6 +76,8 @@ void		vm(t_all *all)
 			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
 			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
 				i++;
+			if (tmp_proc->op.opc == 1)
+				tmp_proc->last_live = total_cycle;
 			next_action(all, tmp_proc);
 		}
 		total_cycle++;
@@ -82,7 +85,7 @@ void		vm(t_all *all)
 			printf("It is now cycle %d\n", total_cycle);
 		if (cycle++ == all->cycle_to_die)
 		{
-			if (!check_nb_live(all))
+			if (!check_nb_live(all, total_cycle))
 				break ;
 			all->nb_check++;
 			if (all->nb_live >= NBR_LIVE  || all->nb_check > MAX_CHECKS)

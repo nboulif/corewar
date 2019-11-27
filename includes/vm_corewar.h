@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/11/27 14:29:47 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/27 15:01:42 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ typedef struct		s_process
 	// current operation
 	t_op			op;
 	int				index;
+	int				last_live;
 }					t_process;
 
 typedef struct		s_map
