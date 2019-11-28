@@ -64,13 +64,14 @@ void		vm(t_all *all)
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU && total_cycle >= 1500)//!(total_cycle % 5))
+		if (all->flag & FLAG_VISU)// && total_cycle >= 1500)//!(total_cycle % 5))
 		{
 			moveTo(10, 64 * 3 + 20);
 			printf("nb_cycle %d die %d %d", total_cycle, all->cycle_to_die, all->stack_proc->n_items);
 			hexdump_map_square(all);
 		}
 		tmp_all = all;
+		// int tmp_item = all->stack_proc->n_items;
 		while (i < all->stack_proc->n_items)
 		{
 			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
