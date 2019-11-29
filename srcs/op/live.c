@@ -10,6 +10,7 @@ void    	op_live(t_all *all, t_process *proc)
 	champ = get_champ(proc->op.params[0], all);
 	// printf("live for champ (%p) %d proc->op.params[0] %d\n", champ, champ ? champ->index : 0, proc->op.params[0]);
 	proc->flag_live = 1;
+	all->nb_live++;
 	if (champ)
 	{
 		// if (!(all->flag & FLAG_RESUME))
@@ -17,7 +18,6 @@ void    	op_live(t_all *all, t_process *proc)
 		// else
 		// 	printf("P	%d| live %d\n", champ->index, proc->op.params[0]);
 		all->last_player_alive = champ;
-		all->nb_live++;
 	}
 	// affiche_new_pc();
 }

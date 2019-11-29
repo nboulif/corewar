@@ -64,7 +64,7 @@ void		vm(t_all *all)
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		i = 0;
-		if (all->flag & FLAG_VISU && total_cycle >= 1500)//!(total_cycle % 5))
+		if (all->flag & FLAG_VISU && total_cycle >= 29700)//!(total_cycle % 5))
 		{
 			moveTo(10, 64 * 3 + 20);
 			printf("nb_cycle %d die %d %d", total_cycle, all->cycle_to_die, all->stack_proc->n_items);
@@ -99,8 +99,8 @@ void		vm(t_all *all)
 					break;
 				}
 				all->nb_check = 0;
-				all->nb_live = 0;
 			}
+			all->nb_live = 0;
 			cycle = 1;
 		}
 	}
