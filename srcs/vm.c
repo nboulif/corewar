@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/27 16:04:39 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/29 11:23:45 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ void		vm(t_all *all)
 					break;
 				}
 				all->nb_check = 0;
-				all->nb_live = 0;
 			}
+			all->nb_live = 0;
 			cycle = 1;
 		}
 	}

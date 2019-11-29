@@ -81,7 +81,6 @@ void					simple_hexdump(t_all *all)
 void					hexdump_map_square(t_all *all)
 {
 	int			i;
-	// static char map_save[MEM_SIZE] = "";
 	static char flag = 0;
 	char *last_color;
 	char *last_back = NULL;
@@ -99,33 +98,12 @@ void					hexdump_map_square(t_all *all)
 		if (last_color != all->map.color_in_map[i])
 			printf("%s", last_color = all->map.color_in_map[i]);
 		if (proc)
-		{
-			// if (last_back != background_color[proc])
-				// printf("%s", background_color[proc]);
-			// back_color = background_color[proc];
 			printf("%s", last_color = background_color[proc]);
-		}
-		// else
-		// {
-		// 	back_color = background_color[8];
-		// 	// printf("\n");
-		// }
-		// if (back_color != last_back)
-		// {
-		// }
-		// else
-		// {
-		// }
 		if (!((i + 1) % 64))
 			printf("%.2hhx\n", all->map.character[i]);
 		else
 			printf("%.2hhx\033[0;39m %s", all->map.character[i], last_color);
 	}
-	// if (back_color)
-	// {
-	// 	printf("%s", 
-	// }
-	// ft_memcpy(map_save, all->map.character, MEM_SIZE);
 	flag = 1;
 	read(0, &i, 4);
 }

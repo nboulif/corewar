@@ -61,7 +61,6 @@ int		parse_arg_op(t_all *all, t_process *proc)
 	ret = 1;
 	i = -1;
 
-// unsigned char octal = 0;
 	int pc_to_read = proc->pc;
 
 	if (proc->op.codage_octal)
@@ -89,21 +88,6 @@ int		parse_arg_op(t_all *all, t_process *proc)
 		}
 		i = -1;
 	}
-	// si jms codage octal pourri
-	// if (octal == 0xff)
-	// {
-	// static int row = 0;
-
-	// moveTo(13 + row, 64 * 3 + 10);
-	// printf("f[0] -> |%d| f[1] -> |%d| f[2] -> |%d|", proc->op.flags_params[0], proc->op.flags_params[1], proc->op.flags_params[2]);
-	// fflush(stdout);
-	// moveTo(50 + row, 64 * 3 + 10);
-	// printf("                                      ");
-	// moveTo(50 + row++, 64 * 3 + 10);
-	// printf("ocatl -> |%#.2hhX|", octal);
-	// fflush(stdout);
-	// row %= all->stack_proc->n_items;
-	// }
 	if ((!(proc->op.flags_params[0] & op_tab[proc->op.opc].flags_params[0]) && op_tab[proc->op.opc].nb_params > 0) ||
 		(!(proc->op.flags_params[1] & op_tab[proc->op.opc].flags_params[1]) && op_tab[proc->op.opc].nb_params > 1) ||
 		(!(proc->op.flags_params[2] & op_tab[proc->op.opc].flags_params[2]) && op_tab[proc->op.opc].nb_params > 2))
@@ -134,15 +118,12 @@ int		parse_arg_op(t_all *all, t_process *proc)
 			{
 				if (proc->op.type_of_params[i] == T_REG && !tab_of_printed_value_arg[proc->op.opc - 1][i][T_REG - 1] && !(proc->op.opc == 3 && i == 1 ))
 					printf("r");
-				// printf("tab_of_printed_value_arg[%d][%d][%d]", proc->op.opc - 1,i,proc->op.type_of_params[i] - 1);
 				printf(i == proc->op.nb_params - 1 && proc->op.opc != 9 && proc->op.opc != 12 && proc->op.opc != 15 ? "%d\n" : "%d ",
 				tab_of_printed_value_arg[proc->op.opc - 1][i][proc->op.type_of_params[i] - 1] ?
 				value_of_arg(all, proc, pc_to_read, i) : proc->op.params[i]);
 			}
 		}
 	}
-	// moveTo(20, 64 * 3 + 20);
-	// printf("ret %d proc->op.nb_params %d\n", ret,proc->op.nb_params);
 	return (ret);
 }
 
