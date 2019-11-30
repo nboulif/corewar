@@ -78,16 +78,20 @@ int					main(int argc, char **argv)
 	while (++i < argc)
 	{
 		if (*argv[i] == '-')
-			all.flag |= handle_flag(&i, argc, argv, &all);
-		else
 		{
-			parse_champ(&all, NULL, argv[i]);
-			if (all.flag & FLAG_RESUME)
-				printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n", all.nb_champ, all.champ[all.nb_champ - 1].size_exec, all.champ[all.nb_champ - 1].name, all.champ[all.nb_champ - 1].comment);
+			all.flag |= handle_flag(&i, argc, argv, &all);
+			if (all.flag & FLAG_VISU)
+				all.flag = FLAG_VISU;
 		}
+		else
+			parse_champ(&all, NULL, argv[i]);
 	}
 	if (all.flag & FLAG_VISU)
 		printf("\e[?25l");
+	else if (all.flag)
+		printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
+				all.nb_champ, all.champ[all.nb_champ - 1].size_exec, all.champ[all.nb_champ - 1].name,
+				all.champ[all.nb_champ - 1].comment);
 	vm(&all);
 	//execute
 	//free_all
