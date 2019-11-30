@@ -79,7 +79,6 @@ typedef struct			s_prog
 	int					fd;
 	int					l_h;
 	t_op				*op;
-	char				*full_line;
 	char				*line;
 	int					i;
 	int					prog_size;

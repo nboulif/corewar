@@ -114,6 +114,7 @@ t_prog			*init_prog(int argc, char **argv)
 
 	if (!(prog = (t_prog *)malloc(sizeof(t_prog))))
 		return (err_malloc("prog", 0) ? NULL : NULL);
+	prog->debug = 0;
 	if (open_file(prog, argc, argv))
 	{
 		free(prog->line);
@@ -121,6 +122,7 @@ t_prog			*init_prog(int argc, char **argv)
 		return (NULL);
 	}
 	prog->nb_line = 0;
+	prog->line = NULL;
 	prog->name = NULL;
 	prog->comment = NULL;
 	prog->list_data = NULL;

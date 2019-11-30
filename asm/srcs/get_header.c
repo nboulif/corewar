@@ -17,16 +17,14 @@ static int	manage_header_errors(t_prog *p, int i)
 	int tmp_i;
 
 	tmp_i = i;
-	printf("INVALID HEADER, ERROR line %d: ", p->nb_line);
+	printf("line %d: ", p->nb_line);
 	if (p->line[i++] == '.')
 	{
 		skip_chars(p->line, &i, LABEL_CHARS);
 		return (printf("unknown command \"%.*s\"\n",
 					i - tmp_i, &p->line[tmp_i]));
 	}
-	printf("%s\n", &p->line[i]);
-	printf("line %d: ", p->nb_line);
-	if (!p->name && !p->comment)
+	else if (!p->name && !p->comment)
 		return (printf("program name and comment not found\n"));
 	else if (!p->name)
 		return (printf("program name not found\n"));

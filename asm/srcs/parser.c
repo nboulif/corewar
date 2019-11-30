@@ -24,9 +24,12 @@ t_data			*parse_opc(t_prog *prog, int skip_len, char *label)
 		return (err_lexical(prog, 57, prog->i) ? NULL : NULL);
 	op = identify_opc(str_opc);
 	if (!op)
+	{
+		label ? free_str(label) : 0;
 		return (printf(g_err_msgs[ERROR_INDENTIFY_OPC], prog->nb_line, str_opc)
 			+ free_str(prog->line) + free_str(str_opc) ? NULL : NULL);
-		free_str(str_opc);
+	}
+	free_str(str_opc);
 	if (!(data = init_data(prog, &prog->line[prog->i], label, op)))
 		return (NULL);
 	else if (prog->line[prog->i])
@@ -37,37 +40,25 @@ t_data			*parse_opc(t_prog *prog, int skip_len, char *label)
 t_data			*parse_label(t_prog *prog, int *skip_len)
 {
 	char	*label;
-	t_data	*data;
 
 	if (!(label = ft_strsub(prog->line, prog->i - *skip_len, *skip_len)))
 		return (err_malloc("str_sub_label", prog->nb_line) ? NULL : NULL);
 	prog->i++;
 	skip_chars(prog->line, &prog->i, " \t");
 	if (!prog->line[prog->i] || prog->line[prog->i] == COMMENT_CHAR)
-	{
-		data = init_data_label(prog, label);
-		if (!data)
-			return (NULL);
-		return (data);
-	}
+		return (init_data_label(prog, label));
 	*skip_len = skip_until(prog->line, &prog->i, ":% \t");
 	if (prog->line[prog->i])
-	{
-		data = parse_opc(prog, *skip_len, label);
-		if (!data)
-			return (NULL);
-		return (data);
-	}
+		return (parse_opc(prog, *skip_len, label));
 	free_str(label);
+	free_str(prog->line);
 	return (err_lexical(prog, 39, prog->i - *skip_len) ? NULL : NULL);
 }
 
 t_data			*parse_commands(t_prog *prog)
 {
-	char	*label;
 	int		skip_len;
 
-	label = "";
 	skip_chars(prog->line, &prog->i, " \t");
 	skip_len = skip_until(prog->line, &prog->i, ":% \t");
 	if (!prog->line[prog->i])

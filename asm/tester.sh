@@ -1,10 +1,15 @@
 
 
+sed 's/ #-fsanitize=address/ -fsanitize=address/g' Makefile > Makefile_tmp ; rm Makefile ; mv Makefile_tmp Makefile
+leaks=0
+if [[ $1 == "-v"  ]]; then 
+    leaks=1
+    sed 's/ -fsanitize=address/ #-fsanitize=address/g' Makefile > Makefile_tmp ; rm Makefile ; mv Makefile_tmp Makefile
+fi
+make re
 
 # !!!!!!!!!! DESACTIVATE FSANITIZE FOR VALGRIND
 pb_players=("Backward" "Misaka_Mikoto" "Torpille" "tdc2" "tdc3" "tdc4" "sebc" "new" "mat" "leeloo" "Death")
-
-make
 
 for arg in $(find vm_champs -name "*.s")
 do
@@ -28,23 +33,26 @@ do
         else echo "`tput setaf 2`OK`tput sgr0` => $arg"
         fi
 
-        leaks_definitely=''
-        leaks_indirectly=''
-        while read -r line ; do
-             if [[ "$line" == *"definitely lost"*  ]]; then 
-                leaks_definitely="$line"
-            elif [[ "$line" == *"indirectly lost"*  ]]; then 
-                leaks_indirectly="$line"
+        if [[ $leaks == 1  ]]; then 
+
+            leaks_definitely=''
+            leaks_indirectly=''
+            while read -r line ; do
+                if [[ "$line" == *"definitely lost"*  ]]; then 
+                    leaks_definitely="$line"
+                elif [[ "$line" == *"indirectly lost"*  ]]; then 
+                    leaks_indirectly="$line"
+                fi
+            done <<< "$(valgrind --leak-check=full --show-leak-kinds=all ./asm -a $arg 2>&1 | grep 'definitely\|indirectly')"
+
+            if [[ "$leaks_definitely" == *"0 bytes in 0 blocks"*  ]] && [[ "$leaks_indirectly" == *"0 bytes in 0 blocks"*  ]]; then 
+                echo "`tput setaf 2`OK`tput sgr0` => leaks"
+            else
+                if [[ "$leaks_definitely" != *"0 bytes in 0 blocks"* ]]; then echo "`tput setaf 1`$leaks_definitely`tput sgr0`" ;fi 
+                if [[ "$leaks_indirectly" != *"0 bytes in 0 blocks"* ]]; then echo "`tput setaf 1`$leaks_indirectly`tput sgr0`" ;fi 
             fi
-        done <<< "$(valgrind --leak-check=full --show-leak-kinds=all ./asm -a $arg 2>&1 | grep 'definitely\|indirectly')"
 
-        if [[ "$leaks_definitely" == *"0 bytes in 0 blocks"*  ]] && [[ "$leaks_indirectly" == *"0 bytes in 0 blocks"*  ]]; then 
-            echo "`tput setaf 2`OK`tput sgr0` => leaks"
-        else
-            if [[ "$leaks_definitely" != *"0 bytes in 0 blocks"* ]]; then echo "`tput setaf 1`$leaks_definitely`tput sgr0`" ;fi 
-            if [[ "$leaks_indirectly" != *"0 bytes in 0 blocks"* ]]; then echo "`tput setaf 1`$leaks_indirectly`tput sgr0`" ;fi 
         fi
-
 
         diff "${arg%.*}.mycor" "${arg%.*}.cor"
         rm "${arg%.*}.mycor" "${arg%.*}.cor"
@@ -65,6 +73,27 @@ do
             else echo "`tput setaf 1`Error compiling but its normal...`tput sgr0` => $arg" ; fi
         else echo "`tput setaf 1`Error compiling`tput sgr0` => $arg" ;fi
         
+        if [[ $leaks == 1  ]]; then 
+
+            leaks_definitely=''
+            leaks_indirectly=''
+            while read -r line ; do
+                if [[ "$line" == *"definitely lost"*  ]]; then 
+                    leaks_definitely="$line"
+                elif [[ "$line" == *"indirectly lost"*  ]]; then 
+                    leaks_indirectly="$line"
+                fi
+            done <<< "$(valgrind --leak-check=full --show-leak-kinds=all ./asm -a $arg 2>&1 | grep 'definitely\|indirectly')"
+
+            if [[ "$leaks_definitely" == *"0 bytes in 0 blocks"*  ]] && [[ "$leaks_indirectly" == *"0 bytes in 0 blocks"*  ]]; then 
+                echo "`tput setaf 2`OK`tput sgr0` => leaks"
+            else
+                if [[ "$leaks_definitely" != *"0 bytes in 0 blocks"* ]]; then echo "`tput setaf 1`$leaks_definitely`tput sgr0`" ;fi 
+                if [[ "$leaks_indirectly" != *"0 bytes in 0 blocks"* ]]; then echo "`tput setaf 1`$leaks_indirectly`tput sgr0`" ;fi 
+            fi
+
+        fi
+
         if [[ "$ASM_RESULT" == *"Writing output program to"* ]]; then
         rm "${arg%.*}.mycor"
         else echo "our : $ASM_RESULT";fi
@@ -77,3 +106,6 @@ do
     # sleep 0.5
 done
 
+sed 's/ -fsanitize=address/ #-fsanitize=address/g' Makefile > Makefile_tmp ; rm Makefile ; mv Makefile_tmp Makefile
+
+make fclean
