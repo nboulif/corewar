@@ -18,6 +18,7 @@ void    	op_longfork(t_all *all, t_process *proc)
 		new_proc.pc = old_pc;
 		new_proc.index = ++all->max;
 		new_proc.flag_live = proc->flag_live;
+		new_proc.last_live = proc->last_live;
 		move_pc(&new_proc.pc, proc->op.params[0]);
 		ft_array_insert(all->stack_proc, 0, &new_proc);
 	}

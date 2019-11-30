@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/11/27 15:01:42 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/11/30 16:19:06 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ typedef struct		s_all
 	int				nb_alive;
 	int				nb_check;
 	int				max;
+	int				total_cycle;
 }					t_all;
 
 /*
