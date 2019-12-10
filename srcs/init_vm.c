@@ -109,11 +109,14 @@ void		init_vm(t_all *all)
 	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	i = -1;
 	t_process *cur;
-	while (++i < all->nb_champ)
+	int j = all->nb_champ;
+	while (j)
 	{
+		i++;
 		cur = (t_process*)ft_array_get(all->stack_proc, i);
-		cur->origin_champ->index_player = i + 1;
-		cur->index = ++all->max;
+		cur->origin_champ->index_player = i;
+		cur->index = j--;
+		all->max++;
 	}
 	init_color_in_map(all);
 }
