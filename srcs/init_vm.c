@@ -2,7 +2,7 @@
 
 int			cmp_champ_order(t_process *champ1, t_process *champ2)
 {
-	if (champ1->origin_champ->index < champ2->origin_champ->index)
+	if (champ1->origin_champ->index > champ2->origin_champ->index)
 		return (-1);
 	else if (champ1->origin_champ->index == champ2->origin_champ->index)
 		return (0);
