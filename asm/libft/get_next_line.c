@@ -80,12 +80,12 @@ int			get_next_line(const int fd, char **line)
 		j = -1;
 		while (next_line[++j])
 			next_line[j] = next_line[j + i + 1];
-		return (1);
+		return (2);
 	}
 	while ((ret = reader(fd, current_line, next_line)) == 2)
 		join_and_free(line, current_line);
 	join_and_free(line, current_line);
 	if (!ft_strlen(*line) && !ret)
 		return (0);
-	return (1);
+	return (1 + !!ret);
 }

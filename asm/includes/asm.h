@@ -109,7 +109,8 @@ t_data					*init_data_label(t_prog *p, char *label);
 t_prog					*init_prog(int argc, char **argv);
 
 t_data					*parse_commands(t_prog *prog);
-int						program_parser(t_prog *prog);
+int						program_parser(t_prog *prog, t_data *data,
+						t_data *old_data);
 
 int						print_data(t_data *data);
 int						print_debug(t_prog *prog);

@@ -81,7 +81,7 @@ int				main(int argc, char **argv)
 		return (free_prog(prog) + 1);
 	if (prog->nb_line <= 0)
 		return (printf("Empty program\n") + free_prog(prog));
-	if (!program_parser(prog))
+	if (!program_parser(prog, NULL, NULL))
 	{
 		if (prog->prog_size == 0)
 			return (printf("Empty program\n") + free_prog(prog));
@@ -89,6 +89,7 @@ int				main(int argc, char **argv)
 			return (free_prog(prog) + 1);
 		prog->debug ? print_debug(prog) : write_file(prog);
 	}
+	close(prog->fd);
 	free_prog(prog);
 	return (0);
 }

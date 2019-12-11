@@ -79,18 +79,19 @@ t_data			*get_pc(t_prog *prog, t_data *old_data, t_data *data)
 	return (data);
 }
 
-int				program_parser(t_prog *prog)
+int				program_parser(t_prog *prog, t_data *data, t_data *old_data)
 {
-	t_data	*data;
-	t_data	*old_data;
+	int		last_res;
+	int		res;
 
-	old_data = NULL;
-	data = NULL;
-	while (get_next_line(prog->fd, &prog->line) > 0)
+	last_res = 0;
+	while ((res = get_next_line(prog->fd, &prog->line)) > 0)
 	{
+		last_res = prog->line[0] == '#' ? 2 : res;
 		prog->i = 0;
 		prog->nb_line++;
 		skip_chars(prog->line, &prog->i, " \t");
+		!prog->line[prog->i] ? last_res = 2 : 0;
 		if ((!prog->line || !prog->line[prog->i] ||
 			prog->line[prog->i] == COMMENT_CHAR) && !free_str(prog->line))
 			continue;
@@ -104,6 +105,5 @@ int				program_parser(t_prog *prog)
 	}
 	free(prog->line);
 	prog->prog_size = data ? data->pc + data->nb_octet : 0;
-	close(prog->fd);
-	return (0);
+	return (last_res == 1 ? printf("No end line\n") : OK);
 }
