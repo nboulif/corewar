@@ -34,6 +34,7 @@ int		check_nb_live(t_all *all, int total_cycle)
 	t_process		*process;
 	t_process		*prev;
 	int				i;
+	static int tab_death[500000] = {0};
 
 	i = -1;
 	prev = NULL;
@@ -43,15 +44,34 @@ int		check_nb_live(t_all *all, int total_cycle)
 		if (!process->flag_live)
 		{
 			if (all->flag & FLAG_DEATH)
-				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index, total_cycle - process->last_live, all->cycle_to_die - CYCLE_DELTA);
+				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index, total_cycle - process->last_live - 1, all->cycle_to_die - CYCLE_DELTA);
+			if (tab_death[process->index])
+				printf("Process %d double death\n", process->index);
+			tab_death[process->index] = 1;
+			// printf("lst_proc (delete p%4d prev %4d)", process->index, prev ? prev->index : 0);
+			// for (t_process *cur = all->stack_proc; cur && printf(" -> "); cur = cur->next)
+			// 	printf("%d", cur->index);
+			// printf("\n");
 			if (prev)
+			{
 				prev->next = process->next;
+				process = prev;
+			}
 			else
+			{
 				all->stack_proc = process->next;
+				process = all->stack_proc;
+			}
+			// printf("                                ");
+			// for (t_process *cur = all->stack_proc; cur && printf(" -> "); cur = cur->next)
+			// 		printf("%d", cur->index);
+			// 	printf("\n");
 			all->nb_process--;
 		}
 		else
 			process->flag_live = 0;
+		if (!process)
+			break;
 		prev = process;
 		if (!(process = process->next))
 			break ;
@@ -114,8 +134,8 @@ void		vm(t_all *all)
 					break;
 				}
 				all->nb_check = 0;
+				all->nb_live = 0;
 			}
-			all->nb_live = 0;
 			cycle = 1;
 		}
 	}

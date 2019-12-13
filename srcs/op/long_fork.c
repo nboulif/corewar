@@ -22,6 +22,10 @@ void    	op_longfork(t_all *all, t_process *proc)
 		move_pc(&new_proc->pc, proc->op.params[0]);
 		new_proc->next = all->stack_proc;
 		all->stack_proc = new_proc;
+		// printf("lst_proc");
+		// for (t_process *cur = all->stack_proc; cur && printf(" -> "); cur = cur->next)
+		// 	printf("%d", cur->index);
+		// printf("\n");
 		all->nb_process++;
 	}
 }
