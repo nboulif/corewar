@@ -31,7 +31,6 @@ void		next_action(t_all *all, t_process *current_process)
 
 int		check_nb_live(t_all *all)
 {
-	static int		first_test = 0;
 	t_process		*process;
 	int				i;
 
@@ -42,70 +41,82 @@ int		check_nb_live(t_all *all)
 		if (!process->flag_live)
 		{
 			if (all->flag & FLAG_DEATH)
-				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index, all->total_cycle - process->last_live, all->cycle_to_die);
+				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index,
+					all->total_cycle - process->last_live, all->cycle_to_die);
 			ft_array_remove(all->stack_proc, i--, NULL);
 		}
 		else
 			process->flag_live = 0;
 	}
+	all->nb_check++;
 	return (all->stack_proc->n_items);
+}
+
+void check_action_and_visu(t_all *all)
+{
+	t_process	*tmp_proc;
+	int			i;
+
+	i = 0;
+	if (all->flag & FLAG_VISU)
+	{
+		moveTo(10, 64 * 3 + 20);
+		printf("nb_cycle %d die %d %d", all->total_cycle, all->cycle_to_die, all->stack_proc->n_items);
+		hexdump_map_square(all);
+	}
+	while (i < all->stack_proc->n_items)
+	{
+		tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
+		if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
+			i++;
+		next_action(all, tmp_proc);
+	}
+}
+
+int apply_cycle_to_die(t_all *all, int *cycle)
+{
+	if (!check_nb_live(all))
+		return (0);
+	if (all->nb_live >= NBR_LIVE  || all->nb_check >= MAX_CHECKS)
+	{
+		if (all->flag & FLAG_CYCLE)
+			printf("Cycle to die is now %d\n", all->cycle_to_die - CYCLE_DELTA);
+		if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
+		{
+			if (all->flag & FLAG_CYCLE)
+				printf("It is now cycle %d\n", all->total_cycle + 1);
+			return (0);
+		}
+		all->nb_check = 0;
+	}
+	all->nb_live = 0;
+	return (1);
 }
 
 void		vm(t_all *all)
 {
-	t_all	*tmp_all;
 	int 	cycle;
-	int		i;
-	cycle = 1;
 
+	cycle = 1;
 	init_vm(all);
 	while (all->cycles_before_exit == -1 || all->total_cycle < all->cycles_before_exit)
 	{
-		i = 0;
-		if (all->flag & FLAG_VISU && all->total_cycle >= 1500)//!(all->total_cycle % 5))
-		{
-			moveTo(10, 64 * 3 + 20);
-			printf("nb_cycle %d die %d %d", all->total_cycle, all->cycle_to_die, all->stack_proc->n_items);
-			hexdump_map_square(all);
-		}
-		tmp_all = all;
-		while (i < all->stack_proc->n_items)
-		{
-			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
-			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
-				i++;
-			next_action(all, tmp_proc);
-		}
 		all->total_cycle++;
+		check_action_and_visu(all);
 		if (all->flag & FLAG_CYCLE)
 			printf("It is now cycle %d\n", all->total_cycle);
 		if (cycle++ == all->cycle_to_die)
 		{
-			if (!check_nb_live(all))
+			if (!apply_cycle_to_die(all, cycle))
 				break ;
-			all->nb_check++;
-			if (all->nb_live >= NBR_LIVE  || all->nb_check >= MAX_CHECKS)
-			{
-				if (all->flag & FLAG_CYCLE)
-					printf("Cycle to die is now %d\n", all->cycle_to_die - CYCLE_DELTA);
-				if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
-				{
-					if (all->flag & FLAG_CYCLE)
-						printf("It is now cycle %d\n", all->total_cycle + 1);
-					break;
-				}
-				all->nb_check = 0;
-			}
-			all->nb_live = 0;
 			cycle = 1;
 		}
 	}
+	fflush(stdout);
 	if (all->last_player_alive)
-		printf("Contestant %d, \"%s\", has won !\n", (-1) * all->last_player_alive->index, all->last_player_alive->name);
+		ft_printf("Contestant %d, \"%s\", has won !\n", (-1) * all->last_player_alive->index, all->last_player_alive->name);
 	else
-		printf("Everybody lost\n");
+		ft_printf("Everybody lost\n");
 	if (all->flag & FLAG_DUMP && all->total_cycle == all->cycles_before_exit)
 		simple_hexdump(all);
-	//while (all->flag & FLAG_VISU)
-		//;
 }

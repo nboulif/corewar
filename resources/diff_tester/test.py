@@ -26,7 +26,7 @@ p = " ".join([args[i + 2] for i in range(n)])
 our = "ourdump_" + name
 real = "realdump_" + name
 diff = "diffdump_" + name
-s_c, c_c, e_c, error_c = 1, 10000, 10000, -1
+s_c, c_c, e_c, error_c = 1, 1000, 1000, -1
 while (s_c + 1 != e_c and e_c <= 100000):
 	generate_diff(c_c)
 	if open(diff, 'r').read() == "":
@@ -34,7 +34,7 @@ while (s_c + 1 != e_c and e_c <= 100000):
 			c_c, s_c = (e_c - c_c) // 2 + c_c, c_c 
 		else:
 			s_c = e_c + 1
-			e_c += 10000
+			e_c += 1000
 			c_c = e_c
 	else:
 		error_c = c_c
