@@ -31,56 +31,68 @@ void		next_action(t_all *all, t_process *current_process)
 
 int		check_nb_live(t_all *all, int total_cycle)
 {
-	static int		first_test = 0;
 	t_process		*process;
+	t_process		*prev;
 	int				i;
 
 	i = -1;
-	while (++i < all->stack_proc->n_items)
+	prev = NULL;
+	process = all->stack_proc;
+	while (1)
 	{
-		process = (t_process*)ft_array_get(all->stack_proc, i);
 		if (!process->flag_live)
 		{
 			if (all->flag & FLAG_DEATH)
 				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index, total_cycle - process->last_live, all->cycle_to_die - CYCLE_DELTA);
-			ft_array_remove(all->stack_proc, i--, NULL);
+			if (prev)
+				prev->next = process->next;
+			else
+				all->stack_proc = process->next;
+			all->nb_process--;
 		}
 		else
 			process->flag_live = 0;
+		prev = process;
+		if (!(process = process->next))
+			break ;
 	}
-	return (all->stack_proc->n_items);
+	return (!!all->stack_proc);
+}
+
+void	make_action_and_visu(t_all *all, int total_cycle)
+{
+	t_process *proc;
+
+	if (all->flag & FLAG_VISU && total_cycle >= 10000)// && !(total_cycle % 5))
+	{
+		moveTo(10, 64 * 3 + 20);
+		printf("nb_cycle %d die %d %4d", total_cycle, all->cycle_to_die, all->nb_process);
+		hexdump_map_square(all);
+	}
+	proc = all->stack_proc;
+	while (1)
+	{
+		if (proc->op.opc == 1)
+			proc->last_live = total_cycle;
+		next_action(all, proc);
+		if (!(proc = proc->next))
+			break ;
+	}
 }
 
 void		vm(t_all *all)
 {
+	int		total_cycle;
 	t_all	*tmp_all;
 	int 	cycle;
 	int		i;
-	int		total_cycle;
+
 	cycle = 1;
 	total_cycle = 0;
-
 	init_vm(all);
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
-		i = 0;
-		if (all->flag & FLAG_VISU && total_cycle >= 29700)//!(total_cycle % 5))
-		{
-			moveTo(10, 64 * 3 + 20);
-			printf("nb_cycle %d die %d %d", total_cycle, all->cycle_to_die, all->stack_proc->n_items);
-			hexdump_map_square(all);
-		}
-		tmp_all = all;
-		while (i < all->stack_proc->n_items)
-		{
-			t_process *tmp_proc = (t_process*)ft_array_get(all->stack_proc, i++);
-			if (tmp_proc && tmp_proc->wait == 1 && (tmp_proc->op.opc == 12 || tmp_proc->op.opc == 15))
-				i++;
-			if (tmp_proc->op.opc == 1)
-				tmp_proc->last_live = total_cycle;
-			next_action(all, tmp_proc);
-		}
-		total_cycle++;
+		make_action_and_visu(all, total_cycle++);
 		if (all->flag & FLAG_CYCLE)
 			printf("It is now cycle %d\n", total_cycle);
 		if (cycle++ == all->cycle_to_die)
@@ -88,7 +100,7 @@ void		vm(t_all *all)
 			if (!check_nb_live(all, total_cycle))
 				break ;
 			all->nb_check++;
-			if (all->nb_live >= NBR_LIVE  || all->nb_check >= MAX_CHECKS)
+			if (all->nb_live >= NBR_LIVE || all->nb_check >= MAX_CHECKS)
 			{
 				if (all->flag & FLAG_CYCLE)
 					printf("Cycle to die is now %d\n", all->cycle_to_die - CYCLE_DELTA);

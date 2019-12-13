@@ -3,7 +3,7 @@
 void    	op_fork(t_all *all, t_process *proc)
 {
 	t_champ		*champ;
-	t_process	new_proc;
+	t_process	*new_proc;
 	static int	old_pc;
 
 	old_pc = proc->pc;
@@ -11,14 +11,18 @@ void    	op_fork(t_all *all, t_process *proc)
 	{
 		if (all->flag & FLAG_RESUME)
 			printf("(%d)\n", proc->op.params[0] % IDX_MOD + old_pc);
-		ft_bzero(&new_proc, sizeof(new_proc));
-		ft_memcpy((void*)new_proc.reg, proc->reg, sizeof(int) * REG_NUMBER);
-		new_proc.origin_champ = proc->origin_champ;
-		new_proc.carry = proc->carry;
-		new_proc.pc = old_pc;
-		new_proc.index = ++all->max;
-		new_proc.flag_live = proc->flag_live;
-		move_pc(&new_proc.pc, proc->op.params[0] % IDX_MOD);
-		ft_array_insert(all->stack_proc, 0, &new_proc);
+		new_proc = malloc(sizeof(t_process));
+		ft_bzero(new_proc, sizeof(t_process));
+		*new_proc = *proc;
+		// ft_memcpy(new_proc->reg, proc->reg, sizeof(int) * REG_NUMBER);
+		// new_proc->origin_champ = proc->origin_champ;
+		// new_proc->carry = proc->carry;
+		// new_proc->flag_live = proc->flag_live;
+		new_proc->pc = old_pc;
+		new_proc->index = ++all->max;
+		move_pc(&new_proc->pc, proc->op.params[0] % IDX_MOD);
+		new_proc->next = all->stack_proc;
+		all->stack_proc = new_proc;
+		all->nb_process++;
 	}
 }
