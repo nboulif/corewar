@@ -2,7 +2,7 @@
 
 int			cmp_champ_order(t_process *champ1, t_process *champ2)
 {
-	if (champ1->origin_champ->index < champ2->origin_champ->index)
+	if (champ1->origin_champ->index > champ2->origin_champ->index)
 		return (-1);
 	else if (champ1->origin_champ->index == champ2->origin_champ->index)
 		return (0);
@@ -108,15 +108,18 @@ void		init_vm(t_all *all)
 	}
 	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	i = -1;
-	while (++i < all->nb_champ)
+	int j = all->nb_champ;
+	while (j)
 	{
+		i++;
 		proc = &all->stack_proc[i];
 		if (i < all->nb_champ - 1)
 			proc->next = &all->stack_proc[i + 1];
 		else
 			proc->next = NULL;
 		proc->origin_champ->index_player = i;
-		proc->index = ++all->max;
+		proc->index = j--;
+		all->max++;
 	}
 	all->nb_process = all->nb_champ;
 	init_color_in_map(all);

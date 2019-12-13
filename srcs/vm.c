@@ -72,8 +72,11 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 	proc = all->stack_proc;
 	while (1)
 	{
-		if (proc->op.opc == 1)
+		if (proc->op.opc == 1 && proc->wait == 1)
+		{
+			// printf("live\n");
 			proc->last_live = total_cycle;
+		}
 		next_action(all, proc);
 		if (!(proc = proc->next))
 			break ;

@@ -28,7 +28,7 @@ void    	op_sti(t_all *all, t_process *proc)
 		}
 		proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
 		if (all->flag & FLAG_RESUME)
-			printf("       | -> store to %d + %d = %d (with pc and mod %d)\n", proc->op.params[1] , proc->op.params[2], proc->op.params[1] + proc->op.params[2], pc_to_write + proc->op.params[1] + proc->op.params[2]);
+			printf("       | -> store to %d + %d = %d (with pc and mod %d)\n", proc->op.params[1] , proc->op.params[2], proc->op.params[1] + proc->op.params[2], (pc_to_write + proc->op.params[1] + proc->op.params[2]) % MEM_SIZE);
 		move_pc(&pc_to_write, ((long)proc->op.params[1] + (long)proc->op.params[2]) % IDX_MOD);
 		// moveTo(50, 64 * 3 + 20);
 		// printf("pc_to_write %d proc->op.params[0] %x\n", pc_to_write, proc->op.params[0]);
