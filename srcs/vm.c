@@ -25,18 +25,29 @@ void		next_action(t_all *all, t_process *current_process)
 		move_pc(&current_process->pc, 1);
 		return ;
 	}
-	ft_memcpy(&current_process->op, &op_tab[all->map.character[current_process->pc]], sizeof(t_op));
+	current_process->op = op_tab[all->map.character[current_process->pc]];
 	current_process->wait = current_process->op.cycles - 1;
+}
+
+void		delete_element(t_all *all, t_process **element, t_process *prev)
+{
+	if (prev)
+	{
+		prev->next = (*element)->next;
+		*element = prev;
+	}
+	else
+	{
+		all->stack_proc = (*element)->next;
+		*element = all->stack_proc;
+	}
 }
 
 int		check_nb_live(t_all *all, int total_cycle)
 {
 	t_process		*process;
 	t_process		*prev;
-	int				i;
-	static int tab_death[500000] = {0};
 
-	i = -1;
 	prev = NULL;
 	process = all->stack_proc;
 	while (1)
@@ -44,36 +55,15 @@ int		check_nb_live(t_all *all, int total_cycle)
 		if (!process->flag_live)
 		{
 			if (all->flag & FLAG_DEATH)
-				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", process->index, total_cycle - process->last_live - 1, all->cycle_to_die - CYCLE_DELTA);
-			if (tab_death[process->index])
-				printf("Process %d double death\n", process->index);
-			tab_death[process->index] = 1;
-			// printf("lst_proc (delete p%4d prev %4d)", process->index, prev ? prev->index : 0);
-			// for (t_process *cur = all->stack_proc; cur && printf(" -> "); cur = cur->next)
-			// 	printf("%d", cur->index);
-			// printf("\n");
-			if (prev)
-			{
-				prev->next = process->next;
-				process = prev;
-			}
-			else
-			{
-				all->stack_proc = process->next;
-				process = all->stack_proc;
-			}
-			// printf("                                ");
-			// for (t_process *cur = all->stack_proc; cur && printf(" -> "); cur = cur->next)
-			// 		printf("%d", cur->index);
-			// 	printf("\n");
+				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", 
+				process->index, --total_cycle - process->last_live,
+				all->cycle_to_die - CYCLE_DELTA);
+			delete_element(all, &process, prev);
 			all->nb_process--;
 		}
-		else
-			process->flag_live = 0;
-		if (!process)
-			break;
+		process && (process->flag_live = 0);
 		prev = process;
-		if (!(process = process->next))
+		if (!process || !(process = process->next))
 			break ;
 	}
 	return (!!all->stack_proc);
@@ -83,7 +73,7 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 {
 	t_process *proc;
 
-	if (all->flag & FLAG_VISU && total_cycle >= 10000)// && !(total_cycle % 5))
+	if (all->flag & FLAG_VISU && total_cycle >= 26023)
 	{
 		moveTo(10, 64 * 3 + 20);
 		printf("nb_cycle %d die %d %4d", total_cycle, all->cycle_to_die, all->nb_process);
@@ -93,58 +83,74 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 	while (1)
 	{
 		if (proc->op.opc == 1 && proc->wait == 1)
-		{
-			// printf("live\n");
 			proc->last_live = total_cycle;
-		}
 		next_action(all, proc);
 		if (!(proc = proc->next))
 			break ;
 	}
 }
 
+int check_ctd(t_all *all, int total_cycle)
+{
+	static int cycle = 1;
+
+	if (cycle++ == all->cycle_to_die)
+	{
+		if (!check_nb_live(all, total_cycle))
+			return (0);
+		all->nb_check++;
+		if (all->nb_live >= NBR_LIVE || all->nb_check >= MAX_CHECKS)
+		{
+			if (all->flag & FLAG_CYCLE)
+				ft_printf("Cycle to die is now %d\n", all->cycle_to_die - CYCLE_DELTA);
+			if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
+			{
+				if (all->flag & FLAG_CYCLE)
+					ft_printf("It is now cycle %d\n", total_cycle + 1);
+				return (0);
+			}
+			all->nb_check = 0;
+		}
+		all->nb_live = 0;
+		cycle = 1;
+	}
+	return (1);
+}
+
+void		free_all(t_all *all, t_process	*first_process)
+{
+	proc_alloc(0);
+	free(first_process);
+	while (all->nb_champ--)
+	{
+		free(all->champ[all->nb_champ].name);
+		free(all->champ[all->nb_champ].comment);
+		free(all->champ[all->nb_champ].exec_code);
+	}
+	free(all->map.character);
+	free(all->map.color_in_map);
+}
+
 void		vm(t_all *all)
 {
-	int		total_cycle;
-	t_all	*tmp_all;
-	int 	cycle;
-	int		i;
+	int			total_cycle;
+	t_process	*first_process;
 
-	cycle = 1;
 	total_cycle = 0;
 	init_vm(all);
+	first_process = all->stack_proc;
 	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
 	{
 		make_action_and_visu(all, total_cycle++);
 		if (all->flag & FLAG_CYCLE)
-			printf("It is now cycle %d\n", total_cycle);
-		if (cycle++ == all->cycle_to_die)
-		{
-			if (!check_nb_live(all, total_cycle))
-				break ;
-			all->nb_check++;
-			if (all->nb_live >= NBR_LIVE || all->nb_check >= MAX_CHECKS)
-			{
-				if (all->flag & FLAG_CYCLE)
-					printf("Cycle to die is now %d\n", all->cycle_to_die - CYCLE_DELTA);
-				if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
-				{
-					if (all->flag & FLAG_CYCLE)
-						printf("It is now cycle %d\n", total_cycle + 1);
-					break;
-				}
-				all->nb_check = 0;
-				all->nb_live = 0;
-			}
-			cycle = 1;
-		}
+			ft_printf("It is now cycle %d\n", total_cycle);
+		if (!check_ctd(all, total_cycle))
+			break ;
 	}
 	if (all->last_player_alive)
-		printf("Contestant %d, \"%s\", has won !\n", (-1) * all->last_player_alive->index, all->last_player_alive->name);
+		ft_printf("Contestant %d, \"%s\", has won !\n", (-1) * all->last_player_alive->index, all->last_player_alive->name);
 	else
-		printf("Everybody lost\n");
+		ft_printf("Everybody lost\n");
 	if (all->flag & FLAG_DUMP && total_cycle == all->cycles_before_exit)
 		simple_hexdump(all);
-	//while (all->flag & FLAG_VISU)
-		//;
 }

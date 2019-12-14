@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   zjmp.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/14 00:53:38 by rhunders          #+#    #+#             */
+/*   Updated: 2019/12/14 00:53:42 by rhunders         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm_corewar.h"
 
-void    	op_zjmp(t_all *all, t_process *proc)
+void		op_zjmp(t_all *all, t_process *proc)
 {
-	int old_pc;
-	char *to_print;
+	int		old_pc;
+	char	*to_print;
 
 	old_pc = proc->pc;
 	if (parse_arg_op(all, proc))

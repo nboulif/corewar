@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lldi.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/14 00:53:19 by rhunders          #+#    #+#             */
+/*   Updated: 2019/12/14 00:53:21 by rhunders         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm_corewar.h"
 
-void    	op_lldi(t_all *all, t_process *proc)
+void		op_lldi(t_all *all, t_process *proc)
 {
-	int pc;
+	int		pc;
 
 	pc = proc->pc;
 	if (parse_arg_op(all, proc))
@@ -14,9 +26,9 @@ void    	op_lldi(t_all *all, t_process *proc)
 		if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
 			printf("       | -> load from %d + %d = %d (with pc and mod %ld)\n",
 				proc->op.params[0], proc->op.params[1],
-				proc->op.params[0] + proc->op.params[1], ((long)pc + (long)proc->op.params[0] + (long)proc->op.params[1]));
+				proc->op.params[0] + proc->op.params[1], ((long)pc +
+					(long)proc->op.params[0] + (long)proc->op.params[1]));
 		move_pc(&pc, (long)proc->op.params[0] + (long)proc->op.params[1]);
-		char c = all->map.character[pc];
-		proc->reg[proc->op.params[2] - 1] = c;
+		proc->reg[proc->op.params[2] - 1] = all->map.character[pc];
 	}
 }

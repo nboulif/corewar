@@ -1,17 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fork.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/14 00:52:43 by rhunders          #+#    #+#             */
+/*   Updated: 2019/12/14 00:52:45 by rhunders         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm_corewar.h"
 
-void    	op_fork(t_all *all, t_process *proc)
+void		op_fork(t_all *all, t_process *proc)
 {
 	t_champ		*champ;
 	t_process	*new_proc;
-	static int	old_pc;
+	int			old_pc;
 
 	old_pc = proc->pc;
 	if (parse_arg_op(all, proc))
 	{
 		if (all->flag & FLAG_RESUME)
 			printf("(%d)\n", proc->op.params[0] % IDX_MOD + old_pc);
-		new_proc = malloc(sizeof(t_process));
+		new_proc = proc_alloc(1);
 		ft_bzero(new_proc, sizeof(t_process));
 		ft_memcpy(new_proc->reg, proc->reg, sizeof(int) * REG_NUMBER);
 		new_proc->origin_champ = proc->origin_champ;
@@ -22,10 +34,6 @@ void    	op_fork(t_all *all, t_process *proc)
 		move_pc(&new_proc->pc, proc->op.params[0] % IDX_MOD);
 		new_proc->next = all->stack_proc;
 		all->stack_proc = new_proc;
-		// printf("lst_proc");
-		// for (t_process *cur = all->stack_proc; cur && printf(" -> "); cur = cur->next)
-		// 	printf("%d", cur->index);
-		// printf("\n");
 		all->nb_process++;
 	}
 }

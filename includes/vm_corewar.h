@@ -76,6 +76,11 @@
 # define FLAG_CYCLE		32
 # define FLAG_DEATH		64
 
+#define B1 0x000000ff
+#define B2 0x0000ff00
+#define B3 0x00ff0000
+#define B4 0xff000000
+
 typedef struct s_process	t_process;
 typedef struct s_all		t_all;
 
@@ -233,6 +238,7 @@ void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read);
 void		give_value_of_larg(t_all *all, t_process *proc, int pc, int index);
 void		give_value_of_arg(t_all *all, t_process *proc, int pc, int index);
 int			value_of_arg(t_all *all, t_process *proc, int pc, int index);
+t_process	*proc_alloc(int mode);
 
 /*
 ** parse_arg_op
