@@ -111,14 +111,14 @@ int		parse_arg_op(t_all *all, t_process *proc)
 	{
 		i = -1;
 		if (all->flag & FLAG_RESUME)
-			printf("P%5d | %s ", proc->index, proc->op.name);
+			ft_printf("P %4d | %s ", proc->index, proc->op.name);
 		while (++i < proc->op.nb_params)
 		{
 			if (all->flag & FLAG_RESUME && ret)
 			{
 				if (proc->op.type_of_params[i] == T_REG && !tab_of_printed_value_arg[proc->op.opc - 1][i][T_REG - 1] && !(proc->op.opc == 3 && i == 1 ))
-					printf("r");
-				printf(i == proc->op.nb_params - 1 && proc->op.opc != 9 && proc->op.opc != 12 && proc->op.opc != 15 ? "%d\n" : "%d ",
+					ft_printf("r");
+				ft_printf(i == proc->op.nb_params - 1 && proc->op.opc != 9 && proc->op.opc != 12 && proc->op.opc != 15 ? "%d\n" : "%d ",
 				tab_of_printed_value_arg[proc->op.opc - 1][i][proc->op.type_of_params[i] - 1] ?
 				value_of_arg(all, proc, pc_to_read, i) : proc->op.params[i]);
 			}

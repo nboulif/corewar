@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:52:43 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/14 00:52:45 by rhunders         ###   ########.fr       */
+/*   Updated: 2019/12/15 18:18:15 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		op_fork(t_all *all, t_process *proc)
 	if (parse_arg_op(all, proc))
 	{
 		if (all->flag & FLAG_RESUME)
-			printf("(%d)\n", proc->op.params[0] % IDX_MOD + old_pc);
+			ft_printf("(%d)\n", proc->op.params[0] % IDX_MOD + old_pc);
 		new_proc = proc_alloc(1);
 		ft_bzero(new_proc, sizeof(t_process));
 		ft_memcpy(new_proc->reg, proc->reg, sizeof(int) * REG_NUMBER);

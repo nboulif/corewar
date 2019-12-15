@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:31 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/14 00:53:33 by rhunders         ###   ########.fr       */
+/*   Updated: 2019/12/15 18:08:38 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		config_arg_sti_and_resume(t_all *all, t_process *proc, int pc_to_write)
 		proc->op.params[2] = proc->reg[proc->op.params[2] - 1];
 	proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
 	if (all->flag & FLAG_RESUME)
-		printf("       | -> store to %d + %d = %d (with pc and mod %d)\n",
+		ft_printf("       | -> store to %d + %d = %d (with pc and mod %d)\n",
 		proc->op.params[1] , proc->op.params[2],
 		proc->op.params[1] + proc->op.params[2],
 		(pc_to_write + proc->op.params[1] +

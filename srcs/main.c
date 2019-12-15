@@ -74,7 +74,7 @@ int					main(int argc, char **argv)
 	config_flags();
 	config_flags_syn();
 	i = 0;
-	printf("Introducing contestants...\n");
+	ft_printf("Introducing contestants...\n");
 	while (++i < argc)
 	{
 		if (*argv[i] == '-')
@@ -87,9 +87,9 @@ int					main(int argc, char **argv)
 			parse_champ(&all, NULL, argv[i]);
 	}
 	if (all.flag & FLAG_VISU)
-		printf("\e[?25l");
+		ft_printf("\e[?25l");
 	else if (all.flag)
-		printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
+		ft_printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
 				all.nb_champ, all.champ[all.nb_champ - 1].size_exec, all.champ[all.nb_champ - 1].name,
 				all.champ[all.nb_champ - 1].comment);
 	vm(&all);

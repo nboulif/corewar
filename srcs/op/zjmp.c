@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:38 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/14 00:53:42 by rhunders         ###   ########.fr       */
+/*   Updated: 2019/12/15 18:16:34 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void		op_zjmp(t_all *all, t_process *proc)
 		{
 			proc->pc = old_pc;
 			if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
-				printf("OK\n");
+				ft_printf("OK\n");
 			move_pc(&proc->pc, proc->op.params[0] % IDX_MOD);
 		}
 		else if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
-			printf("FAILED\n");
+			ft_printf("FAILED\n");
 	}
 }

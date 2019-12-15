@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/27 16:04:39 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/15 18:16:03 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		check_nb_live(t_all *all, int total_cycle)
 		if (!process->flag_live)
 		{
 			if (all->flag & FLAG_DEATH)
-				printf("Process %d hasn't lived for %d cycles (CTD %d)\n", 
+				ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", 
 				process->index, --total_cycle - process->last_live,
 				all->cycle_to_die - CYCLE_DELTA);
 			delete_element(all, &process, prev);
@@ -76,7 +76,7 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 	if (all->flag & FLAG_VISU && total_cycle >= 26023)
 	{
 		moveTo(10, 64 * 3 + 20);
-		printf("nb_cycle %d die %d %4d", total_cycle, all->cycle_to_die, all->nb_process);
+		ft_printf("nb_cycle %d die %d %4d", total_cycle, all->cycle_to_die, all->nb_process);
 		hexdump_map_square(all);
 	}
 	proc = all->stack_proc;

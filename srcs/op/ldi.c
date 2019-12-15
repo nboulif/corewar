@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:09 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/14 00:53:12 by rhunders         ###   ########.fr       */
+/*   Updated: 2019/12/15 18:07:59 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		op_ldi(t_all *all, t_process *proc)
 		give_value_of_arg(all, proc, pc, 0);
 		give_value_of_arg(all, proc, pc, 1);
 		if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
-			printf("       | -> load from %d + %d = %d (with pc and mod %d)\n",
+			ft_printf("       | -> load from %d + %d = %d (with pc and mod %d)\n",
 				proc->op.params[0], proc->op.params[1],
 				proc->op.params[0] + proc->op.params[1],
 				(pc + (proc->op.params[0] + proc->op.params[1]) % IDX_MOD) %
