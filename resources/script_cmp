@@ -81,7 +81,7 @@ cat diff_rv4FKG | grep P
 #-----------------------4 Player---------------------------------------------
 #Gagnant Gagnant Gagnant Gagnant
 ./a.out resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -r > rGGGG
-./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -v 4 > v4GGG
+./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -v 4 > v4GGGG
 diff rGGGG v4GGGG > diff_rv4GGGG
 echo "Gagnant Gagnant Gagnant Gagnant"
 cat diff_rv4GGGG | grep P
