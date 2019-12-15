@@ -44,12 +44,13 @@ int		is_a_process(t_all *all, int pc)
 	int			i;
 	t_process	*proc;
 
-	i = -1;
-	while (++i < all->stack_proc->n_items)
+	proc = all->stack_proc;
+	while (1)
 	{
-		proc = (t_process*)ft_array_get(all->stack_proc, i);
 		if (pc == proc->pc)
 			return ((unsigned int)proc->origin_champ->index_player);
+		if (!(proc = proc->next))
+			break ;
 	}
 	return (0);
 }

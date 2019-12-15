@@ -76,6 +76,11 @@
 # define FLAG_CYCLE		32
 # define FLAG_DEATH		64
 
+#define B1 0x000000ff
+#define B2 0x0000ff00
+#define B3 0x00ff0000
+#define B4 0xff000000
+
 typedef struct s_process	t_process;
 typedef struct s_all		t_all;
 
@@ -112,18 +117,19 @@ typedef struct		s_champ
 
 typedef struct		s_process
 {
-	t_champ			*origin_champ;
-	int				step_in_exec;
-	int				flag_live;
-	int				wait;
+	t_champ				*origin_champ;
+	int					step_in_exec;
+	int					flag_live;
+	int					wait;
 	// les registres
-	int				reg[REG_NUMBER];
-	int				pc;
-	int				carry;
+	int					reg[REG_NUMBER];
+	int					pc;
+	int					carry;
 	// current operation
-	t_op			op;
-	int				index;
-	int				last_live;
+	t_op				op;
+	int					index;
+	int					last_live;
+	struct s_process	*next;
 }					t_process;
 
 typedef struct		s_map
@@ -132,15 +138,19 @@ typedef struct		s_map
 	char			**color_in_map;
 }					t_map;
 
+
+
 typedef struct		s_all
 {
 	t_map			map;
 	// char			*map;
 	// char			*color_in_map;
 	size_t			nb_champ;
+	int				nb_process;
     unsigned int	flag; // si on met un flag pour le visu ou pour activer les threads
 	t_champ			champ[4];
-	t_array			*stack_proc;
+	// t_array			*stack_proc;
+	t_process		*stack_proc;
 	int				cycle_to_die;
 	int				cycles_before_exit;
 	t_champ			*last_player_alive;
@@ -229,6 +239,7 @@ void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read);
 void		give_value_of_larg(t_all *all, t_process *proc, int pc, int index);
 void		give_value_of_arg(t_all *all, t_process *proc, int pc, int index);
 int			value_of_arg(t_all *all, t_process *proc, int pc, int index);
+t_process	*proc_alloc(int mode);
 
 /*
 ** parse_arg_op

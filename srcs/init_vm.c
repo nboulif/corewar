@@ -9,30 +9,30 @@ int			cmp_champ_order(t_process *champ1, t_process *champ2)
 	return (1);
 }
 
-void	swap_proc(t_array *stack_proc, int a, int b)
+void	swap_proc(t_process *stack_proc, int a, int b)
 {
 	t_process	tmp;
 
-	tmp = *(t_process*)ft_array_get(stack_proc, a);
-	*(t_process*)ft_array_get(stack_proc, a) = *(t_process*)ft_array_get(stack_proc, b);
-	*(t_process*)ft_array_get(stack_proc, b) = tmp;
+	tmp = stack_proc[a];
+	stack_proc[a] = stack_proc[b];
+	stack_proc[b] = tmp;
 }
 
-int		partition(t_array *stack_proc, int start_ind, int size)
+int		partition(t_process *stack_proc, int start_ind, int size)
 {
 	t_process *value_piv;
 	int	piv_i;
 
-	value_piv = ft_array_get(stack_proc, size - 1);
+	value_piv = &stack_proc[size - 1];
 	piv_i = start_ind;
 	for (int i = start_ind; i < size; i++)
-		if (cmp_champ_order(value_piv, ft_array_get(stack_proc, i)) == -1)
+		if (cmp_champ_order(value_piv, &stack_proc[i]) == -1)
 			swap_proc(stack_proc, i, piv_i++);
 	swap_proc(stack_proc, size - 1, piv_i);
 	return (piv_i);
 }
 
-void	qsort_proc(t_array *stack_proc, int start_ind, int size)
+void	qsort_proc(t_process *stack_proc, int start_ind, int size)
 {
 	int pivot_i;
 
@@ -67,7 +67,7 @@ void		init_color_in_map(t_all *all)
 	while (++i < all->nb_champ)
 	{
 		x = -1;
-		proc = ft_array_get(all->stack_proc, i);
+		proc = &all->stack_proc[i];
 		while (++x < proc->origin_champ->size_exec)
 			all->map.color_in_map[x + proc->pc] = text_color[proc->origin_champ->index_player];
 	}
@@ -84,14 +84,14 @@ void		init_vm(t_all *all)
 	min_ind = 127;
 	i = -1;
 	init_map(all);
-	if (!(all->stack_proc = ft_array_construct(all->nb_champ, sizeof(t_process))))
+	if (!(all->stack_proc = malloc(all->nb_champ * sizeof(t_process))))
 		print_error_and_exit(MALLOC_ERROR);
 	ft_bzero(all->map.character, MEM_SIZE);
+	ft_bzero(all->stack_proc, all->nb_champ * sizeof(t_process));
 	while (++i < all->nb_champ)
 	{
 		ft_memcpy(all->map.character + i * (MEM_SIZE / all->nb_champ), all->champ[i].exec_code, all->champ[i].size_exec);
-		ft_bzero((proc = ft_array_inject(all->stack_proc)), sizeof(t_process));
-		ft_bzero(proc->reg, sizeof(int) * REG_NUMBER);
+		proc = &all->stack_proc[i];
 		proc->origin_champ = &all->champ[i];
 		proc->pc = i * (MEM_SIZE / all->nb_champ);
 		proc->carry = 0;
@@ -104,19 +104,23 @@ void		init_vm(t_all *all)
 	{
 		if (!all->champ[i].flag_index)
 			all->champ[i].index = min_ind - ++i_undif;
-		((t_process*)ft_array_get(all->stack_proc, i))->reg[0] = all->champ[i].index;
+		all->stack_proc[i].reg[0] = all->champ[i].index;
 	}
 	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	i = -1;
-	t_process *cur;
 	int j = all->nb_champ;
 	while (j)
 	{
 		i++;
-		cur = (t_process*)ft_array_get(all->stack_proc, i);
-		cur->origin_champ->index_player = i;
-		cur->index = j--;
+		proc = &all->stack_proc[i];
+		if (i < all->nb_champ - 1)
+			proc->next = &all->stack_proc[i + 1];
+		else
+			proc->next = NULL;
+		proc->origin_champ->index_player = i;
+		proc->index = j--;
 		all->max++;
 	}
+	all->nb_process = all->nb_champ;
 	init_color_in_map(all);
 }

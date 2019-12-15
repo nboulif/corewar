@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ld.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/14 00:53:06 by rhunders          #+#    #+#             */
+/*   Updated: 2019/12/14 00:53:08 by rhunders         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm_corewar.h"
 
-void    	op_ld(t_all *all, t_process *proc)
+void		op_ld(t_all *all, t_process *proc)
 {
 	int pc_to_read;
 
@@ -10,7 +22,8 @@ void    	op_ld(t_all *all, t_process *proc)
 		if (proc->op.type_of_params[0] == T_IND)
 		{
 			move_pc(&pc_to_read, proc->op.params[0] % IDX_MOD);
-			proc->reg[proc->op.params[1] - 1] = read_int_in_map(all, pc_to_read);
+			proc->reg[proc->op.params[1] - 1] =
+				read_int_in_map(all, pc_to_read);
 		}
 		else
 			proc->reg[proc->op.params[1] - 1] = proc->op.params[0];
