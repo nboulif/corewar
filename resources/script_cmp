@@ -4,35 +4,43 @@
 ./resources/vm_champs/corewar resources/tests/Gagnant.cor -v 4 > v4Gagnant
 diff rGagnant v4Gagnant > diff_rv4Gagnant
 echo "Gagnant"
-cat diff_rv4Gagnant | grep P
+cat diff_rv4Gagnant | grep "P "
 
 #ultima
 ./a.out resources/tests/ultima.cor -r > rultima
 ./resources/vm_champs/corewar resources/tests/ultima.cor -v 4 > v4ultima
 diff rultima v4ultima > diff_rv4ultima
 echo "ultima"
-cat diff_rv4ultima | grep P
+cat diff_rv4ultima | grep "P "
 
 #Kitty_Miaou
 ./a.out resources/tests/Kitty_Miaou.cor -r > rKitty_Miaou
 ./resources/vm_champs/corewar resources/tests/Kitty_Miaou.cor -v 4 > v4Kitty_Miaou
 diff rKitty_Miaou v4Kitty_Miaou > diff_rv4Kitty_Miaou
 echo "Kitty_Miaou"
-cat diff_rv4Kitty_Miaou | grep P
+cat diff_rv4Kitty_Miaou | grep "P "
 
 #Backward
 ./a.out resources/tests/Backward.cor -r > rBackward
 ./resources/vm_champs/corewar resources/tests/Backward.cor -v 4 > v4Backward
 diff rBackward v4Backward > diff_rv4Backward
 echo "Backward"
-cat diff_rv4Backward | grep P
+cat diff_rv4Backward | grep "P "
 
 #ForgottenOne
 ./a.out resources/tests/ForgottenOne.cor -r > rForgottenOne
 ./resources/vm_champs/corewar resources/tests/ForgottenOne.cor -v 4 > v4ForgottenOne
 diff rForgottenOne v4ForgottenOne > diff_rv4ForgottenOne
 echo "ForgottenOne"
-cat diff_rv4ForgottenOne | grep P
+cat diff_rv4ForgottenOne | grep "P "
+
+
+#jumper
+./a.out resources/tests/jumper.cor -r > rjumper
+./resources/vm_champs/corewar resources/tests/jumper.cor -v 4 > v4jumper
+diff rjumper v4jumper > diff_rv4jumper
+echo "jumper"
+cat diff_rv4jumper | grep "P "
 
 #-----------------------2 Player---------------------------------------------
 #Gagnant ultima
@@ -40,21 +48,21 @@ cat diff_rv4ForgottenOne | grep P
 ./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/ultima.cor -v 4 > v4Gu
 diff rGu v4Gu > diff_rv4Gu
 echo "Gagnant ultima"
-cat diff_rv4Gu | grep P
+cat diff_rv4Gu | grep "P "
 
 #ultima Gagnant
 ./a.out resources/tests/ultima.cor resources/tests/Gagnant.cor -r > ruG
 ./resources/vm_champs/corewar resources/tests/ultima.cor resources/tests/Gagnant.cor -v 4 > v4uG
 diff ruG v4uG > diff_rv4uG
 echo "ultima Gagnant"
-cat diff_rv4uG | grep P
+cat diff_rv4uG | grep "P "
 
 #Kitty_Miaou Gagnant
 ./a.out resources/tests/Kitty_Miaou.cor resources/tests/Gagnant.cor -r > rKG
 ./resources/vm_champs/corewar resources/tests/Kitty_Miaou.cor resources/tests/Gagnant.cor -v 4 > v4KG
 diff rKG v4KG > diff_rv4KG
 echo "Kitty_Miaou Gagnant"
-cat diff_rv4KG | grep P
+cat diff_rv4KG | grep "P "
 
 #-----------------------3 Player---------------------------------------------
 #Gagnant ultima Kitty_Miaou
@@ -62,21 +70,21 @@ cat diff_rv4KG | grep P
 ./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/ultima.cor resources/tests/Kitty_Miaou.cor -v 4 > v4GuK
 diff rGuK v4GuK > diff_rv4GuK
 echo "Gagnant ultima Kitty_Miaou"
-cat diff_rv4GuK | grep P
+cat diff_rv4GuK | grep "P "
 
 #Gagnant Backward ultima
 ./a.out resources/tests/Gagnant.cor resources/tests/Backward.cor resources/tests/ultima.cor -r > rGBu
 ./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/Backward.cor resources/tests/ultima.cor -v 4 > v4GBu
 diff rGBu v4GBu > diff_rv4GBu
 echo "Gagnant Backward ultima"
-cat diff_rv4GBu | grep P
+cat diff_rv4GBu | grep "P "
 
 #ForgottenOne Kitty_Miaou Gagnant
 ./a.out resources/tests/ForgottenOne.cor resources/tests/Kitty_Miaou.cor resources/tests/Gagnant.cor -r > rFKG
 ./resources/vm_champs/corewar resources/tests/ForgottenOne.cor resources/tests/Kitty_Miaou.cor resources/tests/Gagnant.cor -v 4 > v4FKG
 diff rFKG v4FKG > diff_rv4FKG
 echo "ForgottenOne Kitty_Miaou Gagnant"
-cat diff_rv4FKG | grep P
+cat diff_rv4FKG | grep "P "
 
 #-----------------------4 Player---------------------------------------------
 #Gagnant Gagnant Gagnant Gagnant
@@ -84,11 +92,19 @@ cat diff_rv4FKG | grep P
 ./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -v 4 > v4GGGG
 diff rGGGG v4GGGG > diff_rv4GGGG
 echo "Gagnant Gagnant Gagnant Gagnant"
-cat diff_rv4GGGG | grep P
+cat diff_rv4GGGG | grep "P "
 
 #ultima ultima ultima ultima
 ./a.out resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor -r > ruuuu
 ./resources/vm_champs/corewar resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor -v 4 > v4uuuu
 diff ruuuu v4uuuu > diff_rv4uuuu
 echo "ultima ultima ultima ultima"
-cat diff_rv4uuuu | grep P
+cat diff_rv4uuuu | grep "P "
+
+
+#jumper jumper Gagnant Gagnant
+./a.out resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -r > rjjGG
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -v 4 > v4jjGG
+diff rjjGG v4jjGG > diff_rv4jjGG
+echo "jumper jumper Gagnant Gagnant"
+cat diff_rv4jjGG | grep "P "
