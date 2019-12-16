@@ -64,6 +64,13 @@ diff rKG v4KG > diff_rv4KG
 echo "Kitty_Miaou Gagnant"
 cat diff_rv4KG | grep "P "
 
+#jumper Gagnant
+./a.out resources/tests/jumper.cor resources/tests/Gagnant.cor -r > rjG
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/Gagnant.cor -v 4 > v4jG
+diff rjG v4jG > diff_rv4jG
+echo "jumper Gagnant"
+cat diff_rv4jG | grep "P "
+
 #-----------------------3 Player---------------------------------------------
 #Gagnant ultima Kitty_Miaou
 ./a.out resources/tests/Gagnant.cor resources/tests/ultima.cor resources/tests/Kitty_Miaou.cor -r > rGuK
@@ -85,6 +92,20 @@ cat diff_rv4GBu | grep "P "
 diff rFKG v4FKG > diff_rv4FKG
 echo "ForgottenOne Kitty_Miaou Gagnant"
 cat diff_rv4FKG | grep "P "
+
+#jumper Gagnant Gagnant
+./a.out resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -r > rjGG
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -v 4 > v4jGG
+diff rjGG v4jGG > diff_rv4jGG
+echo "jumper Gagnant Gagnant"
+cat diff_rv4jGG | grep "P "
+
+#jumper jumper Gagnant
+./a.out resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/Gagnant.cor -r > rjjG
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/Gagnant.cor -v 4 > v4jjG
+diff rjjG v4jjG > diff_rv4jjG
+echo "jumper jumper Gagnant"
+cat diff_rv4jjG | grep "P "
 
 #-----------------------4 Player---------------------------------------------
 #Gagnant Gagnant Gagnant Gagnant
