@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/15 18:16:03 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/16 16:42:10 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		next_action(t_all *all, t_process *current_process)
 	current_process->wait = current_process->op.cycles - 1;
 }
 
-void		delete_element(t_all *all, t_process **element, t_process *prev)
+int		delete_element(t_all *all, t_process **element, t_process *prev)
 {
 	if (prev)
 	{
@@ -40,7 +40,9 @@ void		delete_element(t_all *all, t_process **element, t_process *prev)
 	{
 		all->stack_proc = (*element)->next;
 		*element = all->stack_proc;
+		return (1);
 	}
+	return (0);
 }
 
 int		check_nb_live(t_all *all, int total_cycle)
@@ -50,7 +52,7 @@ int		check_nb_live(t_all *all, int total_cycle)
 
 	prev = NULL;
 	process = all->stack_proc;
-	while (1)
+	while (process)
 	{
 		if (!process->flag_live)
 		{
@@ -58,10 +60,12 @@ int		check_nb_live(t_all *all, int total_cycle)
 				ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", 
 				process->index, --total_cycle - process->last_live,
 				all->cycle_to_die - CYCLE_DELTA);
-			delete_element(all, &process, prev);
+			if (delete_element(all, &process, prev))
+				continue ;
 			all->nb_process--;
 		}
-		process && (process->flag_live = 0);
+		if (process)
+			(process->flag_live = 0);
 		prev = process;
 		if (!process || !(process = process->next))
 			break ;
