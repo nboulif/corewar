@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/16 17:22:42 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/17 16:23:20 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int		check_nb_live(t_all *all, int total_cycle)
 				ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", 
 				process->index, --total_cycle - process->last_live,
 				all->cycle_to_die - CYCLE_DELTA);
+			all->nb_process--;
 			if (delete_element(all, &process, prev))
 				continue ;
-			all->nb_process--;
 		}
 		if (process)
 			(process->flag_live = 0);

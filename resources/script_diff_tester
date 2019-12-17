@@ -41,7 +41,15 @@ python3 resources/diff_tester/test.py kg 2 resources/tests/Kitty_Miaou.cor resou
 echo "jumper Gagnant"
 python3 resources/diff_tester/test.py jg 2 resources/tests/jumper.cor resources/tests/Gagnant.cor
 
+#gateau overwatch
+echo "gateau overwatch"
+python3 resources/diff_tester/test.py go 2 resources/tests/gateau.cor resources/tests/overwatch.cor
+
 #-----------------------3 Player---------------------------------------------
+#test Kitty_Miaou ForgottenOne
+echo "test Kitty_Miaou ForgottenOne"
+python3 resources/diff_tester/test.py tKF 3 resources/tests/test.cor resources/tests/Kitty_Miaou.cor resources/tests/ForgottenOne.cor
+
 #Gagnant ultima Kitty_Miaou
 echo "Gagnant ultima Kitty_Miaou"
 python3 resources/diff_tester/test.py guk 3 resources/tests/Gagnant.cor resources/tests/ultima.cor resources/tests/Kitty_Miaou.cor
@@ -67,10 +75,21 @@ python3 resources/diff_tester/test.py jjg 3 resources/tests/jumper.cor resources
 echo "Gagnant Gagnant Gagnant Gagnant"
 python3 resources/diff_tester/test.py gggg 4 resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor
 
+#Gagnant ultima ForgottenOne Kitty_Miaou
+echo "Gagnant ultima ForgottenOne Kitty_Miaou"
+python3 resources/diff_tester/test.py GuFK 4 resources/tests/Gagnant.cor resources/tests/ultima.cor resources/tests/ForgottenOne.cor resources/tests/Kitty_Miaou.cor
+
+#jumper Gagnant overwatch gateau
+echo "jumper Gagnant overwatch gateau"
+python3 resources/diff_tester/test.py jGog 4 resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/overwatch.cor resources/tests/gateau.cor
+
+#Kitty_Miaou2 ultima Gagnant Backward
+echo "Kitty_Miaou2 ultima Gagnant Backward"
+python3 resources/diff_tester/test.py K2uGB 4 resources/tests/Kitty_Miaou2.cor resources/tests/ultima.cor resources/tests/Gagnant.cor resources/tests/Backward.cor
+
 #ultima ultima ultima ultima
 echo "ultima ultima ultima ultima"
 python3 resources/diff_tester/test.py uuuu 4 resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor
-
 
 #jumper jumper Gagnant Gagnant
 echo "jumper jumper Gagnant Gagnant"

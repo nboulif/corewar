@@ -71,7 +71,29 @@ diff rjG v4jG > diff_rv4jG
 echo "jumper Gagnant"
 cat diff_rv4jG | grep "P "
 
+
+#gateau overwatch
+./a.out resources/tests/gateau.cor resources/tests/overwatch.cor -r > rgo
+./resources/vm_champs/corewar resources/tests/gateau.cor resources/tests/overwatch.cor -v 4 > v4go
+diff rgo v4go > diff_rv4go
+echo "gateau overwatch"
+cat diff_rv4go | grep "P "
+
+#jumper overwatch
+./a.out resources/tests/jumper.cor resources/tests/overwatch.cor -r > rjo
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/overwatch.cor -v 4 > v4jo
+diff rjo v4jo > diff_rv4jo
+echo "jumper overwatch"
+cat diff_rv4jo | grep "P "
+
 #-----------------------3 Player---------------------------------------------
+#test Kitty_Miaou ForgottenOne
+./a.out resources/tests/test.cor resources/tests/Kitty_Miaou.cor resources/tests/ForgottenOne.cor -r > rtKF
+./resources/vm_champs/corewar resources/tests/test.cor resources/tests/Kitty_Miaou.cor resources/tests/ForgottenOne.cor -v 4 > v4tKF
+diff rtKF v4tKF > diff_rv4tKF
+echo "test Kitty_Miaou ForgottenOne"
+cat diff_rv4tKF | grep "P "
+
 #Gagnant ultima Kitty_Miaou
 ./a.out resources/tests/Gagnant.cor resources/tests/ultima.cor resources/tests/Kitty_Miaou.cor -r > rGuK
 ./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/ultima.cor resources/tests/Kitty_Miaou.cor -v 4 > v4GuK
@@ -115,17 +137,58 @@ diff rGGGG v4GGGG > diff_rv4GGGG
 echo "Gagnant Gagnant Gagnant Gagnant"
 cat diff_rv4GGGG | grep "P "
 
+#Gagnant ultima ForgottenOne Kitty_Miaou
+./a.out resources/tests/Gagnant.cor resources/tests/ultima.cor resources/tests/ForgottenOne.cor resources/tests/Kitty_Miaou.cor -r > rGuFK
+./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/ultima.cor resources/tests/ForgottenOne.cor resources/tests/Kitty_Miaou.cor -v 4 > v4GuFK
+diff rGuFK v4GuFK > diff_rv4GuFK
+echo "Gagnant ultima ForgottenOne Kitty_Miaou"
+cat diff_rv4GuFK | grep "P "
+
+#test2 test test test
+./a.out resources/tests/test2.cor resources/tests/test.cor resources/tests/test.cor resources/tests/test.cor -r > rt2ttt
+./resources/vm_champs/corewar resources/tests/test2.cor resources/tests/test.cor resources/tests/test.cor resources/tests/test.cor -v 4 > v4t2ttt
+diff rt2ttt v4t2ttt > diff_rv4t2ttt
+echo "test2 test test test"
+cat diff_rv4t2ttt | grep "P "
+
+#jumper Gagnant overwatch gateau
+./a.out resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/overwatch.cor resources/tests/gateau.cor -r > rjGog
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/overwatch.cor resources/tests/gateau.cor -v 4 > v4jGog
+diff rjGog v4jGog > diff_rv4jGog
+echo "jumper Gagnant overwatch gateau"
+cat diff_rv4jGog | grep "P "
+
+#Kitty_Miaou2 ultima Gagnant Backward
+./a.out resources/tests/Kitty_Miaou2.cor resources/tests/ultima.cor resources/tests/Gagnant.cor resources/tests/Backward.cor -r > rKuGB
+./resources/vm_champs/corewar resources/tests/Kitty_Miaou2.cor resources/tests/ultima.cor resources/tests/Gagnant.cor resources/tests/Backward.cor -v 4 > v4KuGB
+diff rKuGB v4KuGB > diff_rv4KuGB
+echo "Kitty_Miaou2 ultima Gagnant Backward"
+cat diff_rv4KuGB | grep "P "
+
 #ultima ultima ultima ultima
 ./a.out resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor -r > ruuuu
 ./resources/vm_champs/corewar resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor -v 4 > v4uuuu
 diff ruuuu v4uuuu > diff_rv4uuuu
 echo "ultima ultima ultima ultima"
-cat diff_rv4uuuu | grep "P "
-
+cat diff_rv4uuuu | grep "P " | wc -l
 
 #jumper jumper Gagnant Gagnant
 ./a.out resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -r > rjjGG
 ./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -v 4 > v4jjGG
 diff rjjGG v4jjGG > diff_rv4jjGG
 echo "jumper jumper Gagnant Gagnant"
-cat diff_rv4jjGG | grep "P "
+cat diff_rv4jjGG | grep "P " | wc -l
+
+#overwatch overwatch Gagnant Gagnant
+./a.out resources/tests/overwatch.cor resources/tests/overwatch.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -r > rooGG
+./resources/vm_champs/corewar resources/tests/overwatch.cor resources/tests/overwatch.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -v 4 > v4ooGG
+diff rooGG v4ooGG > diff_rv4ooGG
+echo "overwatch overwatch Gagnant Gagnant"
+cat diff_rv4ooGG | grep "P "
+
+#jumper jumper overwatch overwatch
+./a.out resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/overwatch.cor resources/tests/overwatch.cor -r > rjjoo
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/overwatch.cor resources/tests/overwatch.cor -v 4 > v4jjoo
+diff rjjoo v4jjoo > diff_rv4jjoo
+echo "jumper jumper overwatch overwatch"
+cat diff_rv4jjoo | grep "P "
