@@ -192,3 +192,46 @@ cat diff_rv4ooGG | grep "P "
 diff rjjoo v4jjoo > diff_rv4jjoo
 echo "jumper jumper overwatch overwatch"
 cat diff_rv4jjoo | grep "P "
+
+#jumper Gagnant jumper Gagnant
+./a.out resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/jumper.cor resources/tests/Gagnant.cor -r > rjGjG
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/jumper.cor resources/tests/Gagnant.cor -v 4 > v4jGjG
+diff rjGjG v4jGjG > diff_rv4jGjG
+echo "jumper Gagnant jumper Gagnant"
+cat diff_rv4jGjG | grep "P "
+
+#Gagnant Gagnant jumper jumper
+./a.out resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/jumper.cor resources/tests/jumper.cor -r > rGGjj
+./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/Gagnant.cor resources/tests/jumper.cor resources/tests/jumper.cor -v 4 > v4GGjj
+diff rGGjj v4GGjj > diff_rv4GGjj
+echo "Gagnant Gagnant jumper jumper"
+cat diff_rv4GGjj | grep "P "
+
+#ultima ultima jumper jumper
+./a.out resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/jumper.cor resources/tests/jumper.cor -r > ruujj
+./resources/vm_champs/corewar resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/jumper.cor resources/tests/jumper.cor -v 4 > v4uujj
+diff ruujj v4uujj > diff_rv4uujj
+echo "ultima ultima jumper jumper"
+cat diff_rv4uujj | grep "P "
+
+#jumper jumper ultima ultima 
+./a.out resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/ultima.cor resources/tests/ultima.cor -r > rjjuu
+./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/ultima.cor resources/tests/ultima.cor -v 4 > v4jjuu
+diff rjjuu v4jjuu > diff_rv4jjuu
+echo "jumper jumper ultima ultima"
+cat diff_rv4jjuu | grep "P "
+
+#mise_a_jour maxidef run_Kitty_RUN jumper
+./a.out resources/tests/mise_a_jour_windows95.cor resources/tests/maxidef.cor resources/tests/run_Kitty_RUN.cor resources/tests/jumper.cor -r > rmimarj
+./resources/vm_champs/corewar resources/tests/mise_a_jour_windows95.cor resources/tests/maxidef.cor resources/tests/run_Kitty_RUN.cor resources/tests/jumper.cor -v 4 > v4mimarj
+diff rmimarj v4mimarj > diff_rv4mimarj
+echo "mise_a_jour maxidef run_Kitty_RUN jumper"
+cat diff_rv4mimarj | grep "P "
+
+
+#Douceur_power run_Kitty_RUN Gagnant ultima
+./a.out resources/tests/Douceur_power.cor resources/tests/run_Kitty_RUN.cor resources/tests/Gagnant.cor resources/tests/ultima.cor -r > rDrGu
+./resources/vm_champs/corewar resources/tests/Douceur_power.cor resources/tests/run_Kitty_RUN.cor resources/tests/Gagnant.cor resources/tests/ultima.cor -v 4 > v4DrGu
+diff rDrGu v4DrGu > diff_rv4DrGu
+echo "Douceur_power run_Kitty_RUN Gagnant ultima"
+cat diff_rv4DrGu | grep "P " | wc -l
