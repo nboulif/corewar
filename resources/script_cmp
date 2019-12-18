@@ -42,6 +42,62 @@ diff rjumper v4jumper > diff_rv4jumper
 echo "jumper"
 cat diff_rv4jumper | grep "P "
 
+#Douceur_power
+./a.out resources/tests/Douceur_power.cor -r > rDouceur_power
+./resources/vm_champs/corewar resources/tests/Douceur_power.cor -v 4 > v4Douceur_power
+diff rDouceur_power v4Douceur_power > diff_rv4Douceur_power
+echo "Douceur_power"
+cat diff_rv4Douceur_power | grep "P "
+
+#gateau
+./a.out resources/tests/gateau.cor -r > rgateau
+./resources/vm_champs/corewar resources/tests/gateau.cor -v 4 > v4gateau
+diff rgateau v4gateau > diff_rv4gateau
+echo "gateau"
+cat diff_rv4gateau | grep "P "
+
+#overwatch
+./a.out resources/tests/overwatch.cor -r > roverwatch
+./resources/vm_champs/corewar resources/tests/overwatch.cor -v 4 > v4overwatch
+diff roverwatch v4overwatch > diff_rv4overwatch
+echo "overwatch"
+cat diff_rv4overwatch | grep "P "
+
+#maxidef
+./a.out resources/tests/maxidef.cor -r > rmaxidef
+./resources/vm_champs/corewar resources/tests/maxidef.cor -v 4 > v4maxidef
+diff rmaxidef v4maxidef > diff_rv4maxidef
+echo "maxidef"
+cat diff_rv4maxidef | grep "P "
+
+#run_Kitty_RUN
+./a.out resources/tests/run_Kitty_RUN.cor -r > rrun_Kitty_RUN
+./resources/vm_champs/corewar resources/tests/run_Kitty_RUN.cor -v 4 > v4run_Kitty_RUN
+diff rrun_Kitty_RUN v4run_Kitty_RUN > diff_rv4run_Kitty_RUN
+echo "run_Kitty_RUN"
+cat diff_rvrun_Kitty_RUN | grep "P "
+
+#test
+./a.out resources/tests/test.cor -r > rtest
+./resources/vm_champs/corewar resources/tests/test.cor -v 4 > v4test
+diff rtest v4test > diff_rv4test
+echo "test"
+cat diff_rv4test | grep "P "
+
+#test2
+./a.out resources/tests/test2.cor -r > rtest2
+./resources/vm_champs/corewar resources/tests/test2.cor -v 4 > v4test2
+diff rtest2 v4test2 > diff_rv4test2
+echo "test2"
+cat diff_rv4test2 | grep "P "
+
+#mise_a_jour_windows95
+./a.out resources/tests/mise_a_jour_windows95.cor -r > rmise_a_jour
+./resources/vm_champs/corewar resources/tests/mise_a_jour_windows95.cor -v 4 > v4mise_a_jour
+diff rmise_a_jour v4mise_a_jour > diff_rv4mise_a_jour
+echo "mise_a_jour"
+cat diff_rv4mise_a_jour | grep "P "
+
 #-----------------------2 Player---------------------------------------------
 #Gagnant ultima
 ./a.out resources/tests/Gagnant.cor resources/tests/ultima.cor -r > rGu
@@ -235,3 +291,24 @@ cat diff_rv4mimarj | grep "P "
 diff rDrGu v4DrGu > diff_rv4DrGu
 echo "Douceur_power run_Kitty_RUN Gagnant ultima"
 cat diff_rv4DrGu | grep "P " | wc -l
+
+#Douceur_power Douceur_power Douceur_power Douceur_power
+./a.out resources/tests/Douceur_power.cor resources/tests/Douceur_power.cor resources/tests/Douceur_power.cor resources/tests/Douceur_power.cor -r > rDDDD
+./resources/vm_champs/corewar resources/tests/Douceur_power.cor resources/tests/Douceur_power.cor resources/tests/Douceur_power.cor resources/tests/Douceur_power.cor -v 4 > v4DDDD
+diff rDDDD v4DDDD > diff_rv4DDDD
+echo "Douceur_power Douceur_power Douceur_power Douceur_power"
+cat diff_rv4DDDD | grep "P " | wc -l
+
+#Douceur_power run_Kitty_RUN jumper Douceur_power
+./a.out resources/tests/Douceur_power.cor resources/tests/run_Kitty_RUN.cor resources/tests/jumper.cor resources/tests/Douceur_power.cor -r > rDrjD
+./resources/vm_champs/corewar resources/tests/Douceur_power.cor resources/tests/run_Kitty_RUN.cor resources/tests/jumper.cor resources/tests/Douceur_power.cor -v 4 > v4DrjD
+diff rDrjD v4DrjD > diff_rv4DrjD
+echo "Douceur_power run_Kitty_RUN jumper Douceur_power"
+cat diff_rv4DrjD | grep "P " | wc -l
+
+#Gagnant Douceur_power maxidef mise_a_jour
+./a.out resources/tests/Gagnant.cor resources/tests/Douceur_power.cor resources/tests/maxidef.cor resources/tests/mise_a_jour_windows95.cor -r > rGDmami
+./resources/vm_champs/corewar resources/tests/Gagnant.cor resources/tests/Douceur_power.cor resources/tests/maxidef.cor resources/tests/mise_a_jour_windows95.cor -v 4 > v4GDmami
+diff rGDmami v4GDmami > diff_rv4GDmami
+echo "Gagnant Douceur_power maxidef mise_a_jour"
+cat diff_rv4GDmami | grep "P " | wc -l
