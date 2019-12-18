@@ -94,3 +94,7 @@ python3 resources/diff_tester/test.py uuuu 4 resources/tests/ultima.cor resource
 #jumper jumper Gagnant Gagnant
 echo "jumper jumper Gagnant Gagnant"
 python3 resources/diff_tester/test.py jjGG 4 resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor
+
+#Douceur_power run_Kitty_RUN Gagnant ultima
+echo "Douceur_power run_Kitty_RUN Gagnant ultima"
+python3 resources/diff_tester/test.py DrGu 4 resources/tests/Douceur_power.cor resources/tests/run_Kitty_RUN.cor resources/tests/Gagnant.cor resources/tests/ultima.cor

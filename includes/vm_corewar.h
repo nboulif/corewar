@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/11/30 16:19:06 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/18 17:18:13 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@
 # define FLAG_RESUME	16
 # define FLAG_CYCLE		32
 # define FLAG_DEATH		64
+# define FLAG_DUMP64	128
+# define FLAG_LIVE		256
 
 #define B1 0x000000ff
 #define B2 0x0000ff00

@@ -134,6 +134,8 @@ void				config_flags(void)
 	flags['r'] = FLAG_RESUME;
 	flags['c'] = FLAG_CYCLE;
 	flags['x'] = FLAG_DEATH;
+	flags['L'] = FLAG_LIVE;
+	flags['D'] = FLAG_DUMP64;
 }
 
 void				config_flags_syn(void)
