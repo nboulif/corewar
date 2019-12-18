@@ -175,6 +175,8 @@ extern char				*background_color[256];
 ** utils
 */
 
+int			calcul_new_pc_idx(int pc, int deplacement);
+int			calcul_new_pc(int pc, int deplacement);
 void		config_flags(void);
 void		config_flags_syn(void);
 int			ft_realloc(void **tab, int *size_av,

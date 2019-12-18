@@ -23,7 +23,7 @@ void		op_and(t_all *all, t_process *proc)
 	{
 		config_arg_binary_op(all, proc, pc_to_read);
 		proc->reg[proc->op.params[2] - 1] =
-			proc->op.params[0] & proc->op.params[1];
+			(unsigned int)proc->op.params[0] & (unsigned int)proc->op.params[1];
 		proc->carry = !proc->reg[proc->op.params[2] - 1];
 	}
 }

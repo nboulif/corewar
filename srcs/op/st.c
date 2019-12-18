@@ -21,7 +21,8 @@ void		op_st(t_all *all, t_process *p)
 	{
 		if (p->op.type_of_params[1] == T_IND)
 		{
-			move_pc(&pc_w, p->op.params[1] % IDX_MOD);
+			pc_w = calcul_new_pc_idx(pc_w, p->op.params[1]);
+			// move_pc(&pc_w, p->op.params[1] % IDX_MOD);
 			all->map.character[pc_w] = (p->reg[*p->op.params - 1] & B4) >> 24;
 			change_color(all, p, pc_w);
 			move_pc(&pc_w, 1);

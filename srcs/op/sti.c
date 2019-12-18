@@ -12,6 +12,26 @@
 
 #include "vm_corewar.h"
 
+int			calcul_new_pc_idx(int pc, int deplacement)
+{
+	if (deplacement <= -MEM_SIZE || deplacement >= MEM_SIZE)
+		deplacement %= MEM_SIZE;
+	pc += (deplacement % IDX_MOD);
+	if (pc < 0)
+		pc += MEM_SIZE;
+	return (pc % MEM_SIZE);
+}
+
+int			calcul_new_pc(int pc, int deplacement)
+{
+	if (deplacement <= -MEM_SIZE || deplacement >= MEM_SIZE)
+		deplacement %= MEM_SIZE;
+	pc += deplacement;
+	if (pc < 0)
+		pc += MEM_SIZE;
+	return (pc % MEM_SIZE);
+}
+
 void		config_arg_sti_and_resume(t_all *all, t_process *proc, int pc_to_write)
 {
 	int pc_to_read;
@@ -23,7 +43,8 @@ void		config_arg_sti_and_resume(t_all *all, t_process *proc, int pc_to_write)
 	else if (proc->op.type_of_params[1] == T_IND)
 	{
 		pc_to_read = pc_to_write;
-		move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
+		// move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
+		pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[1]);
 		proc->op.params[1] = read_int_in_map(all, pc_to_read);
 	}
 	if (proc->op.type_of_params[2] == T_REG)
@@ -45,8 +66,9 @@ void		op_sti(t_all *all, t_process *proc)
 	if (parse_arg_op(all, proc))
 	{
 		config_arg_sti_and_resume(all, proc, pc_to_write);
-		move_pc(&pc_to_write,
-		((long)proc->op.params[1] + (long)proc->op.params[2]) % IDX_MOD);
+		// move_pc(&pc_to_write,
+		// ((int)proc->op.params[1] + (int)proc->op.params[2]) % IDX_MOD);
+		pc_to_write = calcul_new_pc_idx(pc_to_write, proc->op.params[1] + proc->op.params[2]);
 		all->map.character[pc_to_write] = (proc->op.params[0] & B4) >> 24;
 		change_color(all, proc, pc_to_write);
 		move_pc(&pc_to_write, 1);

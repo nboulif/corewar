@@ -28,7 +28,8 @@ void		op_lldi(t_all *all, t_process *proc)
 				proc->op.params[0], proc->op.params[1],
 				proc->op.params[0] + proc->op.params[1], ((long)pc +
 					(long)proc->op.params[0] + (long)proc->op.params[1]));
-		move_pc(&pc, (long)proc->op.params[0] + (long)proc->op.params[1]);
+		// move_pc(&pc, (long)proc->op.params[0] + (long)proc->op.params[1]);
+		pc = calcul_new_pc(pc, proc->op.params[0] + proc->op.params[1]);
 		proc->reg[proc->op.params[2] - 1] = all->map.character[pc];
 		proc->carry = !proc->reg[proc->op.params[2] - 1];
 	}

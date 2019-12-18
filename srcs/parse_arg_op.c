@@ -87,13 +87,12 @@ int		parse_arg_op(t_all *all, t_process *proc)
 			}
 		}
 		i = -1;
+		if ((!(proc->op.flags_params[0] & op_tab[proc->op.opc].flags_params[0]) && op_tab[proc->op.opc].nb_params > 0) ||
+			(!(proc->op.flags_params[1] & op_tab[proc->op.opc].flags_params[1]) && op_tab[proc->op.opc].nb_params > 1) ||
+			(!(proc->op.flags_params[2] & op_tab[proc->op.opc].flags_params[2]) && op_tab[proc->op.opc].nb_params > 2))
+			ret = 0;
 	}
-	if ((!(proc->op.flags_params[0] & op_tab[proc->op.opc].flags_params[0]) && op_tab[proc->op.opc].nb_params > 0) ||
-		(!(proc->op.flags_params[1] & op_tab[proc->op.opc].flags_params[1]) && op_tab[proc->op.opc].nb_params > 1) ||
-		(!(proc->op.flags_params[2] & op_tab[proc->op.opc].flags_params[2]) && op_tab[proc->op.opc].nb_params > 2))
-		ret = 0;
 	move_pc(&proc->pc, 1);
-
 	while (++i < proc->op.nb_params)
 	{
 		if (proc->op.type_of_params[i] == T_DIR)

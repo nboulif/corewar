@@ -88,10 +88,11 @@ int					main(int argc, char **argv)
 	}
 	if (all.flag & FLAG_VISU)
 		ft_printf("\e[?25l");
-	else if (all.flag)
+	else
+		for (int i = 0;i < all.nb_champ;i++)
 		ft_printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
-				all.nb_champ, all.champ[all.nb_champ - 1].size_exec, all.champ[all.nb_champ - 1].name,
-				all.champ[all.nb_champ - 1].comment);
+				i+1, all.champ[i].size_exec, all.champ[i].name,
+				all.champ[i].comment);
 	vm(&all);
 	//execute
 	//free_all
