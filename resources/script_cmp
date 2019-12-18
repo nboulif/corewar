@@ -158,6 +158,13 @@ echo "jumper overwatch"
 cat diff_rv4jo | grep "P "
 rm rjo v4jo diff_rv4jo
 
+#run_Kitty_RUN ultima
+./a.out resources/tests/run_Kitty_RUN.cor resources/tests/ultima.cor -r > rru
+./resources/vm_champs/corewar resources/tests/run_Kitty_RUN.cor resources/tests/ultima.cor -v 4 > v4ru
+diff rru v4ru > diff_rv4ru
+echo "run_KittY_RUN ultima"
+cat diff_rv4ru | grep "P "
+
 #-----------------------3 Player---------------------------------------------
 #test Kitty_Miaou ForgottenOne
 ./a.out resources/tests/test.cor resources/tests/Kitty_Miaou.cor resources/tests/ForgottenOne.cor -r > rtKF
