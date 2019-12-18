@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/17 16:23:20 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/18 18:37:08 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,39 +112,6 @@ int check_ctd(t_all *all, int total_cycle)
 		}
 		all->nb_live = 0;
 		cycle = 1;
-	}
-	return (1);
-}
-
-void		free_all(t_all *all, t_process	*first_process)
-{
-	proc_alloc(0);
-	free(first_process);
-	while (all->nb_champ--)
-	{
-		free(all->champ[all->nb_champ].name);
-		free(all->champ[all->nb_champ].comment);
-		free(all->champ[all->nb_champ].exec_code);
-	}
-	free(all->map.character);
-	free(all->map.color_in_map);
-}
-
-void		vm(t_all *all)
-{
-	int			total_cycle;
-	t_process	*first_process;
-
-	total_cycle = 0;
-	init_vm(all);
-	first_process = all->stack_proc;
-	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
-	{
-		make_action_and_visu(all, total_cycle++);
-		if (all->flag & FLAG_CYCLE)
-			ft_printf("It is now cycle %d\n", total_cycle);
-		if (!check_ctd(all, total_cycle))
-			break ;
 	}
 	return (1);
 }
