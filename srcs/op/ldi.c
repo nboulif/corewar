@@ -29,7 +29,8 @@ void		op_ldi(t_all *all, t_process *proc)
 				proc->op.params[0] + proc->op.params[1],
 				(pc + (proc->op.params[0] + proc->op.params[1]) % IDX_MOD) %
 					MEM_SIZE);
-		move_pc(&pc, (proc->op.params[0] + proc->op.params[1]) % IDX_MOD);
+		// move_pc(&pc, (proc->op.params[0] + proc->op.params[1]) % IDX_MOD);
+		pc = calcul_new_pc_idx(pc, proc->op.params[0] + proc->op.params[1]);
 		proc->reg[proc->op.params[2] - 1] = read_int_in_map(all, pc);
 	}
 }

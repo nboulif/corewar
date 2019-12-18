@@ -50,14 +50,16 @@ void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read)
 		proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
 	else if (proc->op.type_of_params[0] == T_IND)
 	{
-		move_pc(&pc_to_read, proc->op.params[0] % IDX_MOD);
+		// move_pc(&pc_to_read, proc->op.params[0] % IDX_MOD);
+		pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[0]);
 		proc->op.params[0] = read_int_in_map(all, pc_to_read);
 	}
 	if (proc->op.type_of_params[1] == T_REG)
 		proc->op.params[1] = proc->reg[proc->op.params[1] - 1];
 	else if (proc->op.type_of_params[1] == T_IND)
 	{
-		move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
+		// move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
+		pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[1]);
 		proc->op.params[1] = read_int_in_map(all, pc_to_read);
 	}
 }
@@ -68,7 +70,8 @@ int    value_of_arg(t_all *all, t_process *proc, int pc, int index)
 		return (proc->reg[proc->op.params[index] - 1]);
 	else if (proc->op.type_of_params[index] == T_IND)
 	{
-		move_pc(&pc, proc->op.params[index] % IDX_MOD);
+		// move_pc(&pc, proc->op.params[index] % IDX_MOD);
+		pc = calcul_new_pc_idx(pc, proc->op.params[index]);
 		return (read_int_in_map(all, pc));
 	}
 	return (proc->op.params[index]);
@@ -82,7 +85,8 @@ void    give_value_of_arg(t_all *all, t_process *proc, int pc, int index)
 		proc->op.params[index] = proc->reg[proc->op.params[index] - 1];
 	else if (proc->op.type_of_params[index] == T_IND)
 	{
-		move_pc(&pc, proc->op.params[index] % IDX_MOD);
+		// move_pc(&pc, proc->op.params[index] % IDX_MOD);
+		pc = calcul_new_pc_idx(pc, proc->op.params[index]);
 		proc->op.params[index] = read_int_in_map(all, pc);
 	}
 }
@@ -95,7 +99,8 @@ void    give_value_of_larg(t_all *all, t_process *proc, int pc, int index)
 		proc->op.params[index] = proc->reg[proc->op.params[index] - 1];
 	else if (proc->op.type_of_params[index] == T_IND)
 	{
-		move_pc(&pc, proc->op.params[index]);
+		// move_pc(&pc, proc->op.params[index]);
+		pc = calcul_new_pc(pc, proc->op.params[index]);
 		proc->op.params[index] = read_int_in_map(all, pc);
 	}
 }

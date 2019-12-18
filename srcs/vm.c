@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/17 16:23:20 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/18 18:37:08 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int check_ctd(t_all *all, int total_cycle)
 {
 	static int cycle = 1;
 
-	if (cycle++ == all->cycle_to_die)
+	if (cycle++ >= all->cycle_to_die)
 	{
 		if (!check_nb_live(all, total_cycle))
 			return (0);
@@ -107,12 +107,7 @@ int check_ctd(t_all *all, int total_cycle)
 		{
 			if (all->flag & FLAG_CYCLE)
 				ft_printf("Cycle to die is now %d\n", all->cycle_to_die - CYCLE_DELTA);
-			if ((all->cycle_to_die -= CYCLE_DELTA) <= 0)
-			{
-				if (all->flag & FLAG_CYCLE)
-					ft_printf("It is now cycle %d\n", total_cycle + 1);
-				return (0);
-			}
+			all->cycle_to_die -= CYCLE_DELTA;
 			all->nb_check = 0;
 		}
 		all->nb_live = 0;

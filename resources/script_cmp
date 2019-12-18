@@ -1,114 +1,26 @@
+nb_lines_diff=""
+declare -a op=( "live" "st" "add" "sub" "and" "or" "xor" "zjmp" "ldi" "sti" "fork" "lld" "lldi" "lfork" )
+declare -a champ=( "Gagnant" "ultima" "Kitty_Miaou" "Backward" "jumper" "Douceur_power" "gateau" "overwatch" "maxidef" "run_Kitty_RUN" "test" "test2")
 #-----------------------1 Player---------------------------------------------
-#Gagnant
-./a.out resources/tests/Gagnant.cor -r > rGagnant
-./resources/vm_champs/corewar resources/tests/Gagnant.cor -v 4 > v4Gagnant
-diff rGagnant v4Gagnant > diff_rv4Gagnant
-echo "Gagnant"
-cat diff_rv4Gagnant | grep "P "
-rm rGagnant v4Gagnant diff_rv4Gagnant
-
-#ultima
-./a.out resources/tests/ultima.cor -r > rultima
-./resources/vm_champs/corewar resources/tests/ultima.cor -v 4 > v4ultima
-diff rultima v4ultima > diff_rv4ultima
-echo "ultima"
-cat diff_rv4ultima | grep "P "
-rm rultima v4ultima diff_rv4ultima
-
-#Kitty_Miaou
-./a.out resources/tests/Kitty_Miaou.cor -r > rKitty_Miaou
-./resources/vm_champs/corewar resources/tests/Kitty_Miaou.cor -v 4 > v4Kitty_Miaou
-diff rKitty_Miaou v4Kitty_Miaou > diff_rv4Kitty_Miaou
-echo "Kitty_Miaou"
-cat diff_rv4Kitty_Miaou | grep "P "
-rm rKitty_Miaou v4Kitty_Miaou diff_rv4Kitty_Miaou
-
-#Backward
-./a.out resources/tests/Backward.cor -r > rBackward
-./resources/vm_champs/corewar resources/tests/Backward.cor -v 4 > v4Backward
-diff rBackward v4Backward > diff_rv4Backward
-echo "Backward"
-cat diff_rv4Backward | grep "P "
-rm rBackward v4Backward diff_rv4Backward
-
-#ForgottenOne
-./a.out resources/tests/ForgottenOne.cor -r > rForgottenOne
-./resources/vm_champs/corewar resources/tests/ForgottenOne.cor -v 4 > v4ForgottenOne
-diff rForgottenOne v4ForgottenOne > diff_rv4ForgottenOne
-echo "ForgottenOne"
-cat diff_rv4ForgottenOne | grep "P "
-rm rForgottenOne v4ForgottenOne diff_rv4ForgottenOne
-
-#jumper
-./a.out resources/tests/jumper.cor -r > rjumper
-./resources/vm_champs/corewar resources/tests/jumper.cor -v 4 > v4jumper
-diff rjumper v4jumper > diff_rv4jumper
-echo "jumper"
-cat diff_rv4jumper | grep "P "
-
-#Douceur_power
-./a.out resources/tests/Douceur_power.cor -r > rDouceur_power
-./resources/vm_champs/corewar resources/tests/Douceur_power.cor -v 4 > v4Douceur_power
-diff rDouceur_power v4Douceur_power > diff_rv4Douceur_power
-echo "Douceur_power"
-cat diff_rv4Douceur_power | grep "P " | wc -l
-
-#gateau
-./a.out resources/tests/gateau.cor -r > rgateau
-./resources/vm_champs/corewar resources/tests/gateau.cor -v 4 > v4gateau
-diff rgateau v4gateau > diff_rv4gateau
-echo "gateau"
-cat diff_rv4gateau | grep "P "
-rm rgateau v4gateau diff_rv4gateau
-
-#overwatch
-./a.out resources/tests/overwatch.cor -r > roverwatch
-./resources/vm_champs/corewar resources/tests/overwatch.cor -v 4 > v4overwatch
-diff roverwatch v4overwatch > diff_rv4overwatch
-echo "overwatch"
-cat diff_rv4overwatch | grep "P "
-rm roverwatch v4overwatch diff_rv4overwatch
-
-#maxidef
-./a.out resources/tests/maxidef.cor -r > rmaxidef
-./resources/vm_champs/corewar resources/tests/maxidef.cor -v 4 > v4maxidef
-diff rmaxidef v4maxidef > diff_rv4maxidef
-echo "maxidef"
-cat diff_rv4maxidef | grep "P "
-rm rmaxidef v4maxidef diff_rv4maxidef
-
-#run_Kitty_RUN
-./a.out resources/tests/run_Kitty_RUN.cor -r > rrun_Kitty_RUN
-./resources/vm_champs/corewar resources/tests/run_Kitty_RUN.cor -v 4 > v4run_Kitty_RUN
-diff rrun_Kitty_RUN v4run_Kitty_RUN > diff_rv4run_Kitty_RUN
-echo "run_Kitty_RUN"
-cat diff_rv4run_Kitty_RUN | grep "P "
-rm rrun_Kitty_RUN v4run_Kitty_RUN diff_rv4run_Kitty_RUN
-
-#test
-./a.out resources/tests/test.cor -r > rtest
-./resources/vm_champs/corewar resources/tests/test.cor -v 4 > v4test
-diff rtest v4test > diff_rv4test
-echo "test"
-cat diff_rv4test | grep "P "
-rm rtest v4test diff_rv4test
-
-#test2
-./a.out resources/tests/test2.cor -r > rtest2
-./resources/vm_champs/corewar resources/tests/test2.cor -v 4 > v4test2
-diff rtest2 v4test2 > diff_rv4test2
-echo "test2"
-cat diff_rv4test2 | grep "P "
-rm rtest2 v4test2 diff_rv4test2
-
-#mise_a_jour_windows95 (mega long)
-#./a.out resources/tests/mise_a_jour_windows95.cor -r > rmise_a_jour
-#./resources/vm_champs/corewar resources/tests/mise_a_jour_windows95.cor -v 4 > v4mise_a_jour
-#diff rmise_a_jour v4mise_a_jour > diff_rv4mise_a_jour
-#echo "mise_a_jour"
-#cat diff_rv4mise_a_jour | grep "P "
-#rm rmise_a_jour v4mise_a_jour diff_rv4mise_a_jour
-
+for cur_champ in "${champ[@]}"
+do
+    ./a.out resources/tests/$cur_champ.cor -r > r$cur_champ
+    ./resources/vm_champs/corewar resources/tests/$cur_champ.cor -v 4 > v4$cur_champ
+    diff r$cur_champ v4$cur_champ > diff_rv4$cur_champ
+    echo "$cur_champ"
+    cat diff_rv4$cur_champ | grep "P "
+    nb_lines_diff=`cat diff_rv4$cur_champ | grep "P " | wc -l | bc -l`
+    #if [ $nb_lines_diff != "0" ]; then
+        for i in "${op[@]}"
+        do
+            # echo "$i"
+            nb=`cat v4$cur_champ | grep "$i" | wc -l | bc -l`
+            echo "($i : |${nb}|) "
+        done
+    #fi
+    rm r$cur_champ v4$cur_champ diff_rv4$cur_champ
+done
+echo "FINISH FORR 1 Player"
 
 #-----------------------2 Player---------------------------------------------
 #Gagnant ultima
@@ -252,15 +164,22 @@ rm rjGog v4jGog diff_rv4jGog
 ./resources/vm_champs/corewar resources/tests/Kitty_Miaou2.cor resources/tests/ultima.cor resources/tests/Gagnant.cor resources/tests/Backward.cor -v 4 > v4KuGB
 diff rKuGB v4KuGB > diff_rv4KuGB
 echo "Kitty_Miaou2 ultima Gagnant Backward"
-cat diff_rv4KuGB | grep "P "
+cat diff_rv4KuGB | grep "P " | wc -l
 rm rKuGB v4KuGB diff_rv4KuGB
 
 #ultima ultima ultima ultima
 ./a.out resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor -r > ruuuu
 ./resources/vm_champs/corewar resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor resources/tests/ultima.cor -v 4 > v4uuuu
-diff ruuuu v4uuuu > diff_rv4uuuu
+diff ruuuu v4uuuu | grep "P" > diff_rv4uuuu
 echo "ultima ultima ultima ultima"
-cat diff_rv4uuuu | grep "P " | wc -l
+cat diff_rv4uuuu | wc -l
+for i in "${op[@]}"
+do
+    # echo "$i"
+    nb=`cat v4uuuu | grep "$i" | wc -l | bc -l`
+    echo "($i : |${nb}|) "
+done
+
 
 #jumper jumper Gagnant Gagnant
 ./a.out resources/tests/jumper.cor resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/Gagnant.cor -r > rjjGG
@@ -289,7 +208,7 @@ cat diff_rv4jjoo | grep "P "
 ./resources/vm_champs/corewar resources/tests/jumper.cor resources/tests/Gagnant.cor resources/tests/jumper.cor resources/tests/Gagnant.cor -v 4 > v4jGjG
 diff rjGjG v4jGjG > diff_rv4jGjG
 echo "jumper Gagnant jumper Gagnant"
-cat diff_rv4jGjG | grep "P "
+cat diff_rv4jGjG | grep "P " | wc -l
 rm rjGjG v4jGjG diff_rv4jGjG
 
 #Gagnant Gagnant jumper jumper

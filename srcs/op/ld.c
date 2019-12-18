@@ -21,7 +21,9 @@ void		op_ld(t_all *all, t_process *proc)
 	{
 		if (proc->op.type_of_params[0] == T_IND)
 		{
-			move_pc(&pc_to_read, proc->op.params[0] % IDX_MOD);
+			// move_pc(&pc_to_read, proc->op.params[0] % IDX_MOD);
+			pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[0]);
+			
 			proc->reg[proc->op.params[1] - 1] =
 				read_int_in_map(all, pc_to_read);
 		}
