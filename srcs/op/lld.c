@@ -17,15 +17,12 @@ void		op_lld(t_all *all, t_process *proc)
 	int pc_to_read;
 
 	pc_to_read = proc->pc;
+	// moveTo(80,10);
+	// printf("%02hhx %02hhx\n", all->map.character[proc->pc], all->map.character[proc->pc + 1]);
 	if (parse_arg_op(all, proc))
 	{
-		if (proc->op.type_of_params[0] == T_IND)
-		{
-			give_value_of_larg(all, proc, pc_to_read, 0);
-			proc->reg[proc->op.params[1] - 1] = proc->op.params[0];
-		}
-		else
-			proc->reg[proc->op.params[1] - 1] = proc->op.params[0];
+		give_value_of_larg(all, proc, pc_to_read, 0);
+		proc->reg[proc->op.params[1] - 1] = proc->op.params[0] >> 16;
 		proc->carry = !proc->reg[proc->op.params[1] - 1];
 	}
 }

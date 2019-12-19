@@ -48,7 +48,7 @@ int		is_a_process(t_all *all, int pc)
 	while (1)
 	{
 		if (pc == proc->pc)
-			return ((unsigned int)proc->origin_champ->index_player);
+			return ((unsigned int)proc->origin_champ->index_player + 1);
 		if (!(proc = proc->next))
 			break ;
 	}

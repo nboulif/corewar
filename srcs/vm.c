@@ -77,7 +77,7 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 {
 	t_process *proc;
 
-	if (all->flag & FLAG_VISU)// && total_cycle >= 26023)
+	if (all->flag & FLAG_VISU && total_cycle >= 100)
 	{
 		moveTo(10, 64 * 3 + 20);
 		ft_printf("nb_cycle %d die %d %4d", total_cycle, all->cycle_to_die, all->nb_process);

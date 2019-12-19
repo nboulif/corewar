@@ -19,8 +19,6 @@ void		op_lldi(t_all *all, t_process *proc)
 	pc = proc->pc;
 	if (parse_arg_op(all, proc))
 	{
-		if (proc->op.params[2] > REG_NUMBER || proc->op.params[2] < 1)
-			return ;
 		give_value_of_larg(all, proc, pc, 0);
 		give_value_of_larg(all, proc, pc, 1);
 		if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
@@ -28,9 +26,8 @@ void		op_lldi(t_all *all, t_process *proc)
 				proc->op.params[0], proc->op.params[1],
 				proc->op.params[0] + proc->op.params[1], ((long)pc +
 					(long)proc->op.params[0] + (long)proc->op.params[1]));
-		// move_pc(&pc, (long)proc->op.params[0] + (long)proc->op.params[1]);
 		pc = calcul_new_pc(pc, proc->op.params[0] + proc->op.params[1]);
-		proc->reg[proc->op.params[2] - 1] = all->map.character[pc];
+		proc->reg[proc->op.params[2] - 1] = read_int_in_map(all, pc);
 		proc->carry = !proc->reg[proc->op.params[2] - 1];
 	}
 }
