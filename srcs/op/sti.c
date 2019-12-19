@@ -14,12 +14,13 @@
 
 int			calcul_new_pc_idx(int pc, int deplacement)
 {
-	if (deplacement <= -MEM_SIZE || deplacement >= MEM_SIZE)
-		deplacement %= MEM_SIZE;
+	// if (deplacement <= -MEM_SIZE || deplacement >= MEM_SIZE)
+	// 	deplacement %= MEM_SIZE;
 	pc += (deplacement % IDX_MOD);
+	pc %= MEM_SIZE;
 	if (pc < 0)
 		pc += MEM_SIZE;
-	return (pc % MEM_SIZE);
+	return (pc);// % MEM_SIZE);
 }
 
 int			calcul_new_pc(int pc, int deplacement)
@@ -34,7 +35,7 @@ int			calcul_new_pc(int pc, int deplacement)
 
 void		config_arg_sti_and_resume(t_all *all, t_process *proc, int pc_to_write)
 {
-	int pc_to_read;
+	// int pc_to_read;
 
 	if (proc->op.type_of_params[1] == T_REG)
 	{
@@ -42,10 +43,10 @@ void		config_arg_sti_and_resume(t_all *all, t_process *proc, int pc_to_write)
 	}
 	else if (proc->op.type_of_params[1] == T_IND)
 	{
-		pc_to_read = pc_to_write;
+		// pc_to_read = pc_to_write;
 		// move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
-		pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[1]);
-		proc->op.params[1] = read_int_in_map(all, pc_to_read);
+		// pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[1]);
+		proc->op.params[1] = read_int_in_map(all, calcul_new_pc_idx(pc_to_write, proc->op.params[1]));
 	}
 	if (proc->op.type_of_params[2] == T_REG)
 		proc->op.params[2] = proc->reg[proc->op.params[2] - 1];
@@ -54,8 +55,7 @@ void		config_arg_sti_and_resume(t_all *all, t_process *proc, int pc_to_write)
 		ft_printf("       | -> store to %d + %d = %d (with pc and mod %d)\n",
 		proc->op.params[1] , proc->op.params[2],
 		proc->op.params[1] + proc->op.params[2],
-		(pc_to_write + proc->op.params[1] +
-		proc->op.params[2]) % MEM_SIZE);
+		calcul_new_pc(pc_to_write, proc->op.params[1] + proc->op.params[2]));
 }
 
 void		op_sti(t_all *all, t_process *proc)

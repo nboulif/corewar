@@ -14,6 +14,15 @@
 
 #define SIZE_BLOCK_MEM 50000
 
+int read_int_in_map_idx(t_all *all, int pc, int deplacement)
+{
+	return (
+	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc, deplacement)]) << 24) |
+	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc, deplacement + 1)]) << 16) |
+	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc, deplacement + 2)]) << 8) |
+	((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc, deplacement + 3)]));
+}
+
 t_process *proc_alloc(int mode)
 {
 	static t_process **memo_proc;
@@ -33,34 +42,42 @@ t_process *proc_alloc(int mode)
 	if (index > SIZE_BLOCK_MEM)
 	{
 		index = 0;
-		memo_proc = realloc(memo_proc, sizeof(t_process*) * (++i_tab + 1));
-		memo_proc[i_tab] = malloc(sizeof(t_process) * SIZE_BLOCK_MEM);
+		if (!(memo_proc = realloc(memo_proc, sizeof(t_process*) * (++i_tab + 1))) ||
+			!(memo_proc[i_tab] = malloc(sizeof(t_process) * SIZE_BLOCK_MEM)))
+			return (NULL);
 	}
 	else if (!memo_proc)
 	{
-		memo_proc = malloc(sizeof(t_process*));
-		memo_proc[0] = malloc(sizeof(t_process) * SIZE_BLOCK_MEM);
+		if (!(memo_proc = malloc(sizeof(t_process*))) || 
+			!(memo_proc[0] = malloc(sizeof(t_process) * SIZE_BLOCK_MEM)))
+			return (NULL);
 	}
 	return (&memo_proc[i_tab][index++]);
 }
 
 void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read)
 {
+	int pc2 = pc_to_read;
+
 	if (proc->op.type_of_params[0] == T_REG)
 		proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
 	else if (proc->op.type_of_params[0] == T_IND)
 	{
 		// move_pc(&pc_to_read, proc->op.params[0] % IDX_MOD);
-		pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[0]);
-		proc->op.params[0] = read_int_in_map(all, pc_to_read);
+		// pc2 = calcul_new_pc_idx(pc_to_read, proc->op.params[0]);
+		proc->op.params[0] = read_int_in_map(all, calcul_new_pc_idx(pc_to_read, proc->op.params[0]));
+		// proc->op.params[0] = read_int_in_map_idx(all, pc_to_read, proc->op.params[0]);
+		// calcul_new_pc_idx(pc_to_read, proc->op.params[0]));
 	}
 	if (proc->op.type_of_params[1] == T_REG)
 		proc->op.params[1] = proc->reg[proc->op.params[1] - 1];
 	else if (proc->op.type_of_params[1] == T_IND)
 	{
 		// move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
-		pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[1]);
-		proc->op.params[1] = read_int_in_map(all, pc_to_read);
+		// pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[1]);
+		proc->op.params[1] = read_int_in_map(all, calcul_new_pc_idx(pc_to_read, proc->op.params[1]));
+		// proc->op.params[1] = read_int_in_map_idx(all, pc_to_read, proc->op.params[1]);
+		// calcul_new_pc_idx(pc_to_read, proc->op.params[1]));
 	}
 }
 

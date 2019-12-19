@@ -25,7 +25,7 @@ void		op_or(t_all *all, t_process *proc)
 		if (proc->op.params[2] > REG_NUMBER || proc->op.params[2] < 1)
 			return ;
 		proc->reg[proc->op.params[2] - 1] =
-			(unsigned int)proc->op.params[0] | (unsigned int)proc->op.params[1];
+			proc->op.params[0] | proc->op.params[1];
 			// proc->op.params[0] | proc->op.params[1];
 		proc->carry = !proc->reg[proc->op.params[2] - 1];
 	}
