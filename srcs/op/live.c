@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:13 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/18 17:24:20 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:11:33 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		op_live(t_all *all, t_process *proc)
 	{
 		if (all->flag & FLAG_LIVE)
 			ft_printf("Player %d (%s) is said to be alive\n",
-					-champ->index, champ->name); 
+					-champ->index, champ->name);
 		all->last_player_alive = champ;
 	}
 }

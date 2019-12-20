@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:52:43 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/20 14:03:30 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:11:43 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void		op_fork(t_all *all, t_process *proc)
 		new_proc->flag_live = proc->flag_live;
 		new_proc->pc = old_pc;
 		new_proc->index = ++all->max;
-		// move_pc(&new_proc->pc, proc->op.params[0] % IDX_MOD);
 		new_proc->pc = calcul_new_pc_idx(old_pc, proc->op.params[0]);
 		new_proc->next = all->stack_proc;
 		all->stack_proc = new_proc;

@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/12/18 17:18:13 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:23:18 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@
 
 # include "op.h"
 
-# define SIZE_BUFF	2800
-
+# define SIZE_BUFF		2800
+# define SIZE_BLOCK_MEM	50000
 # define FLAG_DUMP		1
 # define FLAG_THREAD	2
 # define FLAG_VISU		4

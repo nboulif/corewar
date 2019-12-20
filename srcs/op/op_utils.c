@@ -6,28 +6,30 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:24 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/20 14:02:51 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:23:43 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm_corewar.h"
 
-#define SIZE_BLOCK_MEM 50000
-
-int read_int_in_map_idx(t_all *all, int pc, int deplacement)
+int		read_int_in_map_idx(t_all *all, int pc, int deplacement)
 {
 	return (
-	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc, deplacement)]) << 24) |
-	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc, deplacement + 1)]) << 16) |
-	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc, deplacement + 2)]) << 8) |
-	((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc, deplacement + 3)]));
+	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
+	deplacement)]) << 24) |
+	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
+	deplacement + 1)]) << 16) |
+	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
+	deplacement + 2)]) << 8) |
+	((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
+	deplacement + 3)]));
 }
 
-t_process *proc_alloc(int mode)
+t_process	*proc_alloc(int mode)
 {
-	static t_process **memo_proc;
-	static int index = 0;
-	static int i_tab = 0;
+	static t_process	**memo_proc;
+	static int			index = 0;
+	static int			i_tab = 0;
 
 	if (!mode)
 	{
@@ -42,13 +44,14 @@ t_process *proc_alloc(int mode)
 	if (index > SIZE_BLOCK_MEM)
 	{
 		index = 0;
-		if (!(memo_proc = realloc(memo_proc, sizeof(t_process*) * (++i_tab + 1))) ||
-			!(memo_proc[i_tab] = malloc(sizeof(t_process) * SIZE_BLOCK_MEM)))
+		if (!(memo_proc = realloc(memo_proc, sizeof(t_process*) *
+						(++i_tab + 1))) || !(memo_proc[i_tab] =
+						malloc(sizeof(t_process) * SIZE_BLOCK_MEM)))
 			return (NULL);
 	}
 	else if (!memo_proc)
 	{
-		if (!(memo_proc = malloc(sizeof(t_process*))) || 
+		if (!(memo_proc = malloc(sizeof(t_process*))) ||
 			!(memo_proc[0] = malloc(sizeof(t_process) * SIZE_BLOCK_MEM)))
 			return (NULL);
 	}
@@ -61,17 +64,19 @@ void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read)
 		proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
 	else if (proc->op.type_of_params[0] == T_IND)
 	{
-		proc->op.params[0] = read_int_in_map(all, calcul_new_pc_idx(pc_to_read, proc->op.params[0]));
+		proc->op.params[0] = read_int_in_map(all,
+				calcul_new_pc_idx(pc_to_read, proc->op.params[0]));
 	}
 	if (proc->op.type_of_params[1] == T_REG)
 		proc->op.params[1] = proc->reg[proc->op.params[1] - 1];
 	else if (proc->op.type_of_params[1] == T_IND)
 	{
-		proc->op.params[1] = read_int_in_map(all, calcul_new_pc_idx(pc_to_read, proc->op.params[1]));
+		proc->op.params[1] = read_int_in_map(all,
+				calcul_new_pc_idx(pc_to_read, proc->op.params[1]));
 	}
 }
 
-int    value_of_arg(t_all *all, t_process *proc, int pc, int index)
+int		value_of_arg(t_all *all, t_process *proc, int pc, int index)
 {
 	if (proc->op.type_of_params[index] == T_REG)
 		return (proc->reg[proc->op.params[index] - 1]);
@@ -83,7 +88,7 @@ int    value_of_arg(t_all *all, t_process *proc, int pc, int index)
 	return (proc->op.params[index]);
 }
 
-void    give_value_of_arg(t_all *all, t_process *proc, int pc, int index)
+void	give_value_of_arg(t_all *all, t_process *proc, int pc, int index)
 {
 	if ((unsigned int)index > 2)
 		return ;
@@ -91,13 +96,12 @@ void    give_value_of_arg(t_all *all, t_process *proc, int pc, int index)
 		proc->op.params[index] = proc->reg[proc->op.params[index] - 1];
 	else if (proc->op.type_of_params[index] == T_IND)
 	{
-		// move_pc(&pc, proc->op.params[index] % IDX_MOD);
 		pc = calcul_new_pc_idx(pc, proc->op.params[index]);
 		proc->op.params[index] = read_int_in_map(all, pc);
 	}
 }
 
-void    give_value_of_larg(t_all *all, t_process *proc, int pc, int index)
+void	give_value_of_larg(t_all *all, t_process *proc, int pc, int index)
 {
 	if ((unsigned int)index > 2)
 		return ;
@@ -105,7 +109,6 @@ void    give_value_of_larg(t_all *all, t_process *proc, int pc, int index)
 		proc->op.params[index] = proc->reg[proc->op.params[index] - 1];
 	else if (proc->op.type_of_params[index] == T_IND)
 	{
-		// move_pc(&pc, proc->op.params[index]);
 		pc = calcul_new_pc(pc, proc->op.params[index]);
 		proc->op.params[index] = read_int_in_map(all, pc);
 	}

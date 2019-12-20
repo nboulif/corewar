@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:26 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/20 14:02:17 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:13:15 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void		op_or(t_all *all, t_process *proc)
 			return ;
 		proc->reg[proc->op.params[2] - 1] =
 			proc->op.params[0] | proc->op.params[1];
-			// proc->op.params[0] | proc->op.params[1];
 		proc->carry = !proc->reg[proc->op.params[2] - 1];
 	}
 }
