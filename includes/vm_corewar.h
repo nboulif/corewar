@@ -210,6 +210,12 @@ void		parse_champ(t_all *all, char *index, char *file);
 void		init_vm(t_all *all);
 
 /*
+**	qsort_proc
+*/
+
+void		qsort_proc(t_process *stack_proc, int start_ind, int size);
+
+/*
 ** vm
 */
 
