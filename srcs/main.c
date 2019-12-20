@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/20 13:46:29 by nsondag           #+#    #+#             */
+/*   Updated: 2019/12/20 13:53:51 by nsondag          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm_corewar.h"
 
 static void			handle_player_with_number(int *i, int argc, char **argv,
@@ -60,6 +72,17 @@ the order of execution.\n");
 	exit(1);
 }
 
+void	print_comment(t_all all)
+{
+	int i;
+
+	i = 0;
+	while (i++ < all.nb_champ)
+		ft_printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
+			i + 1, all.champ[i].size_exec, all.champ[i].name,
+			all.champ[i].comment);
+}
+
 int					main(int argc, char **argv)
 {
 	t_all			all;
@@ -76,7 +99,6 @@ int					main(int argc, char **argv)
 	i = 0;
 	ft_printf("Introducing contestants...\n");
 	while (++i < argc)
-	{
 		if (*argv[i] == '-')
 		{
 			all.flag |= handle_flag(&i, argc, argv, &all);
@@ -85,16 +107,7 @@ int					main(int argc, char **argv)
 		}
 		else
 			parse_champ(&all, NULL, argv[i]);
-	}
-	if (all.flag & FLAG_VISU)
-		ft_printf("\e[?25l");
-	else
-		for (int i = 0;i < all.nb_champ;i++)
-		ft_printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
-				i+1, all.champ[i].size_exec, all.champ[i].name,
-				all.champ[i].comment);
+	all.flag & FLAG_VISU ? ft_printf("\e[?25l") : print_comment(all);
 	vm(&all);
-	//execute
-	//free_all
 	return (0);
 }
