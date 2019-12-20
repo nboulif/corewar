@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_champ.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/20 16:19:23 by nsondag           #+#    #+#             */
+/*   Updated: 2019/12/20 16:23:10 by nsondag          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm_corewar.h"
 
 int		strcpy_champ(char *dest, char *src, int size)
@@ -15,7 +27,7 @@ int		strcpy_champ(char *dest, char *src, int size)
 	return (i);
 }
 
-int		init_champ_header(t_champ *champ, char	*mem, char *index)
+int		init_champ_header(t_champ *champ, char *mem, char *index)
 {
 	if (!(champ->name = malloc(sizeof(char) * (PROG_NAME_LENGTH + 1))) ||
 		!(champ->comment = malloc(sizeof(char) * (COMMENT_LENGTH + 1))))
@@ -32,7 +44,8 @@ int		check_index_doublon(t_all *all, int index)
 
 	i = -1;
 	while (++i < index)
-		if (all->champ[i].flag_index && all->champ[i].index == all->champ[index].index)
+		if (all->champ[i].flag_index && all->champ[i].index ==
+				all->champ[index].index)
 			return (0);
 	return (1);
 }

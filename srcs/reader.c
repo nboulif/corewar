@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reader.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/20 16:22:05 by nsondag           #+#    #+#             */
+/*   Updated: 2019/12/20 16:25:40 by nsondag          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm_corewar.h"
 
 int				ft_realloc(void **tab, int *size_av,
@@ -33,7 +45,7 @@ int			read_all(char **str, int fd)
 
 	size = SIZE_BUFF + 1;
 	if (!(*str = malloc(size * sizeof(char))))
-		print_error_and_exit(MALLOC_ERROR);	
+		print_error_and_exit(MALLOC_ERROR);
 	index = 0;
 	while ((ret = read(fd, *str + index, SIZE_BUFF)) > 0)
 	{

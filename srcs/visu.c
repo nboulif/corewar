@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   visu.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/12/20 16:15:35 by nsondag           #+#    #+#             */
+/*   Updated: 2019/12/20 16:24:46 by nsondag          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "vm_corewar.h"
 
 void		simple_hexdump(t_all *all, int bytes_per_line)
@@ -5,31 +17,31 @@ void		simple_hexdump(t_all *all, int bytes_per_line)
 	int	octet;
 
 	octet = 0;
-	printf("0x%04x : ", octet);
+	ft_printf("0x%04x : ", octet);
 	while (octet < MEM_SIZE)
-	{ 
-		printf("%.2hhx ", all->map.character[octet]);
+	{
+		ft_printf("%.2hhx ", all->map.character[octet]);
 		if (octet && !((octet + 1) % bytes_per_line) && octet + 1 < MEM_SIZE)
 		{
-			printf("\n");
-			printf("0x%04x : ", octet + 1);
+			ft_printf("\n");
+			ft_printf("0x%04x : ", octet + 1);
 		}
 		octet++;
 	}
-	printf("\n");
+	ft_printf("\n");
 }
 
 void		hexdump_map_square(t_all *all)
 {
-    int			proc;
-	int			i;
-	char		*last_color;
+	int		proc;
+	int		i;
+	char	*last_color;
 
 	if (!(all->flag & FLAG_VISU))
 		return ;
 	i = -1;
 	last_color = NULL;
-	moveTo(0, 0);
+	move_to(0, 0);
 	while (++i < MEM_SIZE)
 	{
 		proc = is_a_process(all, i);

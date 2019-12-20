@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 15:40:35 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:18:19 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 
 	if (all->flag & FLAG_VISU && total_cycle >= 100)
 	{
-		moveTo(10, 64 * 3 + 20);
+		move_to(10, 64 * 3 + 20);
 		ft_printf("nb_cycle %d die %d %4d", total_cycle,
 				all->cycle_to_die, all->nb_process);
 		hexdump_map_square(all);

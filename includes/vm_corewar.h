@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/12/20 15:37:48 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:18:39 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ t_champ		*get_champ(int index, t_all *all);
 void		hexdump_map_square(t_all *all);
 void		simple_hexdump(t_all *all, int bytes_per_line);
 void		print_bit(char nb);
-void		moveTo(int row, int col);
+void		move_to(int row, int col);
 int			read_int_in_map(t_all *all, int pc);
 void		change_color(t_all *all, t_process *proc, int i);
 
