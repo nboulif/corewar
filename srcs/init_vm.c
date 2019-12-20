@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 16:20:03 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 16:20:33 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:48:48 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void		init_map(t_all *all)
 		print_error_and_exit(MALLOC_ERROR);
 	ft_bzero(all->map.character, sizeof(char) * MEM_SIZE);
 	while (++i < MEM_SIZE)
-		all->map.color_in_map[i] = text_color[9];
+		all->map.color_in_map[i] = g_text_color[9];
 }
 
 void		init_color_in_map(t_all *all)
@@ -80,7 +80,7 @@ void		init_color_in_map(t_all *all)
 		x = -1;
 		proc = &all->stack_proc[i];
 		while (++x < proc->origin_champ->size_exec)
-			all->map.color_in_map[x + proc->pc] = text_color[proc->origin_champ->index_player];
+			all->map.color_in_map[x + proc->pc] = g_text_color[proc->origin_champ->index_player];
 	}
 }
 

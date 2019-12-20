@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:24 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/20 16:25:51 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:53:41 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_process	*proc_alloc(int mode)
 		index = 0;
 		return (NULL);
 	}
-	if (index > SIZE_BLOCK_MEM || !memo_proc)
+	if (index >= SIZE_BLOCK_MEM || !memo_proc)
 	{
 		index = 0;
 		if (!(memo_proc = realloc(memo_proc, sizeof(t_process*) *

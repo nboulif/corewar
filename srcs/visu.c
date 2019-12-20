@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 16:15:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 16:24:46 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:45:27 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void		hexdump_map_square(t_all *all)
 		proc = is_a_process(all, i);
 		if (proc)
 		{
-			if (last_color != background_color[proc])
-				printf("%s", (last_color = background_color[proc]));
+			if (last_color != g_background_color[proc])
+				printf("%s", (last_color = g_background_color[proc]));
 		}
 		else if (last_color != all->map.color_in_map[i])
 			printf("%s", (last_color = all->map.color_in_map[i]));

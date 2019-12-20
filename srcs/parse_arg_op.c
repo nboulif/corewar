@@ -76,9 +76,9 @@ int		parse_arg_op(t_all *all, t_process *proc)
 			}
 		}
 		i = -1;
-		if ((!(proc->op.flags_params[0] & op_tab[proc->op.opc].flags_params[0]) && op_tab[proc->op.opc].nb_params > 0) ||
-			(!(proc->op.flags_params[1] & op_tab[proc->op.opc].flags_params[1]) && op_tab[proc->op.opc].nb_params > 1) ||
-			(!(proc->op.flags_params[2] & op_tab[proc->op.opc].flags_params[2]) && op_tab[proc->op.opc].nb_params > 2))
+		if ((!(proc->op.flags_params[0] & g_op_tab[proc->op.opc].flags_params[0]) && g_op_tab[proc->op.opc].nb_params > 0) ||
+			(!(proc->op.flags_params[1] & g_op_tab[proc->op.opc].flags_params[1]) && g_op_tab[proc->op.opc].nb_params > 1) ||
+			(!(proc->op.flags_params[2] & g_op_tab[proc->op.opc].flags_params[2]) && g_op_tab[proc->op.opc].nb_params > 2))
 			ret = 0;
 	}
 	move_pc(&proc->pc, 1);

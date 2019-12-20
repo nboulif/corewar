@@ -6,7 +6,7 @@
 /*   By: dabeloos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 15:25:18 by dabeloos          #+#    #+#             */
-/*   Updated: 2019/12/20 16:18:39 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:45:15 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,11 +167,11 @@ typedef struct		s_all
 ** global variable
 */
 
-extern unsigned int		flags[256];
-extern char				*flags_syn[256];
-extern t_op				op_tab[17];
-extern char				*text_color[256];
-extern char				*background_color[256];
+extern unsigned int		g_flags[256];
+extern char				*g_flags_syn[256];
+extern t_op				g_op_tab[17];
+extern char				*g_text_color[256];
+extern char				*g_background_color[256];
 
 /*
 ** utils

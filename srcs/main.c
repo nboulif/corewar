@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 13:46:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 15:43:28 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:48:09 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static void			handle_dump(int *i, int argc, char **argv, t_all *all)
 
 static int			is_valid_flag(char *flag)
 {
-	if (flags[(int)*flag] && !flag[1])
+	if (g_flags[(int)*flag] && !flag[1])
 		return (1);
-	return (flags_syn[(int)*flag] && !ft_strcmp(flag, flags_syn[(int)*flag]));
+	return (g_flags_syn[(int)*flag] && !ft_strcmp(flag, g_flags_syn[(int)*flag]));
 }
 
 static int			handle_flag(int *i, int argc, char **argv, t_all *all)
 {
 	unsigned int	out;
 
-	out = flags[(int)argv[*i][1]];
+	out = g_flags[(int)argv[*i][1]];
 	if (!is_valid_flag(&argv[*i][1]))
 		parse_champ(all, NULL, argv[*i]);
 	else if (out == FLAG_NUMBER)

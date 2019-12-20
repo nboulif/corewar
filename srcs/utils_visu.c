@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 14:01:03 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/20 14:02:35 by rhunders         ###   ########.fr       */
+/*   Updated: 2019/12/20 16:46:17 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void		change_color(t_all *all, t_process *proc, int i)
 {
-	all->map.color_in_map[i] = text_color[proc->origin_champ->index_player];
+	all->map.color_in_map[i] = g_text_color[proc->origin_champ->index_player];
 }
 
 int			is_a_process(t_all *all, int pc)
@@ -35,5 +35,5 @@ int			is_a_process(t_all *all, int pc)
 
 char		*give_color(t_champ *champ)
 {
-	return (text_color[champ->index_player + 4]);
+	return (g_text_color[champ->index_player + 4]);
 }
