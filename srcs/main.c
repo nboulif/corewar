@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 13:46:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 16:48:09 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:57:53 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int			is_valid_flag(char *flag)
 {
 	if (g_flags[(int)*flag] && !flag[1])
 		return (1);
-	return (g_flags_syn[(int)*flag] && !ft_strcmp(flag, g_flags_syn[(int)*flag]));
+	return (g_flags_syn[(int)*flag] &&
+			!ft_strcmp(flag, g_flags_syn[(int)*flag]));
 }
 
 static int			handle_flag(int *i, int argc, char **argv, t_all *all)

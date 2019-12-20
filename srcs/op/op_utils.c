@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:24 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/20 16:53:41 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 17:00:36 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ int		read_int_in_map_idx(t_all *all, int pc, int deplacement)
 {
 	return (
 			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-																	   deplacement)]) << 24) |
+			deplacement)]) << 24) |
 			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-																	   deplacement + 1)]) << 16) |
+			deplacement + 1)]) << 16) |
 			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-																	   deplacement + 2)]) << 8) |
+			deplacement + 2)]) << 8) |
 			((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-				deplacement + 3)]));
+			deplacement + 3)]));
 }
 
 t_process	*proc_alloc(int mode)
