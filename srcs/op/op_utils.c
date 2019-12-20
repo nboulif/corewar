@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:24 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/20 14:23:43 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 16:13:20 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 int		read_int_in_map_idx(t_all *all, int pc, int deplacement)
 {
 	return (
-	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-	deplacement)]) << 24) |
-	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-	deplacement + 1)]) << 16) |
-	(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-	deplacement + 2)]) << 8) |
-	((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-	deplacement + 3)]));
+			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
+																	   deplacement)]) << 24) |
+			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
+																	   deplacement + 1)]) << 16) |
+			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
+																	   deplacement + 2)]) << 8) |
+			((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
+				deplacement + 3)]));
 }
 
 t_process	*proc_alloc(int mode)
 {
 	static t_process	**memo_proc;
 	static int			index = 0;
-	static int			i_tab = 0;
+	static int			i_tab = -1;
 
 	if (!mode)
 	{
@@ -37,22 +37,16 @@ t_process	*proc_alloc(int mode)
 			free(memo_proc[i_tab--]);
 		free(memo_proc);
 		memo_proc = NULL;
+		i_tab = -1;
 		index = 0;
-		i_tab = 0;
 		return (NULL);
 	}
-	if (index > SIZE_BLOCK_MEM)
+	if (index > SIZE_BLOCK_MEM || !memo_proc)
 	{
 		index = 0;
 		if (!(memo_proc = realloc(memo_proc, sizeof(t_process*) *
 						(++i_tab + 1))) || !(memo_proc[i_tab] =
 						malloc(sizeof(t_process) * SIZE_BLOCK_MEM)))
-			return (NULL);
-	}
-	else if (!memo_proc)
-	{
-		if (!(memo_proc = malloc(sizeof(t_process*))) ||
-			!(memo_proc[0] = malloc(sizeof(t_process) * SIZE_BLOCK_MEM)))
 			return (NULL);
 	}
 	return (&memo_proc[i_tab][index++]);
