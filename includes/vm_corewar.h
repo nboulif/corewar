@@ -177,6 +177,7 @@ extern char				*background_color[256];
 ** utils
 */
 
+int			is_a_process(t_all *all, int pc);
 int			calcul_new_pc_idx(int pc, int deplacement);
 int			calcul_new_pc(int pc, int deplacement);
 void		config_flags(void);
