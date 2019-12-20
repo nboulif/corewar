@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:52:37 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/14 00:52:40 by rhunders         ###   ########.fr       */
+/*   Updated: 2019/12/20 14:04:33 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void		op_and(t_all *all, t_process *proc)
 {
-	int i;
-	int param[2];
 	int pc_to_read;
 
 	pc_to_read = proc->pc;

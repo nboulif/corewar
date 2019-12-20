@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:09 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/16 18:53:34 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:03:19 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void		op_ldi(t_all *all, t_process *proc)
 {
 	int pc;
-	int p0;
-	int p1;
 
 	pc = proc->pc;
 	if (parse_arg_op(all, proc))

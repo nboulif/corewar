@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 13:46:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 13:53:51 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:00:36 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static void			handle_dump(int *i, int argc, char **argv, t_all *all)
 
 static int			is_valid_flag(char *flag)
 {
-	if (flags[*flag] && !flag[1])
+	if (flags[(int)*flag] && !flag[1])
 		return (1);
-	return (flags_syn[*flag] && !ft_strcmp(flag, flags_syn[*flag]));
+	return (flags_syn[(int)*flag] && !ft_strcmp(flag, flags_syn[(int)*flag]));
 }
 
 static int			handle_flag(int *i, int argc, char **argv, t_all *all)
 {
 	unsigned int	out;
 
-	out = flags[argv[*i][1]];
+	out = flags[(int)argv[*i][1]];
 	if (!is_valid_flag(&argv[*i][1]))
 		parse_champ(all, NULL, argv[*i]);
 	else if (out == FLAG_NUMBER)
@@ -74,7 +74,7 @@ the order of execution.\n");
 
 void	print_comment(t_all all)
 {
-	int i;
+	size_t i;
 
 	i = 0;
 	while (i++ < all.nb_champ)

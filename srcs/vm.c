@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 13:44:52 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:05:07 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void		next_action(t_all *all, t_process *current_process)
 		move_pc(&current_process->pc, 1);
 		return ;
 	}
-	current_process->op = op_tab[all->map.character[current_process->pc]];
+	current_process->op = op_tab[(int)all->map.character[current_process->pc]];
 	current_process->wait = current_process->op.cycles - 1;
 }
 

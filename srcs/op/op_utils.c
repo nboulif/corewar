@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:24 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/14 00:53:25 by rhunders         ###   ########.fr       */
+/*   Updated: 2019/12/20 14:02:51 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,17 @@ t_process *proc_alloc(int mode)
 
 void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read)
 {
-	int pc2 = pc_to_read;
-
 	if (proc->op.type_of_params[0] == T_REG)
 		proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
 	else if (proc->op.type_of_params[0] == T_IND)
 	{
-		// move_pc(&pc_to_read, proc->op.params[0] % IDX_MOD);
-		// pc2 = calcul_new_pc_idx(pc_to_read, proc->op.params[0]);
 		proc->op.params[0] = read_int_in_map(all, calcul_new_pc_idx(pc_to_read, proc->op.params[0]));
-		// proc->op.params[0] = read_int_in_map_idx(all, pc_to_read, proc->op.params[0]);
-		// calcul_new_pc_idx(pc_to_read, proc->op.params[0]));
 	}
 	if (proc->op.type_of_params[1] == T_REG)
 		proc->op.params[1] = proc->reg[proc->op.params[1] - 1];
 	else if (proc->op.type_of_params[1] == T_IND)
 	{
-		// move_pc(&pc_to_read, proc->op.params[1] % IDX_MOD);
-		// pc_to_read = calcul_new_pc_idx(pc_to_read, proc->op.params[1]);
 		proc->op.params[1] = read_int_in_map(all, calcul_new_pc_idx(pc_to_read, proc->op.params[1]));
-		// proc->op.params[1] = read_int_in_map_idx(all, pc_to_read, proc->op.params[1]);
-		// calcul_new_pc_idx(pc_to_read, proc->op.params[1]));
 	}
 }
 
@@ -87,7 +77,6 @@ int    value_of_arg(t_all *all, t_process *proc, int pc, int index)
 		return (proc->reg[proc->op.params[index] - 1]);
 	else if (proc->op.type_of_params[index] == T_IND)
 	{
-		// move_pc(&pc, proc->op.params[index] % IDX_MOD);
 		pc = calcul_new_pc_idx(pc, proc->op.params[index]);
 		return (read_int_in_map(all, pc));
 	}

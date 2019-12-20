@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:52:43 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/15 18:18:15 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 14:03:30 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void		op_fork(t_all *all, t_process *proc)
 {
-	t_champ		*champ;
 	t_process	*new_proc;
 	int			old_pc;
 

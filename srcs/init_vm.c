@@ -58,9 +58,8 @@ void		init_map(t_all *all)
 
 void		init_color_in_map(t_all *all)
 {
-	int			i;
-	int			x;
-	int			start_code;
+	size_t		i;
+	size_t		x;
 	t_process	*proc;
 
 	i = -1;
@@ -75,7 +74,7 @@ void		init_color_in_map(t_all *all)
 
 void		init_vm(t_all *all)
 {
-	int			i;
+	size_t			i;
 	t_process	*proc;
 	int			min_ind;
 	int			i_undif;
