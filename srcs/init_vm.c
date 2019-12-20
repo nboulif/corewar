@@ -54,7 +54,7 @@ void		link_and_index_proc(t_all *all)
 	{
 		i++;
 		proc = &all->stack_proc[i];
-		if (i < all->nb_champ - 1)
+		if (i < (int)all->nb_champ - 1)
 			proc->next = &all->stack_proc[i + 1];
 		else
 			proc->next = NULL;
@@ -89,7 +89,6 @@ int			config_stack_proc(t_all *all)
 void		init_vm(t_all *all)
 {
 	int			i;
-	t_process	*proc;
 	int			min_ind;
 	int			i_undif;
 
@@ -101,7 +100,7 @@ void		init_vm(t_all *all)
 	ft_bzero(all->stack_proc, all->nb_champ * sizeof(t_process));
 	min_ind = config_stack_proc(all);
 	i = -1;
-	while (++i < all->nb_champ)
+	while (++i < (int)all->nb_champ)
 	{
 		if (!all->champ[i].flag_index)
 			all->champ[i].index = min_ind - ++i_undif;

@@ -36,7 +36,7 @@ t_champ		*get_champ(int index, t_all *all)
 	int		i;
 
 	i = -1;
-	while (++i < all->nb_champ)
+	while (++i < (int)all->nb_champ)
 	{
 		if (all->champ[i].index == index)
 			return (&all->champ[i]);

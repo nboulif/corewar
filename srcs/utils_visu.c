@@ -19,7 +19,6 @@ void		change_color(t_all *all, t_process *proc, int i)
 
 int			is_a_process(t_all *all, int pc)
 {
-	int			i;
 	t_process	*proc;
 
 	proc = all->stack_proc;

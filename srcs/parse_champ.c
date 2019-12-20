@@ -27,7 +27,7 @@ int		strcpy_champ(char *dest, char *src, int size)
 	return (i);
 }
 
-int		init_champ_header(t_champ *champ, char *mem, char *index)
+int		init_champ_header(t_champ *champ, char *mem)
 {
 	if (!(champ->name = malloc(sizeof(char) * (PROG_NAME_LENGTH + 1))) ||
 		!(champ->comment = malloc(sizeof(char) * (COMMENT_LENGTH + 1))))
@@ -77,14 +77,14 @@ void	parse_champ(t_all *all, char *index, char *file)
 		!(all->champ[all->nb_champ - 1].size_exec =
 		read_all((char**)&all->champ[all->nb_champ - 1].exec_code, fd)))
 		print_error_and_exit(READ_ERROR);
-	if (*((int*)mem) != COREWAR_EXEC_MAGIC_REV)
+	if (*((unsigned int*)mem) != COREWAR_EXEC_MAGIC_REV)
 		print_error_and_exit(BAD_MAGIC_NUMBER);
 	if (!init_champ_header(&all->champ[all->nb_champ - 1],
-			&mem[MAGIC_SIZE], index))
+			&mem[MAGIC_SIZE]))
 		print_error_and_exit(MALLOC_ERROR);
 	if (!check_index_doublon(all, all->nb_champ - 1))
 		print_error_and_exit(INDEX_DOUBLON);
-	if (all->champ[all->nb_champ - 1].size_exec !=
+	if ((int)all->champ[all->nb_champ - 1].size_exec !=
 		rev_int_byte(*(int*)&mem[MAGIC_SIZE + PROG_NAME_LENGTH + NULL_SIZE]) ||
 		all->champ[all->nb_champ - 1].size_exec > CHAMP_MAX_SIZE)
 		print_error_and_exit(EXEC_SIZE_ERROR);
