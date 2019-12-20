@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/18 18:37:08 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 13:44:52 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void		next_action(t_all *all, t_process *current_process)
 			current_process->op.op(all, current_process);
 		return ;
 	}
-	if ((all->map.character[current_process->pc] < 1 || all->map.character[current_process->pc] > 16))
+	if ((all->map.character[current_process->pc] < 1 ||
+				all->map.character[current_process->pc] > 16))
 	{
 		move_pc(&current_process->pc, 1);
 		return ;
@@ -57,7 +58,7 @@ int		check_nb_live(t_all *all, int total_cycle)
 		if (!process->flag_live)
 		{
 			if (all->flag & FLAG_DEATH)
-				ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n", 
+				ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n",
 				process->index, --total_cycle - process->last_live,
 				all->cycle_to_die - CYCLE_DELTA);
 			all->nb_process--;
@@ -80,7 +81,8 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 	if (all->flag & FLAG_VISU && total_cycle >= 100)
 	{
 		moveTo(10, 64 * 3 + 20);
-		ft_printf("nb_cycle %d die %d %4d", total_cycle, all->cycle_to_die, all->nb_process);
+		ft_printf("nb_cycle %d die %d %4d", total_cycle,
+				all->cycle_to_die, all->nb_process);
 		hexdump_map_square(all);
 	}
 	proc = all->stack_proc;
@@ -94,7 +96,7 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 	}
 }
 
-int check_ctd(t_all *all, int total_cycle)
+int		check_ctd(t_all *all, int total_cycle)
 {
 	static int cycle = 1;
 
@@ -106,7 +108,8 @@ int check_ctd(t_all *all, int total_cycle)
 		if (all->nb_live >= NBR_LIVE || all->nb_check >= MAX_CHECKS)
 		{
 			if (all->flag & FLAG_CYCLE)
-				ft_printf("Cycle to die is now %d\n", all->cycle_to_die - CYCLE_DELTA);
+				ft_printf("Cycle to die is now %d\n",
+						all->cycle_to_die - CYCLE_DELTA);
 			all->cycle_to_die -= CYCLE_DELTA;
 			all->nb_check = 0;
 		}
@@ -116,7 +119,7 @@ int check_ctd(t_all *all, int total_cycle)
 	return (1);
 }
 
-void		free_all(t_all *all, t_process	*first_process)
+void		free_all(t_all *all, t_process *first_process)
 {
 	proc_alloc(0);
 	free(first_process);
@@ -138,7 +141,8 @@ void		vm(t_all *all)
 	total_cycle = 0;
 	init_vm(all);
 	first_process = all->stack_proc;
-	while (all->cycles_before_exit == -1 || total_cycle < all->cycles_before_exit)
+	while (all->cycles_before_exit == -1 ||
+			total_cycle < all->cycles_before_exit)
 	{
 		make_action_and_visu(all, total_cycle++);
 		if (all->flag & FLAG_CYCLE)
@@ -147,7 +151,9 @@ void		vm(t_all *all)
 			break ;
 	}
 	if (all->last_player_alive)
-		ft_printf("Contestant %d, \"%s\", has won !\n", (-1) * all->last_player_alive->index, all->last_player_alive->name);
+		ft_printf("Contestant %d, \"%s\", has won !\n",
+				(-1) * all->last_player_alive->index,
+				all->last_player_alive->name);
 	else
 		ft_printf("Everybody lost\n");
 	if (all->flag & FLAG_DUMP && total_cycle == all->cycles_before_exit)
