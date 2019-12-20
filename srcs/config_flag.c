@@ -12,7 +12,27 @@
 
 #include "vm_corewar.h"
 
-void				config_flags(void)
+int		handle_flag(int *i, int argc, char **argv, t_all *all)
+{
+	unsigned int	out;
+
+	out = g_flags[(int)argv[*i][1]];
+	if (!is_valid_flag(&argv[*i][1]))
+		parse_champ(all, NULL, argv[*i]);
+	else if (out == FLAG_NUMBER)
+	{
+		*i += 2;
+		if (*i >= argc)
+			print_error_and_exit(INCOMPLETE_ARG);
+		parse_champ(all, argv[*i - 1], argv[*i]);
+		return (0);
+	}
+	else if (out == FLAG_DUMP || out == FLAG_DUMP64)
+		handle_dump(i, argc, argv, all);
+	return (out);
+}
+
+void	config_flags(void)
 {
 	g_flags['d'] = FLAG_DUMP;
 	g_flags['n'] = FLAG_NUMBER;
@@ -25,7 +45,7 @@ void				config_flags(void)
 	g_flags['D'] = FLAG_DUMP64;
 }
 
-void				config_flags_syn(void)
+void	config_flags_syn(void)
 {
 	g_flags_syn['d'] = "dump";
 }

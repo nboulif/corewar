@@ -196,11 +196,14 @@ void		print_bit(char nb);
 void		move_to(int row, int col);
 int			read_int_in_map(t_all *all, int pc);
 void		change_color(t_all *all, t_process *proc, int i);
+void		handle_dump(int *i, int argc, char **argv, t_all *all);
+int			is_valid_flag(char *flag);
 
 /*
-** parse_champ 
+** parse_champ
 */
 
+int			handle_flag(int *i, int argc, char **argv, t_all *all);
 void		parse_champ(t_all *all, char *index, char *file);
 
 /*

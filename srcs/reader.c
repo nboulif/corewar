@@ -12,7 +12,7 @@
 
 #include "vm_corewar.h"
 
-int				ft_realloc(void **tab, int *size_av,
+int		ft_realloc(void **tab, int *size_av,
 		int new_size_ap, size_t type_size)
 {
 	char			*save;
@@ -37,7 +37,7 @@ int				ft_realloc(void **tab, int *size_av,
 	return (1);
 }
 
-int			read_all(char **str, int fd)
+int		read_all(char **str, int fd)
 {
 	int index;
 	int size;

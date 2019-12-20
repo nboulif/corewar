@@ -20,7 +20,7 @@ void		op_lld(t_all *all, t_process *proc)
 	if (parse_arg_op(all, proc))
 	{
 		if (proc->op.type_of_params[0] == T_REG)
-			proc->op.params[0] = proc->reg[proc->op.params[0] - 1];
+			proc->op.params[0] = proc->reg[proc->op.params[0] - 1] >> 16;
 		else if (proc->op.type_of_params[0] == T_IND)
 		{
 			pc_to_read = calcul_new_pc(pc_to_read, proc->op.params[0]);

@@ -12,16 +12,7 @@
 
 #include "vm_corewar.h"
 
-static void			handle_player_with_number(int *i, int argc, char **argv,
-	t_all *all)
-{
-	*i += 2;
-	if (*i >= argc)
-		print_error_and_exit(INCOMPLETE_ARG);
-	parse_champ(all, argv[*i - 1], argv[*i]);
-}
-
-static void			handle_dump(int *i, int argc, char **argv, t_all *all)
+void			handle_dump(int *i, int argc, char **argv, t_all *all)
 {
 	*i += 1;
 	if (*i >= argc)
@@ -31,29 +22,12 @@ static void			handle_dump(int *i, int argc, char **argv, t_all *all)
 	all->cycles_before_exit = ft_atoi(argv[*i]);
 }
 
-static int			is_valid_flag(char *flag)
+int			is_valid_flag(char *flag)
 {
 	if (g_flags[(int)*flag] && !flag[1])
 		return (1);
 	return (g_flags_syn[(int)*flag] &&
 			!ft_strcmp(flag, g_flags_syn[(int)*flag]));
-}
-
-static int			handle_flag(int *i, int argc, char **argv, t_all *all)
-{
-	unsigned int	out;
-
-	out = g_flags[(int)argv[*i][1]];
-	if (!is_valid_flag(&argv[*i][1]))
-		parse_champ(all, NULL, argv[*i]);
-	else if (out == FLAG_NUMBER)
-	{
-		handle_player_with_number(i, argc, argv, all);
-		return (0);
-	}
-	else if (out == FLAG_DUMP || out == FLAG_DUMP64)
-		handle_dump(i, argc, argv, all);
-	return (out);
 }
 
 void				usage(void)

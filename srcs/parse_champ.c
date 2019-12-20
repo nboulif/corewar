@@ -63,7 +63,7 @@ void	fix_index(t_champ *champ, char *index)
 	champ->index = (char)index_int;
 }
 
-void		parse_champ(t_all *all, char *index, char *file)
+void	parse_champ(t_all *all, char *index, char *file)
 {
 	char		mem[FULL_HEADER_COR_SIZE];
 	int			fd;

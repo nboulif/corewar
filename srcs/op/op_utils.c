@@ -12,19 +12,6 @@
 
 #include "vm_corewar.h"
 
-int		read_int_in_map_idx(t_all *all, int pc, int deplacement)
-{
-	return (
-			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-			deplacement)]) << 24) |
-			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-			deplacement + 1)]) << 16) |
-			(((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-			deplacement + 2)]) << 8) |
-			((int)(unsigned char)all->map.character[calcul_new_pc_idx(pc,
-			deplacement + 3)]));
-}
-
 t_process	*proc_alloc(int mode)
 {
 	static t_process	**memo_proc;
