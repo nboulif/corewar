@@ -1,6 +1,6 @@
 #include "vm_corewar.h"
 
-void		simple_hexdump(t_all *all)
+void		simple_hexdump(t_all *all, int bytes_per_line)
 {
 	int	octet;
 
@@ -9,7 +9,7 @@ void		simple_hexdump(t_all *all)
 	while (octet < MEM_SIZE)
 	{ 
 		printf("%.2hhx ", all->map.character[octet]);
-		if (octet && !((octet + 1) % 64) && octet + 1 < MEM_SIZE)
+		if (octet && !((octet + 1) % bytes_per_line) && octet + 1 < MEM_SIZE)
 		{
 			printf("\n");
 			printf("0x%04x : ", octet + 1);

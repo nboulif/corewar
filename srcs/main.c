@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 13:46:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 14:00:36 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 15:43:28 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int			handle_flag(int *i, int argc, char **argv, t_all *all)
 		handle_player_with_number(i, argc, argv, all);
 		return (0);
 	}
-	else if (out == FLAG_DUMP)
+	else if (out == FLAG_DUMP || out == FLAG_DUMP64)
 		handle_dump(i, argc, argv, all);
 	return (out);
 }
@@ -72,15 +72,17 @@ the order of execution.\n");
 	exit(1);
 }
 
-void	print_comment(t_all all)
+void	print_comment(t_all *all)
 {
 	size_t i;
 
-	i = 0;
-	while (i++ < all.nb_champ)
+	i = -1;
+	while (i++ < all->nb_champ)
+	{
 		ft_printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
-			i + 1, all.champ[i].size_exec, all.champ[i].name,
-			all.champ[i].comment);
+			i, all->champ[i].size_exec, all->champ[i].name,
+			all->champ[i].comment);
+	}
 }
 
 int					main(int argc, char **argv)
@@ -107,7 +109,7 @@ int					main(int argc, char **argv)
 		}
 		else
 			parse_champ(&all, NULL, argv[i]);
-	all.flag & FLAG_VISU ? ft_printf("\e[?25l") : print_comment(all);
+	all.flag & FLAG_VISU ? ft_printf("\e[?25l") : print_comment(&all);
 	vm(&all);
 	return (0);
 }

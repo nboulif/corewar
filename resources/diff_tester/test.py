@@ -6,7 +6,7 @@ from platform import system
 import argparse
 
 def generate_diff(dump_nb):
-	os.system(" ".join(["./a.out -d", str(dump_nb), p, ">", our, "&& ./resources/vm_champs/corewar -d", str(dump_nb), p, ">", real]))
+	os.system(" ".join(["./a.out -D", str(dump_nb), p, ">", our, "&& ./resources/vm_champs/corewar -d", str(dump_nb), p, ">", real]))
 	our_file = open(our, 'r').read().split(sep="0x")
 	real_file = open(real, 'r').read().split(sep="0x")
 	our_file.pop(0)

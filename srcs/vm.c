@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 14:05:07 by nsondag          ###   ########.fr       */
+/*   Updated: 2019/12/20 15:40:35 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,8 @@ void		vm(t_all *all)
 				all->last_player_alive->name);
 	else
 		ft_printf("Everybody lost\n");
-	if (all->flag & FLAG_DUMP && total_cycle == all->cycles_before_exit)
-		simple_hexdump(all);
+	if (((all->flag & FLAG_DUMP) || (all->flag & FLAG_DUMP64))
+			&& total_cycle == all->cycles_before_exit)
+		(all->flag & FLAG_DUMP) ? simple_hexdump(all, 32) :
+			simple_hexdump(all, 64);
 }
