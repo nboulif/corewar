@@ -3,3 +3,8 @@
 *.o
 *.a
 a.out
+asm/asm
+asm/asm.dSYM
+
+corewar/corewar
+corewar/corewar.dSYM
