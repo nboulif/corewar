@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = asm
+NAME = corewar
 
 CC = gcc
 
@@ -20,15 +20,15 @@ LIBRARIES = -lft -L$(LIBFT_DIRECTORY)
 INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS)
 
 LIBFT = $(LIBFT_DIRECTORY)libft.a
-LIBFT_DIRECTORY = ../libft/
+LIBFT_DIRECTORY = libft/
 LIBFT_HEADERS = $(LIBFT_DIRECTORY)
 
-HEADERS_LIST = asm.h
+HEADERS_LIST = corewar.h
 HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./srcs/
-SOURCES_LIST = asm.c op.c parser.c parse_params.c get_header.c error_1.c\
+SOURCES_LIST = corewar.c op.c parser.c parse_params.c get_header.c error_1.c\
 			error_2.c\
 			print_debug.c write_file.c utiles.c utils2.c init.c free.c
 SOURCES = $(addprefix $(SOURCES_DIRECTORY), $(SOURCES_LIST))
@@ -41,7 +41,7 @@ GREEN = \033[0;32m
 RED = \033[0;31m
 RESET = \033[0m
 
-.PHONY: all clean fclean re tester_v tester_f
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
@@ -61,12 +61,6 @@ $(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADERS)
 $(LIBFT):
 	@echo "$(NAME): $(GREEN)Creating $(LIBFT)...$(RESET)"
 	@$(MAKE) -sC $(LIBFT_DIRECTORY)
-
-tester_v:
-	@cd unitest && ./tester_error.sh -v && ./tester_zork2.sh -v && ./tester.sh -v && cd ..
-
-tester_f:
-	@cd unitest && ./tester_error.sh && ./tester_zork2.sh && ./tester.sh && cd ..
 
 clean:
 	@$(MAKE) -sC $(LIBFT_DIRECTORY) clean

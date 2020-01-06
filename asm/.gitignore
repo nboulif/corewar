@@ -1,7 +1,0 @@
-.vscode
-.DS*
-*.o
-*.a
-a.out
-asm/asm
-asm/asm.dSYM

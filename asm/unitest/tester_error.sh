@@ -1,13 +1,25 @@
 
+MAIN_FOLDER="../../"
+ASM_FOLDER="../"
+
+ASM=$ASM_FOLDER"./asm"
+
+MAKEFILE=$ASM_FOLDER"Makefile"
+MAKEFILE_TMP=$ASM_FOLDER"Makefile_tmp"
+
+ASM_RES=$MAIN_FOLDER"resource/./asm_res"
+VM_CHAMPS=$MAIN_FOLDER"resource/champs"
 
 
-sed 's/ #-fsanitize=address/ -fsanitize=address/g' Makefile > Makefile_tmp ; rm Makefile ; mv Makefile_tmp Makefile
+sed 's/ #-fsanitize=address/ -fsanitize=address/g' $MAKEFILE > $MAKEFILE_TMP ; rm $MAKEFILE ; mv $MAKEFILE_TMP $MAKEFILE
 leaks=0
 if [[ $1 == "-v"  ]]; then 
     leaks=1
-    sed 's/ -fsanitize=address/ #-fsanitize=address/g' Makefile > Makefile_tmp ; rm Makefile ; mv Makefile_tmp Makefile
+    sed 's/ -fsanitize=address/ #-fsanitize=address/g' $MAKEFILE > $MAKEFILE_TMP ; rm $MAKEFILE ; mv $MAKEFILE_TMP $MAKEFILE
 fi
-make re
+
+make -sC $ASM_FOLDER re
+
 
 for arg in $(find error_test -name "*.s")
 do
@@ -17,7 +29,7 @@ do
 
     printf "`tput setaf 4`#########   our   ##########`tput sgr0`\n"
     
-    ASM_RESULT=$(./asm $arg)
+    ASM_RESULT=$($ASM $arg)
     if [[ "$ASM_RESULT" == *"Writing output program to"*  ]]; then 
          echo "`tput setaf 1`$ASM_RESULT`tput sgr0`"
     else
@@ -25,7 +37,7 @@ do
     fi
 
     printf "`tput setaf 4`#########   res   ##########`tput sgr0`\n"
-    ASM_RES_RESULT=$(./asm_res $arg)
+    ASM_RES_RESULT=$($ASM_RES $arg)
     if [[ "$ASM_RES_RESULT" == *"Writing output program to"*  ]]; then 
          echo "`tput setaf 1`$ASM_RES_RESULT`tput sgr0`"
     else
@@ -41,7 +53,7 @@ do
             elif [[ "$line" == *"indirectly lost"*  ]]; then 
                 leaks_indirectly="$line"
             fi
-        done <<< "$(valgrind --leak-check=full --show-leak-kinds=all ./asm -a $arg 2>&1 | grep 'definitely\|indirectly')"
+        done <<< "$(valgrind --leak-check=full --show-leak-kinds=all $ASM -a $arg 2>&1 | grep 'definitely\|indirectly')"
 
         if [[ "$leaks_definitely" == *"0 bytes in 0 blocks"*  ]] && [[ "$leaks_indirectly" == *"0 bytes in 0 blocks"*  ]]; then 
             echo "`tput setaf 2`OK`tput sgr0` => leaks"
@@ -53,6 +65,6 @@ do
 
 done
 
-sed 's/ -fsanitize=address/ #-fsanitize=address/g' Makefile > Makefile_tmp ; rm Makefile ; mv Makefile_tmp Makefile
+sed 's/ -fsanitize=address/ #-fsanitize=address/g' $MAKEFILE > $MAKEFILE_TMP ; rm $MAKEFILE ; mv $MAKEFILE_TMP $MAKEFILE
 
-make fclean
+make -sC $ASM_FOLDER fclean
