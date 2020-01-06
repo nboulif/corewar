@@ -1,3 +1,0 @@
-[submodule "corewar/libft"]
-	path = corewar/libft
-	url = git@github.com:msyukyu/libft.git
