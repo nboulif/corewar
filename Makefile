@@ -30,7 +30,7 @@ RESET = \033[0m
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(ASM_NAME) 
+$(NAME): $(LIBFT) $(ASM_NAME) $(VM_NAME) 
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 
 $(ASM_NAME):
@@ -49,9 +49,11 @@ asm_tester:
 
 clean:
 	@$(MAKE) -sC $(ASM_DIRECTORY) clean
+	@$(MAKE) -sC $(VM_DIRECTORY) clean
 	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
 
 fclean: clean
 	@$(MAKE) -sC $(ASM_DIRECTORY) fclean
+	@$(MAKE) -sC $(VM_DIRECTORY) fclean
 	
 re: fclean all
