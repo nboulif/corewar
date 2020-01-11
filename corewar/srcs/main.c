@@ -6,13 +6,13 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 13:46:29 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 16:57:53 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/11 16:40:54 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm_corewar.h"
 
-void			handle_dump(int *i, int argc, char **argv, t_all *all)
+void		handle_dump(int *i, int argc, char **argv, t_all *all)
 {
 	*i += 1;
 	if (*i >= argc)
@@ -30,7 +30,7 @@ int			is_valid_flag(char *flag)
 			!ft_strcmp(flag, g_flags_syn[(int)*flag]));
 }
 
-void				usage(void)
+void		usage(void)
 {
 	ft_putstr(
 "Usage ./corewar [-t] [-v] [-d | -dump N] [[-n N] \
@@ -47,7 +47,7 @@ the order of execution.\n");
 	exit(1);
 }
 
-void	print_comment(t_all *all)
+void		print_comment(t_all *all)
 {
 	size_t i;
 
@@ -60,7 +60,7 @@ void	print_comment(t_all *all)
 	}
 }
 
-int					main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_all			all;
 	int				i;

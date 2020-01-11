@@ -6,7 +6,7 @@
 /*   By: rhunders <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 00:53:24 by rhunders          #+#    #+#             */
-/*   Updated: 2019/12/20 17:08:08 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/11 16:40:22 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void		config_arg_binary_op(t_all *all, t_process *proc, int pc_to_read)
 	}
 }
 
-int		value_of_arg(t_all *all, t_process *proc, int pc, int index)
+int			value_of_arg(t_all *all, t_process *proc, int pc, int index)
 {
 	if (proc->op.type_of_params[index] == T_REG)
 		return (proc->reg[proc->op.params[index] - 1]);
@@ -69,7 +69,7 @@ int		value_of_arg(t_all *all, t_process *proc, int pc, int index)
 	return (proc->op.params[index]);
 }
 
-void	give_value_of_arg(t_all *all, t_process *proc, int pc, int index)
+void		give_value_of_arg(t_all *all, t_process *proc, int pc, int index)
 {
 	if ((unsigned int)index > 2)
 		return ;
@@ -82,7 +82,7 @@ void	give_value_of_arg(t_all *all, t_process *proc, int pc, int index)
 	}
 }
 
-void	give_value_of_larg(t_all *all, t_process *proc, int pc, int index)
+void		give_value_of_larg(t_all *all, t_process *proc, int pc, int index)
 {
 	if ((unsigned int)index > 2)
 		return ;
