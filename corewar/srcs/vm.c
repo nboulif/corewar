@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2020/01/11 16:43:43 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/11 19:13:06 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		make_action_and_visu(t_all *all, int total_cycle)
 {
 	t_process *proc;
 
-	if (all->flag & FLAG_VISU && total_cycle >= 100)
+	if (all->flag & FLAG_VISU)
 	{
 		move_to(10, 64 * 3 + 20);
 		ft_printf("nb_cycle %d die %d %4d", total_cycle,

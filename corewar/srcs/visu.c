@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 16:15:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 16:45:27 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/11 19:18:39 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ void		hexdump_map_square(t_all *all)
 		if (proc)
 		{
 			if (last_color != g_background_color[proc])
-				printf("%s", (last_color = g_background_color[proc]));
+				ft_printf("%s", (last_color = g_background_color[proc]));
 		}
 		else if (last_color != all->map.color_in_map[i])
-			printf("%s", (last_color = all->map.color_in_map[i]));
+			ft_printf("%s", (last_color = all->map.color_in_map[i]));
 		if (!((i + 1) % 64))
-			printf("%.2hhx\n", all->map.character[i]);
+			ft_printf("%.2hhx\n", all->map.character[i]);
 		else
-			printf("%.2hhx\033[0;39m %s", all->map.character[i], last_color);
+			ft_printf("%.2hhx\033[0;39m %s", all->map.character[i], last_color);
 	}
 	read(0, &i, 4);
 }
