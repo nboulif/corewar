@@ -168,13 +168,7 @@
 
 
 
+=> exit doffice en fin de programme pour gerer les leaks "still reachable" / a debattre
 
-
-=> free ce qui se trouve dans proc_alloc a la fin du programme
-
-=> parse_champ -> close en cas d'erreur ? Ou laisser exit le faire
-
-=> exit doffice en fin de programme pour gerer les leaks "still reachable"
-
-=> free_all n'est pas appelee
+=> free_all n'est pas appelee -> ok
 

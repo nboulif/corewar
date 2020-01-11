@@ -53,4 +53,5 @@ void		vm(t_all *all)
 			&& total_cycle == all->cycles_before_exit)
 		(all->flag & FLAG_DUMP) ? simple_hexdump(all, 32) :
 			simple_hexdump(all, 64);
+	free_all(all, first_process);
 }
