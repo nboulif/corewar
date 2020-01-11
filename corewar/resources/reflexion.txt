@@ -172,3 +172,4 @@
 
 => free_all n'est pas appelee -> ok
 
+tester affichage avec le visu fonctionnel

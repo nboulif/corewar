@@ -57,5 +57,5 @@ void		hexdump_map_square(t_all *all)
 		else
 			ft_printf("%.2hhx\033[0;39m %s", all->map.character[i], last_color);
 	}
-	read(0, &i, 4);
+	//read(0, &i, 4);
 }

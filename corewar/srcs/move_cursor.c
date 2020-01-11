@@ -34,5 +34,5 @@ void	move_left(int positions)
 
 void	move_to(int row, int col)
 {
-	printf("\x1b[%d;%df", row, col);
+	ft_printf("\x1b[%d;%df", row, col);
 }
