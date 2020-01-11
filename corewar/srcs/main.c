@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 13:46:29 by nsondag           #+#    #+#             */
-/*   Updated: 2020/01/11 18:37:36 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/11 18:56:20 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			is_valid_flag(char *flag)
 void		usage(void)
 {
 	ft_putstr(
-"Usage ./corewar [-c][-l][-r][-v][-x] [-d | -dump N] [-D | N][[-n N] \
+"Usage ./corewar [-c][-L][-r][-v][-x] [-d | -dump N] [-D | N][[-n N] \
 <champion.cor>] <...>\n\
 	-c		: Show cycles\n\
 	-L		: Show lives\n\
