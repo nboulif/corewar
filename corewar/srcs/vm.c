@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/26 18:32:35 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 16:58:55 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/11 16:43:43 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		next_action(t_all *all, t_process *current_process)
 	current_process->wait = current_process->op.cycles - 1;
 }
 
-int		delete_element(t_all *all, t_process **element, t_process *prev)
+int			delete_element(t_all *all, t_process **element, t_process *prev)
 {
 	if (prev)
 	{
@@ -47,7 +47,7 @@ int		delete_element(t_all *all, t_process **element, t_process *prev)
 	return (0);
 }
 
-int		check_nb_live(t_all *all, int total_cycle)
+int			check_nb_live(t_all *all, int total_cycle)
 {
 	t_process		*process;
 	t_process		*prev;
@@ -75,7 +75,7 @@ int		check_nb_live(t_all *all, int total_cycle)
 	return (!!all->stack_proc);
 }
 
-void	make_action_and_visu(t_all *all, int total_cycle)
+void		make_action_and_visu(t_all *all, int total_cycle)
 {
 	t_process *proc;
 
@@ -97,7 +97,7 @@ void	make_action_and_visu(t_all *all, int total_cycle)
 	}
 }
 
-int		check_ctd(t_all *all, int total_cycle)
+int			check_ctd(t_all *all, int total_cycle)
 {
 	static int cycle = 1;
 
@@ -118,47 +118,4 @@ int		check_ctd(t_all *all, int total_cycle)
 		cycle = 1;
 	}
 	return (1);
-}
-
-void		free_all(t_all *all, t_process *first_process)
-{
-	proc_alloc(0);
-	free(first_process);
-	while (all->nb_champ--)
-	{
-		free(all->champ[all->nb_champ].name);
-		free(all->champ[all->nb_champ].comment);
-		free(all->champ[all->nb_champ].exec_code);
-	}
-	free(all->map.character);
-	free(all->map.color_in_map);
-}
-
-void		vm(t_all *all)
-{
-	int			total_cycle;
-	t_process	*first_process;
-
-	total_cycle = 0;
-	init_vm(all);
-	first_process = all->stack_proc;
-	while (all->cycles_before_exit == -1 ||
-			total_cycle < all->cycles_before_exit)
-	{
-		make_action_and_visu(all, total_cycle++);
-		if (all->flag & FLAG_CYCLE)
-			ft_printf("It is now cycle %d\n", total_cycle);
-		if (!check_ctd(all, total_cycle))
-			break ;
-	}
-	if (all->last_player_alive)
-		ft_printf("Contestant %d, \"%s\", has won !\n",
-				(-1) * all->last_player_alive->index,
-				all->last_player_alive->name);
-	else
-		ft_printf("Everybody lost\n");
-	if (((all->flag & FLAG_DUMP) || (all->flag & FLAG_DUMP64))
-			&& total_cycle == all->cycles_before_exit)
-		(all->flag & FLAG_DUMP) ? simple_hexdump(all, 32) :
-			simple_hexdump(all, 64);
 }
