@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 13:46:29 by nsondag           #+#    #+#             */
-/*   Updated: 2020/01/11 16:40:54 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/11 18:37:36 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,19 @@ int			is_valid_flag(char *flag)
 void		usage(void)
 {
 	ft_putstr(
-"Usage ./corewar [-t] [-v] [-d | -dump N] [[-n N] \
+"Usage ./corewar [-c][-l][-r][-v][-x] [-d | -dump N] [-D | N][[-n N] \
 <champion.cor>] <...>\n\
-	-t		: enable threads\n\
+	-c		: Show cycles\n\
+	-L		: Show lives\n\
+	-r		: Show operations\n\
+	-x		: Show deaths\n\
 	-v		: enable visualization\n\
 	-d -dump N	: at the end of nbr_cycles of executions, dump the \
 memory on the standard output and quit the game. The memory is \
 dumped in the hexadecimal format with 32 octets per line.\n\
+	-D  N		: at the end of nbr_cycles of executions, dump the \
+memory on the standard output and quit the game. The memory is \
+dumped in the hexadecimal format with 64 octets per line.\n\
 	-n N		: sets the number of the next player. If non-existent, \
 the player will have the next available number in the order of \
 the parameters. The last player will have the first process in \

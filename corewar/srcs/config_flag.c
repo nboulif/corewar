@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 16:16:02 by nsondag           #+#    #+#             */
-/*   Updated: 2019/12/20 16:49:20 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/11 18:37:12 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	config_flags(void)
 {
 	g_flags['d'] = FLAG_DUMP;
 	g_flags['n'] = FLAG_NUMBER;
-	g_flags['t'] = FLAG_THREAD;
 	g_flags['v'] = FLAG_VISU;
 	g_flags['r'] = FLAG_RESUME;
 	g_flags['c'] = FLAG_CYCLE;
