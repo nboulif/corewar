@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:30:09 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/08 16:28:11 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/12 17:12:34 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define SYNTAX			"Syntax error at token [TOKEN]"
 # define END			"END \"(null)\""
-# define USAGE1			"Usage: ./asm_res [-a] <sourcefile.s>\n"
+# define USAGE1			"Usage: ./asm [-a] <sourcefile.s>\n"
 # define USAGE2			"    -a : Instead of creating a .cor file, "
 # define USAGE3			"outputs a stripped and annotated version "
 # define USAGE4			"of the code to the standard output\n"
