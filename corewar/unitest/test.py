@@ -18,24 +18,21 @@ class TheProcess():
 
 		print("args.strings -> |{}|".format(args))
 
-		name = args[0]
-		n_players = int(args[1])
+		name = args.pop(0)
 		
-		basename = os.path.basename(name)
-		(file_name, ext) = os.path.splitext(basename)
+		self.our = name + ".ourdump"
+		self.real = name + ".realdump"
+		self.diff = name + ".diffdump"
 
-		self.our = file_name + ".ourdump"
-		self.real = file_name + ".realdump"
-		self.diff = file_name + ".diffdump"
-
-		self.players = " ".join([name for _ in range(n_players)])
+		self.players = " ".join(args)
 
 	def generate_diff(self, dump_nb):
 		os.system(" ".join([".././corewar -D", str(dump_nb), self.players, ">", self.our, "&& ../../resource/./corewar_res -d", str(dump_nb), self.players, ">", self.real]))
 
 		our_file = open(self.our, 'r').read().split(sep="0x")
 		real_file = open(self.real, 'r').read().split(sep="0x")
-		print(f"||{our_file.pop(0)}||\n||{real_file.pop(0)}||")
+		our_file.pop(0)
+		real_file.pop(0)
 
 		open(self.our, 'w').write("".join(our_file))
 		open(self.real, 'w').write("".join(real_file))
