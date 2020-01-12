@@ -6,7 +6,7 @@
 /*   By: nsondag <nsondag@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 13:06:40 by nsondag           #+#    #+#             */
-/*   Updated: 2019/11/06 16:48:53 by nsondag          ###   ########.fr       */
+/*   Updated: 2020/01/12 17:30:51 by nsondag          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 	if (argc < 2)
 		return (printf("%s%s%s%s", USAGE1, USAGE2, USAGE3, USAGE4));
 	i = 0;
-	while (++i <= argc)
+	while (++i < argc)
 	{
 		if (*argv[i] == '-')
 		{
@@ -102,7 +102,6 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 			prog->file_name = argv[i];
 			if (prog->fd < 0)
 				return (printf(g_err_msgs[ERROR_WRONG_FD], argv[i]));
-			break ;
 		}
 	}
 	return (0);
