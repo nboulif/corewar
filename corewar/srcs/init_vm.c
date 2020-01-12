@@ -18,11 +18,11 @@ void		init_map(t_all *all)
 
 	i = -1;
 	if (!(all->map.character = malloc(sizeof(char) * MEM_SIZE)) ||
-		!(all->map.color_in_map = malloc(sizeof(char*) * MEM_SIZE)))
+		!(all->map.color_in_map = malloc(sizeof(int) * MEM_SIZE)))
 		print_error_and_exit(MALLOC_ERROR);
 	ft_bzero(all->map.character, sizeof(char) * MEM_SIZE);
 	while (++i < MEM_SIZE)
-		all->map.color_in_map[i] = g_text_color[9];
+		all->map.color_in_map[i] = g_ncurse_color[6];
 }
 
 void		init_color_in_map(t_all *all)
@@ -38,7 +38,7 @@ void		init_color_in_map(t_all *all)
 		proc = &all->stack_proc[i];
 		while (++x < proc->origin_champ->size_exec)
 			all->map.color_in_map[x + proc->pc] =
-				g_text_color[proc->origin_champ->index_player];
+				g_ncurse_color[proc->origin_champ->index_player];
 	}
 }
 

@@ -63,7 +63,35 @@
 
 # include <errno.h>
 
+/*
+** ncurses
+*/
 #include <ncurses.h>
+
+# define NC_COLOR_BLACK			0
+# define NC_COLOR_RED			1
+# define NC_COLOR_GREEN 		2
+# define NC_COLOR_YELLOW		3
+# define NC_COLOR_BLUE			4
+# define NC_COLOR_MAGENTA		5
+# define NC_COLOR_CYAN			6
+# define NC_COLOR_WHITE			7
+
+# define NC_COLOR_PLAYER_1		NC_COLOR_RED
+# define NC_COLOR_PLAYER_2		NC_COLOR_GREEN
+# define NC_COLOR_PLAYER_3		NC_COLOR_GREEN
+# define NC_COLOR_PLAYER_4		NC_COLOR_YELLOW
+
+# define NC_KEY_SPACE			32
+# define NC_KEY_Q				113
+# define NC_KEY_W				119
+# define NC_KEY_E				101
+# define NC_KEY_R				114
+# define NC_LINE_POSE			5
+# define NC_LINE_CYCLE_PASSED	10
+# define NC_LINE_SLEEP			2
+# define NC_LINE_PLAYER_STATUS	20
+
 
 # include "op.h"
 
@@ -140,7 +168,7 @@ struct						s_process
 typedef struct				s_map
 {
 	char					*character;
-	char					**color_in_map;
+	int						*color_in_map;
 }							t_map;
 
 struct						s_all
@@ -159,6 +187,10 @@ struct						s_all
 	int						nb_check;
 	int						max;
 	int						total_cycle;
+
+	int						max_cycle_by_sec;
+	int						nc_paused;
+	int						nc_jump;
 };
 
 /*
@@ -168,6 +200,7 @@ struct						s_all
 extern unsigned int			g_flags[256];
 extern char					*g_flags_syn[256];
 extern t_op					g_op_tab[17];
+extern int					g_ncurse_color[256];
 extern char					*g_text_color[256];
 extern char					*g_background_color[256];
 

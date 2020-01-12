@@ -80,11 +80,55 @@ void		make_action_and_visu(t_all *all, int total_cycle)
 	t_process *proc;
 
 	if (all->flag & FLAG_VISU)
-	{
-		move_to(10, 64 * 3 + 20);
-		ft_printf("nb_cycle %d die %d %4d", total_cycle,
-				all->cycle_to_die, all->nb_process);
+	{	
+		attron(COLOR_PAIR(107));
+		mvprintw(NC_LINE_CYCLE_PASSED, 64 * 3 + 20, "max cycle by sec %4d", all->max_cycle_by_sec);
+		mvprintw(NC_LINE_CYCLE_PASSED + 1, 64 * 3 + 20, "nb_cycle %d", total_cycle);
+		mvprintw(NC_LINE_CYCLE_PASSED + 2, 64 * 3 + 20, "die %d",  all->cycle_to_die);
+		mvprintw(NC_LINE_CYCLE_PASSED + 3, 64 * 3 + 20, "nb_process %d",  all->nb_process);
+		attroff(COLOR_PAIR(107));
 		hexdump_map_square(all);
+		refresh();
+
+		mvprintw(NC_LINE_POSE, (64 * 3) + 5, "paused");
+		
+		char c = getch();
+
+		if (c == NC_KEY_SPACE)
+		{
+			mvprintw(NC_LINE_POSE, (64 * 3) + 5, "paused");
+			move(64, 65);
+			refresh();
+			all->nc_paused = 0;
+
+			c = '\0';
+			while (c != NC_KEY_SPACE)
+			{
+				timeout(1);
+				c = getch();
+			}
+
+			mvprintw(NC_LINE_POSE, (64 * 3) + 5, "      ");
+			move(64, 65);
+			refresh();
+		}
+		else if (c == NC_KEY_Q)
+		{
+			if (all->max_cycle_by_sec > 11)
+				all->max_cycle_by_sec -= 10;
+		}
+		else if (c == NC_KEY_W)
+		{
+			if (all->max_cycle_by_sec > 2)
+				all->max_cycle_by_sec -= 1;
+		}
+		else if (c == NC_KEY_E)
+			all->max_cycle_by_sec += 1;
+		else if (c == NC_KEY_R)
+			all->max_cycle_by_sec += 10;
+
+		usleep((1000 * 1000) / all->max_cycle_by_sec);
+
 	}
 	proc = all->stack_proc;
 	while (1)

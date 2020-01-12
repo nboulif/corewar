@@ -16,7 +16,7 @@ CC = gcc
 
 FLAGS = -Wall -Wextra -Werror -O3 #-fsanitize=address
 
-LIBRARIES = -lft -L$(LIBFT_DIRECTORY)
+LIBRARIES = -lft -L$(LIBFT_DIRECTORY) -lncurses
 INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS)
 
 LIBFT = $(LIBFT_DIRECTORY)libft.a
