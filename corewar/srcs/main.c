@@ -69,6 +69,7 @@ void		print_comment(t_all *all)
 int			main(int argc, char **argv)
 {
 	t_all			all;
+	pthread_t		thread;
 	int				i;
 
 	if (argc == 1)
@@ -90,7 +91,17 @@ int			main(int argc, char **argv)
 		}
 		else
 			parse_champ(&all, NULL, argv[i]);
-	all.flag & FLAG_VISU ? ft_printf("\e[?25l") : print_comment(&all);
+	if (all.flag & FLAG_VISU)
+	{
+		// initscr();
+		// noecho();
+		// curs_set(FALSE);
+		// if (pthread_create(&thread, NULL, check_pause, NULL) == -1)
+		// 	exit(ft_printf("Thread create fail\n") * 0 + 1);
+		ft_printf("\e[?25l");
+	}
+	else
+		print_comment(&all);	
 	vm(&all);
 	return (0);
 }

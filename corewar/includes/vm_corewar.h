@@ -63,6 +63,8 @@
 
 # include <errno.h>
 
+#include <ncurses.h>
+
 # include "op.h"
 
 # define SIZE_BUFF			2800
@@ -81,6 +83,9 @@
 # define B2 				0x0000ff00
 # define B3 				0x00ff0000
 # define B4 				0xff000000
+
+#define ONE_JUMP 2
+#define PAUSE 1
 
 typedef struct s_process	t_process;
 typedef struct s_all		t_all;
@@ -213,6 +218,12 @@ void						init_vm(t_all *all);
 
 void						qsort_proc(t_process *stack_proc,
 		int start_ind, int size);
+
+/*
+**	visu
+*/
+
+void						*check_pause(void *arg);
 
 /*
 ** vm

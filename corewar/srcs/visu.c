@@ -31,6 +31,10 @@ void		simple_hexdump(t_all *all, int bytes_per_line)
 	ft_printf("\n");
 }
 
+char paused = 0;
+char jump = 0;
+pthread_mutex_t mutex;
+
 void		hexdump_map_square(t_all *all)
 {
 	int		proc;
@@ -57,5 +61,50 @@ void		hexdump_map_square(t_all *all)
 		else
 			ft_printf("%.2hhx\033[0;39m %s", all->map.character[i], last_color);
 	}
-	//read(0, &i, 4);
+
+	// pthread_mutex_lock(&mutex);
+	// while (1)
+	// {
+	// 	if (!paused)
+	// 		break ;
+	// 	if (jump)
+	// 	{
+	// 		jump--;
+	// 		break ;
+	// 	}
+	// 	usleep(50000);
+	// }
+	// pthread_mutex_unlock(&mutex);
 }
+
+// int 	read_command()
+// {
+// 	char	line;
+// 	int		ret;
+
+// 	line = getchar_unlocked();
+// 	if (line == ' ')
+// 		ret = PAUSE;
+// 	else if (line == 's')
+// 		ret = ONE_JUMP;
+// 	else 
+// 		ret = 0;
+// 	return (ret);
+// }
+
+// void	*check_pause(void *arg)
+// {
+// 	char rep;
+
+// 	(void)arg;
+// 	while (1)
+// 	{
+// 		pthread_mutex_lock(&mutex);
+// 		if ((rep = read_command()) == PAUSE)
+// 			paused = 1 - paused;
+// 		else if (rep == ONE_JUMP)
+// 			jump++;
+// 		pthread_mutex_unlock(&mutex);
+// 	}
+//     pthread_exit(NULL);
+// }

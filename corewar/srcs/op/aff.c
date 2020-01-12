@@ -16,5 +16,5 @@ void		op_aff(t_all *all, t_process *proc)
 {
 	if (parse_arg_op(all, proc) && !(all->flag & FLAG_VISU) &&
 		!(all->flag & FLAG_RESUME))
-		ft_putchar((unsigned int)proc->op.params[0] % 256);
+		ft_printf("Aff: %c\n", (unsigned char)proc->reg[proc->op.params[0] - 1] % 256);
 }
