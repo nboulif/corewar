@@ -56,7 +56,6 @@ $(NAME): $(LIBFT) $(OBJECTS_DIRECTORY) $(OBJECTS)
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 
 $(OBJECTS_DIRECTORY):
-	@mkdir -p $(OBJECTS_DIRECTORY)
 	@mkdir -p $(OBJECTS_DIRECTORY)/op
 	@echo "$(NAME): $(GREEN)$(OBJECTS_DIRECTORY) was created$(RESET)"
 

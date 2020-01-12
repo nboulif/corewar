@@ -1,0 +1,72 @@
+#!/usr/local/bin/python3
+from __future__ import print_function
+import sys, random, os
+from os.path import dirname, abspath
+from platform import system
+import argparse
+
+
+class TheProcess():
+
+	def __init__(self):
+
+		parser = argparse.ArgumentParser(description='Process some strings.')
+		parser.add_argument('strings', type=str, nargs='+',
+							help='name n_champs [champ_file ...]')
+		
+		args = parser.parse_args().strings
+
+		print("args.strings -> |{}|".format(args))
+
+		name = args[0]
+		n_players = int(args[1])
+		
+		basename = os.path.basename(name)
+		(file_name, ext) = os.path.splitext(basename)
+
+		self.our = file_name + ".ourdump"
+		self.real = file_name + ".realdump"
+		self.diff = file_name + ".diffdump"
+
+		self.players = " ".join([name for _ in range(n_players)])
+
+	def generate_diff(self, dump_nb):
+		os.system(" ".join([".././corewar -D", str(dump_nb), self.players, ">", self.our, "&& ../../resource/./corewar_res -d", str(dump_nb), self.players, ">", self.real]))
+
+		our_file = open(self.our, 'r').read().split(sep="0x")
+		real_file = open(self.real, 'r').read().split(sep="0x")
+		print(f"||{our_file.pop(0)}||\n||{real_file.pop(0)}||")
+
+		open(self.our, 'w').write("".join(our_file))
+		open(self.real, 'w').write("".join(real_file))
+
+		os.system(" ".join(["diff", self.our, self.real, ">", self.diff]))
+
+	def process(self):
+		s_c, c_c, e_c, error_c = 1, 10000, 10000, -1
+		while (s_c + 1 != e_c and e_c <= 100000):
+			self.generate_diff(c_c)
+			if open(self.diff, 'r').read() == "":
+				if error_c > -1:
+					c_c, s_c = (e_c - c_c) // 2 + c_c, c_c 
+				else:
+					s_c = e_c + 1
+					e_c += 10000
+					c_c = e_c
+			else:
+				error_c = c_c
+				c_c, e_c = (c_c - s_c) // 2 + s_c, c_c
+		if error_c == -1:
+			print(error_c)
+		else:
+			print(e_c)
+
+		self.generate_diff(e_c)
+
+if __name__ == "__main__":
+
+	the_process = TheProcess()
+	
+	the_process.process()
+
+	os.system("cat " + the_process.diff)
