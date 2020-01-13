@@ -69,7 +69,7 @@ void	print_params_as_read(t_data *data, int i, int y)
 	}
 	else
 	{
-		l = (int)count_digit(data->val_param[i]) -
+		l = (int)ft_count_digit(data->val_param[i]) -
 			(data->val_param[i] < 0 ? 1 : 0);
 		if (((data->codage_octal >> (2 * (3 - i))) & 3) == T_REG)
 			printf("r%-17.*d", l, data->val_param[i]);

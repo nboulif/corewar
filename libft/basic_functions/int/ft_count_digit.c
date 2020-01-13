@@ -17,7 +17,7 @@ size_t		ft_count_digit(int n)
 	size_t count;
 
 	count = 0;
-	if (n == -2147483648)
+	if (n < 0 && n - 1 >= 0)
 		return (10);
 	if (n < 0)
 	{
