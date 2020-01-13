@@ -15,7 +15,7 @@
 # include <fcntl.h>
 # include "op.h"
 # include "error.h"
-# include "../libft/libft.h"
+# include "libft.h"
 
 # define SYNTAX			"Syntax error at token [TOKEN]"
 # define END			"END \"(null)\""
