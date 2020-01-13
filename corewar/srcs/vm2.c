@@ -26,22 +26,27 @@ void		free_all(t_all *all, t_process *first_process)
 	free(all->map.color_in_map);
 }
 
-void		vm_part_2(t_all *all)
+void		vm_part_visu(t_all *all)
 {
 	if (all->last_player_alive)
-	{
-		if (all->flag & FLAG_VISU)
-			mvprintw(NC_LINE_RESULT, 64 * 3 + 5,
-			"Contestant %d, \"%s\", has won !",
-			(-1) * all->last_player_alive->index, all->last_player_alive->name);
-		else
-			ft_printf("Contestant %d, \"%s\", has won !\n",
-			(-1) * all->last_player_alive->index, all->last_player_alive->name);
-	}
+		mvprintw(NC_LINE_RESULT, 64 * 3 + 5,
+		"Contestant %d, \"%s\", has won !",
+		(-1) * all->last_player_alive->index, all->last_player_alive->name);
+	else
+		mvprintw(NC_LINE_RESULT, 64 * 3 + 5, "Everybody lost");
+	move(64, 64);
+	refresh();
+}
+
+void		vm_part_2(t_all *all)
+{
+	if (all->flag & FLAG_VISU)
+		vm_part_visu(all);
 	else
 	{
-		if (all->flag & FLAG_VISU)
-			mvprintw(NC_LINE_RESULT, 64 * 3 + 5, "Everybody lost");
+		if (all->last_player_alive)
+			ft_printf("Contestant %d, \"%s\", has won !\n",
+			(-1) * all->last_player_alive->index, all->last_player_alive->name);
 		else
 			ft_printf("Everybody lost\n");
 	}

@@ -27,7 +27,7 @@ class TheProcess():
 		self.players = " ".join(args)
 
 	def generate_diff(self, dump_nb):
-		os.system(" ".join([".././corewar -D", str(dump_nb), self.players, ">", self.our, "&& ../../resource/./corewar_res -d", str(dump_nb), self.players, ">", self.real]))
+		os.system(" ".join(["./corewar -D", str(dump_nb), self.players, ">", self.our, "&& ../resource/./corewar_res -d", str(dump_nb), self.players, ">", self.real]))
 
 		our_file = open(self.our, 'r').read().split(sep="0x")
 		real_file = open(self.real, 'r').read().split(sep="0x")

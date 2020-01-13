@@ -82,7 +82,7 @@
 # define NC_LINE_PROC_PASSED	8
 # define NC_LINE_PLAYER_STATUS	11
 # define NC_LINE_CYCLE_TO_DIE	35
-# define NC_LINE_RESULT	50
+# define NC_LINE_RESULT			50
 
 # include "op.h"
 
@@ -209,7 +209,6 @@ int							rev_int_byte(int nbr);
 void						move_pc(int *pc, int incr);
 t_champ						*get_champ(int index, t_all *all);
 void						print_bit(char nb);
-void						move_to(int row, int col);
 int							read_int_in_map(t_all *all, int pc);
 void						change_color(t_all *all, t_process *proc, int i);
 void						handle_dump(int *i, int argc,

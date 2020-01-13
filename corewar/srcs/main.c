@@ -80,11 +80,7 @@ int			main(int argc, char **argv)
 	ft_printf("Introducing contestants...\n");
 	while (++i < argc)
 		if (*argv[i] == '-')
-		{
 			all.flag |= handle_flag(&i, argc, argv, &all);
-			if (all.flag & FLAG_VISU)
-				all.flag = FLAG_VISU;
-		}
 		else
 			parse_champ(&all, NULL, argv[i]);
 	print_comment(&all);

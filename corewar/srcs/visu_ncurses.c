@@ -20,11 +20,11 @@ void	ncurses_print_player_info(t_all *all)
 	while (++i < all->nb_champ)
 	{
 		mvprintw(NC_LINE_PLAYER_STATUS + 0 + (5 * i), 64 * 3 + 5,
-			"Player %3d : ", all->champ[i].index_player);
-		attron(COLOR_PAIR(100 + g_ncurse_color[i]));
+			"Player %3d : ", all->champ[i].index);
+		attron(COLOR_PAIR(100 + g_ncurse_color[all->champ[i].index_player]));
 		mvprintw(NC_LINE_PLAYER_STATUS + 0 + (5 * i), 64 * 3 + 5 + 13,
 			"%s", all->champ[i].name);
-		attroff(COLOR_PAIR(100 + g_ncurse_color[i]));
+		attroff(COLOR_PAIR(100 + g_ncurse_color[all->champ[i].index_player]));
 		mvprintw(NC_LINE_PLAYER_STATUS + 1 + (5 * i), 64 * 3 + 5,
 			"last live %d", all->champ[i].last_live);
 		mvprintw(NC_LINE_PLAYER_STATUS + 2 + (5 * i), 64 * 3 + 5,
@@ -89,7 +89,6 @@ void	ncurses_event_handler(t_all *all)
 
 	while (1)
 	{
-		move(1000, 1000);
 		c = getch();
 		timeout(1);
 		if (c == NC_KEY_SPACE)
