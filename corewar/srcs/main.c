@@ -60,7 +60,7 @@ void		print_comment(t_all *all)
 	i = -1;
 	while (++i < all->nb_champ)
 	{
-		ft_printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
+		ft_printf("* Player %d, weighing %zu bytes, \"%s\" (\"%s\") !\n",
 			i, all->champ[i].size_exec, all->champ[i].name,
 			all->champ[i].comment);
 	}
@@ -88,8 +88,8 @@ int			main(int argc, char **argv)
 		else
 			parse_champ(&all, NULL, argv[i]);
 	print_comment(&all);
-	if (all.flag & FLAG_VISU)
-		init_visu();
+	if (all.flag & FLAG_VISU && (all.flag = FLAG_VISU))
+		init_ncurses();
 	vm(&all);
 	return (0);
 }

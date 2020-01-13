@@ -31,42 +31,6 @@ void		simple_hexdump(t_all *all, int bytes_per_line)
 	ft_printf("\n");
 }
 
-void		ncurses_print_map_square_v2(t_all *all)
-{
-	int		proc;
-	int		i;
-	int		last_color;
-
-	i = -1;
-	last_color = 0;
-	while (++i < MEM_SIZE)
-	{
-		proc = is_a_process(all, i);
-		if (proc)
-		{
-			if (last_color != 69 + g_ncurse_color[proc])
-			{
-				if (last_color)
-					attroff(COLOR_PAIR(last_color));
-				attron(COLOR_PAIR(69 + g_ncurse_color[proc]));
-				last_color = 69 + g_ncurse_color[proc];
-			}
-			mvprintw(i / 64, (i % 64) * 3, "%.2hhx", all->map.character[i]);
-		}
-		else
-		{
-			if (last_color != 100 + all->map.color_in_map[i])
-			{
-				if (last_color)
-					attroff(COLOR_PAIR(last_color));
-				attron(COLOR_PAIR(100 + all->map.color_in_map[i]));
-				last_color = 100 + all->map.color_in_map[i];
-			}
-			mvprintw(i / 64, (i % 64) * 3, "%.2hhx", all->map.character[i]);
-		}
-	}
-}
-
 void		ncurses_print_map_square(t_all *all)
 {
 	int		proc;
@@ -91,12 +55,13 @@ void		ncurses_print_map_square(t_all *all)
 	}
 }
 
-void		ncurses_print_screen(t_all *all, int total_cycle)
+void		ncurses_print_screen(t_all *all)
 {
-	ncurses_print_info(all, total_cycle);
+	ncurses_print_info(all);
+	ncurses_print_player_info(all);
 	ncurses_print_map_square(all);
 	refresh();
-	ncurses_event_handler(all, total_cycle);
+	ncurses_event_handler(all);
 	usleep((1000 * 1000) / all->max_cycle_by_sec);
 }
 
@@ -105,7 +70,6 @@ void		init_ncurses(void)
 	initscr();
 	curs_set(FALSE);
 	start_color();
-	mvprintw(NC_LINE_POSE, (64 * 3) + 5, "paused");
 	init_pair(100, 0, 0);
 	init_pair(101, 1, 0);
 	init_pair(102, 2, 0);
@@ -117,4 +81,6 @@ void		init_ncurses(void)
 	init_pair(73, 7, 3);
 	init_pair(74, 7, 4);
 	init_pair(77, 7, 7);
+	attron(A_BOLD);
+	mvprintw(NC_LINE_PAUSED, (64 * 3) + 5, "** PAUSED **");
 }

@@ -22,6 +22,8 @@ void		op_live(t_all *all, t_process *proc)
 	all->nb_live++;
 	if (champ)
 	{
+		champ->last_live = all->total_cycle;
+		champ->nb_live_cur_period++;
 		if (all->flag & FLAG_LIVE)
 			ft_printf("Player %d (%s) is said to be alive\n",
 					-champ->index, champ->name);

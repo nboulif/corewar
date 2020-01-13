@@ -56,18 +56,5 @@ void	init_all(t_all *all)
 	all->cycles_before_exit = -1;
 	all->nc_paused = 1;
 	all->max_cycle_by_sec = 120;
-}
-
-void	init_visu(void)
-{
-	int i;
-
-	i = 4;
-	while (i)
-	{
-		ft_printf("\rStarting in %d sec.", i--);
-		fflush(stdout);
-		sleep(1);
-	}
-	init_ncurses();
+	all->total_cycle = 0;
 }

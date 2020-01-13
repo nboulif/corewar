@@ -76,10 +76,13 @@
 # define NC_KEY_R				114
 # define NC_KEY_ENTER			10
 
-# define NC_LINE_POSE			5
-# define NC_LINE_CYCLE_PASSED	10
-# define NC_LINE_SLEEP			2
-# define NC_LINE_PLAYER_STATUS	20
+# define NC_LINE_PAUSED			1
+# define NC_LINE_MAX_CYCLE		4
+# define NC_LINE_CYCLE_PASSED	7
+# define NC_LINE_PROC_PASSED	8
+# define NC_LINE_PLAYER_STATUS	11
+# define NC_LINE_CYCLE_TO_DIE	35
+# define NC_LINE_RESULT	50
 
 # include "op.h"
 
@@ -133,6 +136,8 @@ typedef struct				s_champ
 	unsigned char			flag_index;
 	int						alive;
 	int						nb_live;
+	int						nb_live_cur_period;
+	int						last_live;
 }							t_champ;
 
 struct						s_process
@@ -185,14 +190,11 @@ extern unsigned int			g_flags[256];
 extern char					*g_flags_syn[256];
 extern t_op					g_op_tab[17];
 extern int					g_ncurse_color[256];
-extern char					*g_text_color[256];
-extern char					*g_background_color[256];
 
 /*
 ** utils
 */
 
-void						init_visu(void);
 void						init_all(t_all *all);
 int							is_a_process(t_all *all, int pc);
 int							calcul_new_pc_idx(int pc, int deplacement);
@@ -219,13 +221,13 @@ int							is_valid_flag(char *flag);
 */
 
 void						simple_hexdump(t_all *all, int bytes_per_line);
-
-void						ncurses_print_info(t_all *all, int total_cycle);
+void						ncurses_print_player_info(t_all *all);
+void						ncurses_print_info(t_all *all);
 void						ncurses_manage_pause(t_all *all);
-void						ncurses_event_handler(t_all *all, int total_cycle);
+void						ncurses_event_handler(t_all *all);
 void						ncurses_print_map_square(t_all *all);
 void						ncurses_print_map_square_v2(t_all *all);
-void						ncurses_print_screen(t_all *all, int total_cycle);
+void						ncurses_print_screen(t_all *all);
 void						init_ncurses(void);
 
 /*
@@ -260,8 +262,8 @@ void						*check_pause(void *arg);
 */
 
 void						vm(t_all *all);
-int							check_ctd(t_all *all, int total_cycle);
-void						make_action_and_visu(t_all *all, int total_cycle);
+int							check_ctd(t_all *all);
+void						make_action_and_visu(t_all *all);
 
 /*
 ** op

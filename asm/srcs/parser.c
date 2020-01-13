@@ -26,7 +26,8 @@ t_data			*parse_opc(t_prog *prog, int skip_len, char *label)
 	if (!op)
 	{
 		label ? free_str(label) : 0;
-		return (ft_printf(g_err_msgs[ERROR_INDENTIFY_OPC], prog->nb_line, str_opc)
+		return (ft_printf(g_err_msgs[ERROR_INDENTIFY_OPC],
+			prog->nb_line, str_opc)
 			+ free_str(prog->line) + free_str(str_opc) ? NULL : NULL);
 	}
 	free_str(str_opc);

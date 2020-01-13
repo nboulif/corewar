@@ -47,7 +47,7 @@ int			delete_element(t_all *all, t_process **element, t_process *prev)
 	return (0);
 }
 
-int			check_nb_live(t_all *all, int total_cycle)
+int			check_nb_live(t_all *all)
 {
 	t_process		*process;
 	t_process		*prev;
@@ -60,7 +60,7 @@ int			check_nb_live(t_all *all, int total_cycle)
 		{
 			if (all->flag & FLAG_DEATH)
 				ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n",
-				process->index, --total_cycle - process->last_live,
+				process->index, --all->total_cycle - process->last_live,
 				all->cycle_to_die - CYCLE_DELTA);
 			all->nb_process--;
 			if (delete_element(all, &process, prev))
@@ -75,30 +75,32 @@ int			check_nb_live(t_all *all, int total_cycle)
 	return (!!all->stack_proc);
 }
 
-void		make_action_and_visu(t_all *all, int total_cycle)
+void		make_action_and_visu(t_all *all)
 {
 	t_process *proc;
 
 	if (all->flag & FLAG_VISU)
-		ncurses_print_screen(all, total_cycle);
+		ncurses_print_screen(all);
 	proc = all->stack_proc;
 	while (1)
 	{
 		if (proc->op.opc == 1 && proc->wait == 1)
-			proc->last_live = total_cycle;
+			proc->last_live = all->total_cycle;
 		next_action(all, proc);
 		if (!(proc = proc->next))
 			break ;
 	}
 }
 
-int			check_ctd(t_all *all, int total_cycle)
+int			check_ctd(t_all *all)
 {
-	static int cycle = 1;
+	static int	cycle = 1;
+	size_t		i;
 
+	i = 0;
 	if (cycle++ >= all->cycle_to_die)
 	{
-		if (!check_nb_live(all, total_cycle))
+		if (!check_nb_live(all))
 			return (0);
 		all->nb_check++;
 		if (all->nb_live >= NBR_LIVE || all->nb_check >= MAX_CHECKS)
@@ -111,6 +113,8 @@ int			check_ctd(t_all *all, int total_cycle)
 		}
 		all->nb_live = 0;
 		cycle = 1;
+		while (i < all->nb_champ)
+			all->champ[i++].nb_live_cur_period = 0;
 	}
 	return (1);
 }
