@@ -52,6 +52,7 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_atoi(const char *str);
 long				ft_atoi2(const char *str);
 intmax_t			ft_atoi3(const char *str);
+int					ft_atoi_base(const char *str, int base);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);

@@ -76,6 +76,7 @@ STR_F		= ft_strlen \
 			  ft_atoi \
 			  ft_atoi2 \
 			  ft_atoi3 \
+			  ft_atoi_base \
 			  ft_strnew \
 			  ft_strdel \
 			  ft_strclr \
