@@ -35,7 +35,7 @@ int				parse_register(t_prog *prog, t_data *data, int i)
 	data->i++;
 	data->val_param[i] = ft_atoi(&data->params[i][data->i]);
 	if (!(data->val_param[i] >= 0 && data->val_param[i] <= 99))
-		return (printf(g_err_msgs[ERROR_INVALID_REG_NUMBER],
+		return (ft_printf(g_err_msgs[ERROR_INVALID_REG_NUMBER],
 			prog->nb_line, data->val_param[i]));
 	else
 	{
@@ -60,7 +60,7 @@ int				parse_non_register(t_prog *prog, t_data *d, int i, int type)
 		&& ft_isdigit(d->params[i][d->i + 1])))
 		parse_number(d, i);
 	else
-		return (printf(g_err_msgs[ERROR_INVALID_IND_DIR], d->params[i],
+		return (ft_printf(g_err_msgs[ERROR_INVALID_IND_DIR], d->params[i],
 			(type == T_IND) ? "T_IND" : "T_DIR", prog->nb_line, i + 1));
 			code = type == T_IND ? IND_CODE : DIR_CODE;
 	d->codage_octal |= code << (2 * (3 - i));
@@ -76,7 +76,7 @@ int				parse_one_param(t_prog *prog, t_data *d, int i)
 	int res;
 
 	if (!d->params[i] || !d->params[i][d->i])
-		return (printf(g_err_msgs[ERROR_EMPTY_PARAM], i + 1, prog->nb_line));
+		return (ft_printf(g_err_msgs[ERROR_EMPTY_PARAM], i + 1, prog->nb_line));
 	res = OK;
 	if (d->params[i][d->i] == 'r')
 	{

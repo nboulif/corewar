@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+//fichier a supprimer (vu qu'on travaille avec ncurses)
 #include "vm_corewar.h"
 
 void	move_up(int positions)

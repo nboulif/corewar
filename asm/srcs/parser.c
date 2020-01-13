@@ -26,7 +26,7 @@ t_data			*parse_opc(t_prog *prog, int skip_len, char *label)
 	if (!op)
 	{
 		label ? free_str(label) : 0;
-		return (printf(g_err_msgs[ERROR_INDENTIFY_OPC], prog->nb_line, str_opc)
+		return (ft_printf(g_err_msgs[ERROR_INDENTIFY_OPC], prog->nb_line, str_opc)
 			+ free_str(prog->line) + free_str(str_opc) ? NULL : NULL);
 	}
 	free_str(str_opc);
@@ -105,5 +105,5 @@ int				program_parser(t_prog *prog, t_data *data, t_data *old_data)
 	}
 	free(prog->line);
 	prog->prog_size = data ? data->pc + data->nb_octet : 0;
-	return (last_res == 1 ? printf("No end line\n") : OK);
+	return (last_res == 1 ? ft_printf("No end line\n") : OK);
 }

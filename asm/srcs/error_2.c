@@ -37,7 +37,7 @@ char	*g_err_msgs[19] =
 
 int		err_header_divers(t_prog *p, int error_nb, char *error_type)
 {
-	return (printf(g_err_msgs[error_nb], error_type, p->nb_line));
+	return (ft_printf(g_err_msgs[error_nb], error_type, p->nb_line));
 }
 
 int		manage_errors_inexisting_label(t_data *data, int error_line)
@@ -60,7 +60,7 @@ int		manage_errors_inexisting_label(t_data *data, int error_line)
 		j++;
 	}
 	error_label = ft_strsub(data->line, i - j - 2, j + 2);
-	printf("%s %s %s [TOKEN][%0.3d:%0.3d] DIRECT_LABEL \"%s\"\n",
+	ft_printf("%s %s %s [TOKEN][%0.3d:%0.3d] DIRECT_LABEL \"%s\"\n",
 			NO_LABEL, &error_label[2], DEREF,
 			error_line, i - j - 1, error_label);
 	free_str(error_label);

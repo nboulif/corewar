@@ -98,7 +98,7 @@ int				write_file(t_prog *prog)
 		prog->file_name = EXTENSION;
 	else
 		ft_strcpy(&prog->file_name[i], EXTENSION);
-	printf("Writing output program to %s\n", prog->file_name);
+	ft_printf("Writing output program to %s\n", prog->file_name);
 	fd = open(prog->file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	write_header(prog, fd);
 	write_program(prog->list_data, fd);

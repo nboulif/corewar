@@ -54,7 +54,7 @@ static int		split_params(t_prog *p, t_data *data,
 	nb_param = tab_len(data->params);
 	free_str(final_str);
 	if (!data->params || nb_param != op->nb_params)
-		return (printf(g_err_msgs[ERROR_WRONG_NB_PARAMS],
+		return (ft_printf(g_err_msgs[ERROR_WRONG_NB_PARAMS],
 			p->nb_line, nb_param, op->nb_params) +
 			free_data(data));
 	else
@@ -84,7 +84,7 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 	int i;
 
 	if (argc < 2)
-		return (printf("%s%s%s%s", USAGE1, USAGE2, USAGE3, USAGE4));
+		return (ft_printf("%s%s%s%s", USAGE1, USAGE2, USAGE3, USAGE4));
 	i = 0;
 	while (++i < argc)
 	{
@@ -93,7 +93,7 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 			if (!ft_strcmp("-a", argv[i]))
 				prog->debug = 1;
 			else
-				return (printf("%s%s%s%s", USAGE1,
+				return (ft_printf("%s%s%s%s", USAGE1,
 					USAGE2, USAGE3, USAGE4));
 		}
 		else
@@ -101,7 +101,7 @@ static int		open_file(t_prog *prog, int argc, char **argv)
 			prog->fd = open(argv[i], O_RDONLY);
 			prog->file_name = argv[i];
 			if (prog->fd < 0)
-				return (printf(g_err_msgs[ERROR_WRONG_FD], argv[i]));
+				return (ft_printf(g_err_msgs[ERROR_WRONG_FD], argv[i]));
 		}
 	}
 	return (0);

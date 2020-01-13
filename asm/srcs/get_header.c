@@ -17,19 +17,19 @@ static int	manage_header_errors(t_prog *p, int i)
 	int tmp_i;
 
 	tmp_i = i;
-	printf("line %d: ", p->nb_line);
+	ft_printf("line %d: ", p->nb_line);
 	if (p->line[i++] == '.')
 	{
 		skip_chars(p->line, &i, LABEL_CHARS);
-		return (printf("unknown command \"%.*s\"\n",
+		return (ft_printf("unknown command \"%.*s\"\n",
 					i - tmp_i, &p->line[tmp_i]));
 	}
 	else if (!p->name && !p->comment)
-		return (printf("program name and comment not found\n"));
+		return (ft_printf("program name and comment not found\n"));
 	else if (!p->name)
-		return (printf("program name not found\n"));
+		return (ft_printf("program name not found\n"));
 	else if (!p->comment)
-		return (printf("program comment not found\n"));
+		return (ft_printf("program comment not found\n"));
 	return (ERROR);
 }
 
@@ -95,7 +95,7 @@ static int	get_header_content(t_prog *p, char **content, int type)
 		if (search_next_line(p, content, &content_len, error_type) != OK)
 			return (ERROR);
 	if (content_len > max_len)
-		return (printf(g_err_msgs[ERROR_MAX_LENGTH], error_type, p->nb_line,
+		return (ft_printf(g_err_msgs[ERROR_MAX_LENGTH], error_type, p->nb_line,
 			content_len, max_len));
 		skip_chars(p->line, &p->i, " \t");
 	return (!p->line[p->i] || p->line[p->i] == COMMENT_CHAR ? OK :

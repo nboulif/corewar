@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "asm.h"
+#include <stdio.h>
 
 void	print_params_net(t_data *data, int i, int y)
 {
