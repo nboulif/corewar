@@ -76,6 +76,7 @@ char				*ft_strsub2(char const *s, size_t start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
+size_t				ft_count_digit(int n);
 char				*ft_itoa(int n);
 char				*ft_itoa2(long n);
 char				*ft_strrev(char *str);

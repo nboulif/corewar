@@ -29,7 +29,8 @@ CHAR_F		= ft_isalpha \
 INT_F		= ft_itoa \
 			  ft_itoa2 \
 			  ft_swap_int \
-			  ft_sort_int
+			  ft_sort_int \
+			  ft_count_digit \
 
 LST_F		= ft_lstnew \
 			  ft_lstdelone \
