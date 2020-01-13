@@ -66,32 +66,20 @@
 /*
 ** ncurses
 */
-#include <ncurses.h>
 
-# define NC_COLOR_BLACK			0
-# define NC_COLOR_RED			1
-# define NC_COLOR_GREEN 		2
-# define NC_COLOR_YELLOW		3
-# define NC_COLOR_BLUE			4
-# define NC_COLOR_MAGENTA		5
-# define NC_COLOR_CYAN			6
-# define NC_COLOR_WHITE			7
-
-# define NC_COLOR_PLAYER_1		NC_COLOR_RED
-# define NC_COLOR_PLAYER_2		NC_COLOR_GREEN
-# define NC_COLOR_PLAYER_3		NC_COLOR_GREEN
-# define NC_COLOR_PLAYER_4		NC_COLOR_YELLOW
+# include <ncurses.h>
 
 # define NC_KEY_SPACE			32
 # define NC_KEY_Q				113
 # define NC_KEY_W				119
 # define NC_KEY_E				101
 # define NC_KEY_R				114
+# define NC_KEY_ENTER			10
+
 # define NC_LINE_POSE			5
 # define NC_LINE_CYCLE_PASSED	10
 # define NC_LINE_SLEEP			2
 # define NC_LINE_PLAYER_STATUS	20
-
 
 # include "op.h"
 
@@ -111,9 +99,6 @@
 # define B2 				0x0000ff00
 # define B3 				0x00ff0000
 # define B4 				0xff000000
-
-#define ONE_JUMP 2
-#define PAUSE 1
 
 typedef struct s_process	t_process;
 typedef struct s_all		t_all;
@@ -190,7 +175,6 @@ struct						s_all
 
 	int						max_cycle_by_sec;
 	int						nc_paused;
-	int						nc_jump;
 };
 
 /*
@@ -208,11 +192,12 @@ extern char					*g_background_color[256];
 ** utils
 */
 
+void						init_visu(void);
+void						init_all(t_all *all);
 int							is_a_process(t_all *all, int pc);
 int							calcul_new_pc_idx(int pc, int deplacement);
 int							calcul_new_pc(int pc, int deplacement);
-void						config_flags(void);
-void						config_flags_syn(void);
+void						config_flags_and_flags_syn(void);
 int							ft_realloc(void **tab, int *size_av, int
 		new_size_ap, size_t type_size);
 int							read_all(char **str, int fd);
@@ -221,8 +206,6 @@ int							check_index(char *index);
 int							rev_int_byte(int nbr);
 void						move_pc(int *pc, int incr);
 t_champ						*get_champ(int index, t_all *all);
-void						hexdump_map_square(t_all *all);
-void						simple_hexdump(t_all *all, int bytes_per_line);
 void						print_bit(char nb);
 void						move_to(int row, int col);
 int							read_int_in_map(t_all *all, int pc);
@@ -230,6 +213,20 @@ void						change_color(t_all *all, t_process *proc, int i);
 void						handle_dump(int *i, int argc,
 		char **argv, t_all *all);
 int							is_valid_flag(char *flag);
+
+/*
+** visu ncurses
+*/
+
+void						simple_hexdump(t_all *all, int bytes_per_line);
+
+void						ncurses_print_info(t_all *all, int total_cycle);
+void						ncurses_manage_pause(t_all *all);
+void						ncurses_event_handler(t_all *all, int total_cycle);
+void						ncurses_print_map_square(t_all *all);
+void						ncurses_print_map_square_v2(t_all *all);
+void						ncurses_print_screen(t_all *all, int total_cycle);
+void						init_ncurses(void);
 
 /*
 ** parse_champ

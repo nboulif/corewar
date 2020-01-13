@@ -32,7 +32,7 @@ int		handle_flag(int *i, int argc, char **argv, t_all *all)
 	return (out);
 }
 
-void	config_flags(void)
+void	config_flags_and_flags_syn(void)
 {
 	g_flags['d'] = FLAG_DUMP;
 	g_flags['n'] = FLAG_NUMBER;
@@ -42,9 +42,5 @@ void	config_flags(void)
 	g_flags['x'] = FLAG_DEATH;
 	g_flags['L'] = FLAG_LIVE;
 	g_flags['D'] = FLAG_DUMP64;
-}
-
-void	config_flags_syn(void)
-{
 	g_flags_syn['d'] = "dump";
 }

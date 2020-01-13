@@ -45,8 +45,7 @@ void		vm(t_all *all)
 	}
 	if (all->last_player_alive)
 		ft_printf("Contestant %d, \"%s\", has won !\n",
-				(-1) * all->last_player_alive->index,
-				all->last_player_alive->name);
+		(-1) * all->last_player_alive->index, all->last_player_alive->name);
 	else
 		ft_printf("Everybody lost\n");
 	if (((all->flag & FLAG_DUMP) || (all->flag & FLAG_DUMP64))

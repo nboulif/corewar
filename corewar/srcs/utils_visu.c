@@ -31,8 +31,3 @@ int			is_a_process(t_all *all, int pc)
 	}
 	return (0);
 }
-
-int give_color(t_champ *champ)
-{
-	return (g_ncurse_color[champ->index_player + 4]);
-}

@@ -28,9 +28,9 @@ HEADERS_DIRECTORY = ./includes/
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 SOURCES_DIRECTORY = ./srcs/
-SOURCES_LIST = config_flag.c global.c init_vm.c main.c move_cursor.c \
+SOURCES_LIST = config_flag.c global.c init_vm.c main.c \
 				parse_arg_op.c parse_champ.c qsort_champ.c reader.c utils.c \
-				utils_parse.c utils_visu.c visu.c vm.c vm2.c \
+				utils_parse.c utils_visu.c visu.c visu_ncurses.c vm.c vm2.c \
 				op/add.c op/aff.c op/and.c op/fork.c op/ld.c op/ldi.c \
 				op/live.c op/lld.c op/lldi.c op/long_fork.c op/op_utils.c \
 				op/or.c op/st.c op/sti.c op/sub.c op/xor.c op/zjmp.c

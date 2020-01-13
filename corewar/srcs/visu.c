@@ -31,53 +31,90 @@ void		simple_hexdump(t_all *all, int bytes_per_line)
 	ft_printf("\n");
 }
 
-char paused = 0;
-char jump = 0;
-
-
-
-
-void		hexdump_map_square(t_all *all)
+void		ncurses_print_map_square_v2(t_all *all)
 {
 	int		proc;
 	int		i;
-	char	*last_color;
+	int		last_color;
 
-	if (!(all->flag & FLAG_VISU))
-		return ;
 	i = -1;
-	last_color = NULL;
-
-	int old_color = 0;
-
+	last_color = 0;
 	while (++i < MEM_SIZE)
 	{
 		proc = is_a_process(all, i);
-
 		if (proc)
 		{
-			if (old_color != 69 + g_ncurse_color[proc])
+			if (last_color != 69 + g_ncurse_color[proc])
 			{
-				if (old_color)
-					attroff(COLOR_PAIR(old_color));
+				if (last_color)
+					attroff(COLOR_PAIR(last_color));
 				attron(COLOR_PAIR(69 + g_ncurse_color[proc]));
-				old_color = 69 + g_ncurse_color[proc];
+				last_color = 69 + g_ncurse_color[proc];
 			}
 			mvprintw(i / 64, (i % 64) * 3, "%.2hhx", all->map.character[i]);
 		}
 		else
 		{
-
-			if (old_color != 100 + all->map.color_in_map[i])
+			if (last_color != 100 + all->map.color_in_map[i])
 			{
-				if (old_color)
-					attroff(COLOR_PAIR(old_color));
+				if (last_color)
+					attroff(COLOR_PAIR(last_color));
 				attron(COLOR_PAIR(100 + all->map.color_in_map[i]));
-				old_color = 100 + all->map.color_in_map[i];
+				last_color = 100 + all->map.color_in_map[i];
 			}
 			mvprintw(i / 64, (i % 64) * 3, "%.2hhx", all->map.character[i]);
 		}
-
 	}
+}
 
+void		ncurses_print_map_square(t_all *all)
+{
+	int		proc;
+	int		i;
+
+	i = -1;
+	while (++i < MEM_SIZE)
+	{
+		proc = is_a_process(all, i);
+		if (proc)
+		{
+			attron(COLOR_PAIR(69 + g_ncurse_color[proc]));
+			mvprintw(i / 64, (i % 64) * 3, "%.2hhx", all->map.character[i]);
+			attroff(COLOR_PAIR(69 + g_ncurse_color[proc]));
+		}
+		else
+		{
+			attron(COLOR_PAIR(100 + all->map.color_in_map[i]));
+			mvprintw(i / 64, (i % 64) * 3, "%.2hhx", all->map.character[i]);
+			attroff(COLOR_PAIR(100 + all->map.color_in_map[i]));
+		}
+	}
+}
+
+void		ncurses_print_screen(t_all *all, int total_cycle)
+{
+	ncurses_print_info(all, total_cycle);
+	ncurses_print_map_square(all);
+	refresh();
+	ncurses_event_handler(all, total_cycle);
+	usleep((1000 * 1000) / all->max_cycle_by_sec);
+}
+
+void		init_ncurses(void)
+{
+	initscr();
+	curs_set(FALSE);
+	start_color();
+	mvprintw(NC_LINE_POSE, (64 * 3) + 5, "paused");
+	init_pair(100, 0, 0);
+	init_pair(101, 1, 0);
+	init_pair(102, 2, 0);
+	init_pair(103, 3, 0);
+	init_pair(104, 4, 0);
+	init_pair(107, 7, 0);
+	init_pair(71, 7, 1);
+	init_pair(72, 7, 2);
+	init_pair(73, 7, 3);
+	init_pair(74, 7, 4);
+	init_pair(77, 7, 7);
 }

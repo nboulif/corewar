@@ -58,7 +58,7 @@ void		print_comment(t_all *all)
 	size_t i;
 
 	i = -1;
-	while (i++ < all->nb_champ)
+	while (++i < all->nb_champ)
 	{
 		ft_printf("* Player %zu, weighing %zu bytes, \"%s\" (\"%s\") !\n",
 			i, all->champ[i].size_exec, all->champ[i].name,
@@ -74,16 +74,8 @@ int			main(int argc, char **argv)
 	if (argc == 1)
 		usage();
 	ft_bzero(&all, sizeof(t_all));
-	
-	all.nc_paused = 1;
-	all.nc_jump = 0;
-	all.max_cycle_by_sec = 120;
-
-	all.nb_alive = -1;
-	all.cycle_to_die = CYCLE_TO_DIE;
-	all.cycles_before_exit = -1;
-	config_flags();
-	config_flags_syn();
+	init_all(&all);
+	config_flags_and_flags_syn();
 	i = 0;
 	ft_printf("Introducing contestants...\n");
 	while (++i < argc)
@@ -95,50 +87,9 @@ int			main(int argc, char **argv)
 		}
 		else
 			parse_champ(&all, NULL, argv[i]);
-
+	print_comment(&all);
 	if (all.flag & FLAG_VISU)
-	{
-		initscr();
-		start_color();
-
-		init_pair(100, 0, 0);
-		init_pair(101, 1, 0);
-		init_pair(102, 2, 0);
-		init_pair(103, 3, 0);
-		init_pair(104, 4, 0);
-		init_pair(105, 5, 0);
-		init_pair(106, 6, 0);
-		init_pair(107, 7, 0);
-		init_pair(108, 8, 0);
-		init_pair(109, 9, 0);
-
-		init_pair(200, 0, 7);
-		init_pair(201, 1, 7);
-		init_pair(202, 2, 7);
-		init_pair(203, 3, 7);
-		init_pair(204, 4, 7);
-		init_pair(205, 5, 7);
-		init_pair(206, 6, 7);
-		init_pair(207, 7, 7);
-		init_pair(208, 8, 7);
-		init_pair(209, 9, 7);
-
-		init_pair(71, 7, 1);
-		init_pair(72, 7, 2);
-		init_pair(73, 7, 3);
-		init_pair(74, 7, 4);
-
-		mvprintw(NC_LINE_POSE, (64 * 3) + 5, "paused");
-
-
-		// noecho();
-		curs_set(FALSE);
-
-		// ft_printf("\e[?25l");
-	}
-	else
-		print_comment(&all);
-	
+		init_visu();
 	vm(&all);
 	return (0);
 }
