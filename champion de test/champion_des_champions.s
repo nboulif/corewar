@@ -14,8 +14,6 @@ part3:
     st r3,-8
 	st r2,-17
 
-
-
 # part4:
 # 	ld 129,r1
 # 	zjmp %17
