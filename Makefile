@@ -26,7 +26,7 @@ GREEN = \033[0;32m
 RED = \033[0;31m
 RESET = \033[0m
 
-.PHONY: all clean fclean re asm corewar asm_test
+.PHONY: all clean fclean re asm corewar asm_test corewar_test
 
 all: $(NAME)
 
@@ -41,11 +41,17 @@ $(VM_NAME):
 	@echo "$(NAME): $(GREEN)Creating $(VM)...$(RESET)"
 	@$(MAKE) -sC $(VM_DIRECTORY)
 
-asm_tester:
+asm_test: $(NAME)
 	@echo "$(NAME): $(GREEN) STARTING TEST ASM FSANITIZE $(RESET)"
-	@$(MAKE) -sC $(ASM_DIRECTORY) tester_f
+	@$(MAKE) -sC $(ASM_DIRECTORY) test_f
 	@echo "$(NAME): $(GREEN) STARTING TEST ASM VALGRIND $(RESET)"
-	@$(MAKE) -sC $(ASM_DIRECTORY) tester_v
+	@$(MAKE) -sC $(ASM_DIRECTORY) test_v
+
+corewar_test: $(NAME)
+	@echo "$(NAME): $(GREEN) STARTING TEST VM DIFF $(RESET)"
+	@$(MAKE) -sC $(VM_DIRECTORY) test_d
+	@echo "$(NAME): $(GREEN) STARTING TEST VM COMPARE $(RESET)"
+	@$(MAKE) -sC $(VM_DIRECTORY) test_c
 
 clean:
 	@$(MAKE) -sC $(ASM_DIRECTORY) clean

@@ -45,7 +45,7 @@ GREEN = \033[0;32m
 RED = \033[0;31m
 RESET = \033[0m
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test_d test_c
 
 all: $(NAME)
 
@@ -66,6 +66,12 @@ $(OBJECTS_DIRECTORY)%.o : $(SOURCES_DIRECTORY)%.c $(HEADERS)
 $(LIBFT):
 	@echo "$(NAME): $(GREEN)Creating $(LIBFT)...$(RESET)"
 	@$(MAKE) -sC $(LIBFT_DIRECTORY)
+
+test_d:
+	@sh unitest/script_diff_tester.sh
+
+test_c:
+	@sh unitest/script_cmp.sh
 
 clean:
 	@$(MAKE) -sC $(LIBFT_DIRECTORY) clean
