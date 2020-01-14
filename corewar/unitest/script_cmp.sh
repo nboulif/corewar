@@ -175,7 +175,17 @@ rm rKuGB v4KuGB diff_rv4KuGB
 diff ruuuu v4uuuu | grep "P" > diff_rv4uuuu
 echo "ultima ultima ultima ultima"
 cat diff_rv4uuuu | wc -l
+<<<<<<< HEAD
 rm ruuuu v4uuuu diff_rv4uuuu
+=======
+#  
+# for i in "${op[@]}"
+# do
+#     # echo "$i"
+#     nb=`cat v4uuuu | grep "$i" | wc -l | bc -l`
+#     echo "($i : |${nb}|) "
+# done
+>>>>>>> e05ee086a48302d64d7684c2a6df4b6664a78043
 
 #jumper jumper Gagnant Gagnant
 ./corewar ../resource/tests/jumper.cor ../resource/tests/jumper.cor ../resource/tests/Gagnant.cor ../resource/tests/Gagnant.cor -r > rjjGG
@@ -183,7 +193,17 @@ rm ruuuu v4uuuu diff_rv4uuuu
 diff rjjGG v4jjGG > diff_rv4jjGG
 echo "jumper jumper Gagnant Gagnant"
 cat diff_rv4jjGG | grep "P " | wc -l
+<<<<<<< HEAD
 rm rjjGG v4jjGG diff_rv4jjGG
+=======
+
+# for i in "${op[@]}"
+# do
+#     # echo "$i"
+#     nb=`cat v4jjGG | grep "$i" | wc -l | bc -l`
+#     echo "($i : |${nb}|) "
+# done
+>>>>>>> e05ee086a48302d64d7684c2a6df4b6664a78043
 
 #overwatch overwatch Gagnant Gagnant
 ./corewar ../resource/tests/overwatch.cor ../resource/tests/overwatch.cor ../resource/tests/Gagnant.cor ../resource/tests/Gagnant.cor -r > rooGG
