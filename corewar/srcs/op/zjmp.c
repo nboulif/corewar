@@ -24,6 +24,9 @@ void		op_zjmp(t_all *all, t_process *proc)
 			if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
 				ft_printf("OK\n");
 			proc->pc = calcul_new_pc_idx(old_pc, proc->op.params[0]);
+			proc->origin_champ->index_player += 2;
+			change_color(all, proc, proc->pc);
+			proc->origin_champ->index_player -= 2;
 		}
 		else if (all->flag & FLAG_RESUME && !(all->flag & FLAG_VISU))
 			ft_printf("FAILED\n");

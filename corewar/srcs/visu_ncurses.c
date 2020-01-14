@@ -48,6 +48,16 @@ void	ncurses_print_info(t_all *all)
 		"NBR_LIVE : %-10d", NBR_LIVE);
 	mvprintw(NC_LINE_CYCLE_TO_DIE + 6, 64 * 3 + 5,
 		"MAX_CHECKS : %-10d", MAX_CHECKS);
+	int i = 0;
+	for (t_process *proc = all->stack_proc; proc; proc = proc->next, i++)
+	{
+		mvprintw(16 + i * 2, 64 * 3 + 5,
+		"PROC %d :", 1+i);
+		for (int x = 0; x < 16; x++)
+			printw("|%02hhX %02hhX %02hhX %02hhX| ", (proc->reg[x] & 0xff000000) >> 24, (proc->reg[x] & 0xff0000) >> 16, (proc->reg[x] & 0xff00) >> 8, proc->reg[x] & 0xff);
+		printw("\n");
+	}
+	
 }
 
 void	ncurses_manage_pause(t_all *all)

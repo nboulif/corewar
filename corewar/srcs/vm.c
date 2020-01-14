@@ -79,7 +79,7 @@ void		make_action_and_visu(t_all *all)
 {
 	t_process *proc;
 
-	if (all->flag & FLAG_VISU)
+	if (all->flag & FLAG_VISU && all->total_cycle > 1600)
 		ncurses_print_screen(all);
 	proc = all->stack_proc;
 	while (1)
