@@ -72,11 +72,12 @@ void		config_stack_proc(t_all *all)
 	i = -1;
 	while (++i < all->nb_champ)
 	{
-		ft_memcpy(all->map.character + i * (MEM_SIZE / all->nb_champ),
+		ft_memcpy(all->map.character + (all->nb_champ - 1 - i) *
+			(MEM_SIZE / all->nb_champ),
 			all->champ[i].exec_code, all->champ[i].size_exec);
 		proc = &all->stack_proc[i];
 		proc->origin_champ = &all->champ[i];
-		proc->pc = i * (MEM_SIZE / all->nb_champ);
+		proc->pc = (all->nb_champ - 1 - i) * (MEM_SIZE / all->nb_champ);
 		proc->carry = 0;
 		proc->reg[0] = all->champ[i].index;
 	}
