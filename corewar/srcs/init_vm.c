@@ -109,5 +109,6 @@ void		init_vm(t_all *all)
 	qsort_proc(all->stack_proc, 0, all->nb_champ);
 	link_and_index_proc(all);
 	all->nb_process = all->nb_champ;
-	init_color_in_map(all);
+	if (all->flag & FLAG_VISU)
+		init_color_in_map(all);
 }

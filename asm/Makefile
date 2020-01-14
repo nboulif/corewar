@@ -41,7 +41,7 @@ GREEN = \033[0;32m
 RED = \033[0;31m
 RESET = \033[0m
 
-.PHONY: all clean fclean re tester_v tester_f
+.PHONY: all clean fclean re test_v test_f
 
 all: $(NAME)
 
@@ -62,10 +62,10 @@ $(LIBFT):
 	@echo "$(NAME): $(GREEN)Creating $(LIBFT)...$(RESET)"
 	@$(MAKE) -sC $(LIBFT_DIRECTORY)
 
-tester_v:
+test_v:
 	@cd unitest && ./tester_error.sh -v && ./tester_zork2.sh -v && ./tester.sh -v && cd ..
 
-tester_f:
+test_f:
 	@cd unitest && ./tester_error.sh && ./tester_zork2.sh && ./tester.sh && cd ..
 
 clean:
