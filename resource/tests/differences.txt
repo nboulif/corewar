@@ -1,5 +1,0 @@
-champion			diff_test			pc_diff				reason
-
-Kitty_Miaou			3093				
-Gagnant				8301				8275				invalid param
-ultima				OK
