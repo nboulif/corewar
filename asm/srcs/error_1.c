@@ -17,9 +17,9 @@ int		err_default(t_prog *p, int error_nb)
 	return (ft_printf(g_err_msgs[error_nb], p->nb_line, p->i));
 }
 
-int		err_lexical(t_prog *p, int error_nb, int i)
+int		err_lexical(t_prog *p, int i)
 {
-	return (ft_printf(g_err_msgs[ERROR_LEXICAL], error_nb, p->nb_line, i));
+	return (ft_printf(g_err_msgs[ERROR_LEXICAL], p->nb_line, i));
 }
 
 int		err_malloc(char *str, int nb_line)

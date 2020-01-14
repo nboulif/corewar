@@ -26,7 +26,7 @@ char	*g_err_msgs[19] =
 	"Empty %s on line %d\n",
 	"Missig %s quote for %s on line %d.\n",
 	"Max length exceeded for %s on line %d : %d (max: %d)\n",
-	"Lexical error (%d) on [%0.3d:%0.3d].\n",
+	"Lexical error on [%0.3d:%0.3d].\n",
 	"Invalid register number on line %d : r%d \n",
 	"Invalid value (\"%s\") of type %s on line %d, param number %d.\n",
 	"Empty param number %d on line %d.\n",

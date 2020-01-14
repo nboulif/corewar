@@ -118,7 +118,7 @@ int				parse_params(t_prog *p, t_data *d)
 		to_delete = skip_chars(d->params[i], &d->i, " \t");
 		if (d->params[i][d->i] &&
 			(i + 1 < d->op->nb_params || d->params[i][d->i] != COMMENT_CHAR))
-			return (err_lexical(p, 98, p->i + d->i));
+			return (err_lexical(p, p->i + d->i));
 		tmp_params = d->params[i];
 		d->params[i] = ft_strsub(d->params[i], 0, d->i - to_delete);
 		free_str(tmp_params);

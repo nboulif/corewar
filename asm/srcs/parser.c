@@ -21,7 +21,7 @@ t_data			*parse_opc(t_prog *prog, int skip_len, char *label)
 	str_opc = ft_strsub(prog->line, prog->i - skip_len, skip_len);
 	skip_chars(prog->line, &prog->i, " \t");
 	if (!prog->line[prog->i] && !free_str(str_opc))
-		return (err_lexical(prog, 57, prog->i) ? NULL : NULL);
+		return (err_lexical(prog, prog->i) ? NULL : NULL);
 	op = identify_opc(str_opc);
 	if (!op)
 	{
@@ -35,7 +35,7 @@ t_data			*parse_opc(t_prog *prog, int skip_len, char *label)
 		return (NULL);
 	else if (prog->line[prog->i])
 		return (parse_params(prog, data) && !free_data(data) ? NULL : data);
-	return (err_lexical(prog, 32, prog->i) && !free_data(data) ? NULL : NULL);
+	return (err_lexical(prog, prog->i) && !free_data(data) ? NULL : NULL);
 }
 
 t_data			*parse_label(t_prog *prog, int *skip_len)
@@ -53,7 +53,7 @@ t_data			*parse_label(t_prog *prog, int *skip_len)
 		return (parse_opc(prog, *skip_len, label));
 	free_str(label);
 	free_str(prog->line);
-	return (err_lexical(prog, 39, prog->i - *skip_len) ? NULL : NULL);
+	return (err_lexical(prog, prog->i - *skip_len) ? NULL : NULL);
 }
 
 t_data			*parse_commands(t_prog *prog)
@@ -63,7 +63,7 @@ t_data			*parse_commands(t_prog *prog)
 	skip_chars(prog->line, &prog->i, " \t");
 	skip_len = skip_until(prog->line, &prog->i, ":% \t");
 	if (!prog->line[prog->i])
-		return ((void*)(long)!(err_lexical(prog, 65, prog->i) +
+		return ((void*)(long)!(err_lexical(prog, prog->i) +
 		free_str(prog->line)));
 	else if (prog->line[prog->i] == ':')
 		return (parse_label(prog, &skip_len));

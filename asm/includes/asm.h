@@ -126,7 +126,7 @@ t_op					*identify_opc(char *line);
 int						valid_char(const char *str, int base);
 
 int						err_default(t_prog *p, int error_nb);
-int						err_lexical(t_prog *p, int error_nb, int i);
+int						err_lexical(t_prog *p, int i);
 int						err_malloc(char *str, int nb_line);
 int						err_param_type(t_prog *p, char *str, int indice);
 int						err_missing_quotes(t_prog *p, char *error_type,

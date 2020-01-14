@@ -99,7 +99,7 @@ static int	get_header_content(t_prog *p, char **content, int type)
 			content_len, max_len));
 		skip_chars(p->line, &p->i, " \t");
 	return (!p->line[p->i] || p->line[p->i] == COMMENT_CHAR ? OK :
-		err_lexical(p, 36, p->i));
+		err_lexical(p, p->i));
 }
 
 int			get_header(t_prog *p)
