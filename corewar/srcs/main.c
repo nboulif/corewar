@@ -86,6 +86,7 @@ int			main(int argc, char **argv)
 	print_comment(&all);
 	if (all.flag & FLAG_VISU && (all.flag = FLAG_VISU))
 		init_ncurses();
+	set_indexes(&all);
 	vm(&all);
 	return (0);
 }

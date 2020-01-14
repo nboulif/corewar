@@ -64,13 +64,11 @@ void		link_and_index_proc(t_all *all)
 	}
 }
 
-int			config_stack_proc(t_all *all)
+void		config_stack_proc(t_all *all)
 {
 	size_t			i;
 	t_process		*proc;
-	int				min_ind;
 
-	min_ind = 127;
 	i = -1;
 	while (++i < all->nb_champ)
 	{
@@ -80,33 +78,18 @@ int			config_stack_proc(t_all *all)
 		proc->origin_champ = &all->champ[i];
 		proc->pc = i * (MEM_SIZE / all->nb_champ);
 		proc->carry = 0;
-		if (all->champ[i].flag_index && min_ind > all->champ[i].index)
-			min_ind = all->champ[i].index;
+		proc->reg[0] = all->champ[i].index;
 	}
-	return ((min_ind == 127) ? 0 : 1);
 }
 
 void		init_vm(t_all *all)
 {
-	int			i;
-	int			min_ind;
-	int			i_undif;
-
-	i_undif = 0;
 	init_map(all);
 	if (!(all->stack_proc = malloc(all->nb_champ * sizeof(t_process))))
 		print_error_and_exit(MALLOC_ERROR);
 	ft_bzero(all->map.character, MEM_SIZE);
 	ft_bzero(all->stack_proc, all->nb_champ * sizeof(t_process));
-	min_ind = config_stack_proc(all);
-	i = -1;
-	while (++i < (int)all->nb_champ)
-	{
-		if (!all->champ[i].flag_index)
-			all->champ[i].index = min_ind - ++i_undif;
-		all->stack_proc[i].reg[0] = all->champ[i].index;
-	}
-	qsort_proc(all->stack_proc, 0, all->nb_champ);
+	config_stack_proc(all);
 	link_and_index_proc(all);
 	all->nb_process = all->nb_champ;
 	if (all->flag & FLAG_VISU)

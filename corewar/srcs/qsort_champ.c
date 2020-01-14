@@ -12,47 +12,47 @@
 
 #include "vm_corewar.h"
 
-int		cmp_champ_order(t_process *champ1, t_process *champ2)
+int		cmp_champ_order(t_champ *champ1, t_champ *champ2)
 {
-	if (champ1->origin_champ->index > champ2->origin_champ->index)
+	if (champ1->index > champ2->index)
 		return (-1);
-	else if (champ1->origin_champ->index == champ2->origin_champ->index)
+	else if (champ1->index == champ2->index)
 		return (0);
 	return (1);
 }
 
-void	swap_proc(t_process *stack_proc, int a, int b)
+void	swap_champ(t_champ *champ, int a, int b)
 {
-	t_process	tmp;
+	t_champ		tmp;
 
-	tmp = stack_proc[a];
-	stack_proc[a] = stack_proc[b];
-	stack_proc[b] = tmp;
+	tmp = champ[a];
+	champ[a] = champ[b];
+	champ[b] = tmp;
 }
 
-int		partition(t_process *stack_proc, int start_ind, int size)
+int		partition(t_champ *champ, int start_ind, int size)
 {
-	t_process	*value_piv;
+	t_champ		*value_piv;
 	int			piv_i;
 	int			i;
 
 	i = start_ind - 1;
-	value_piv = &stack_proc[size - 1];
+	value_piv = &champ[size - 1];
 	piv_i = start_ind;
 	while (++i < size)
-		if (cmp_champ_order(value_piv, &stack_proc[i]) == -1)
-			swap_proc(stack_proc, i, piv_i++);
-	swap_proc(stack_proc, size - 1, piv_i);
+		if (cmp_champ_order(value_piv, &champ[i]) == -1)
+			swap_champ(champ, i, piv_i++);
+	swap_champ(champ, size - 1, piv_i);
 	return (piv_i);
 }
 
-void	qsort_proc(t_process *stack_proc, int start_ind, int size)
+void	qsort_champ(t_champ *champ, int start_ind, int size)
 {
-	int pivot_i;
+	int			pivot_i;
 
 	if (start_ind >= size)
 		return ;
-	pivot_i = partition(stack_proc, start_ind, size);
-	qsort_proc(stack_proc, start_ind, pivot_i);
-	qsort_proc(stack_proc, pivot_i + 1, size);
+	pivot_i = partition(champ, start_ind, size);
+	qsort_champ(champ, start_ind, pivot_i);
+	qsort_champ(champ, pivot_i + 1, size);
 }

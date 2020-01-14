@@ -58,3 +58,24 @@ void	init_all(t_all *all)
 	all->max_cycle_by_sec = 120;
 	all->total_cycle = 0;
 }
+
+void		set_indexes(t_all *all)
+{
+	size_t	i;
+	int		min_ind;
+	int		i_undif;
+
+	min_ind = 127;
+	i_undif = 0;
+	i = -1;
+	while (++i < all->nb_champ)
+		if (all->champ[i].flag_index && min_ind > all->champ[i].index)
+			min_ind = all->champ[i].index;
+	i = -1;
+	if (min_ind == 127)
+		min_ind = 0;
+	while (++i < all->nb_champ)
+		if (!all->champ[i].flag_index)
+			all->champ[i].index = min_ind - ++i_undif;
+	qsort_champ(all->champ, 0, all->nb_champ);
+}

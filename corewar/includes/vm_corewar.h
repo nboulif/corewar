@@ -196,6 +196,7 @@ extern int					g_ncurse_color[256];
 */
 
 void						init_all(t_all *all);
+void						set_indexes(t_all *all);
 int							is_a_process(t_all *all, int pc);
 int							calcul_new_pc_idx(int pc, int deplacement);
 int							calcul_new_pc(int pc, int deplacement);
@@ -247,7 +248,7 @@ void						init_vm(t_all *all);
 **	qsort_proc
 */
 
-void						qsort_proc(t_process *stack_proc,
+void						qsort_champ(t_champ *champ,
 		int start_ind, int size);
 
 /*
