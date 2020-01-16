@@ -30,7 +30,7 @@ config1:
     ld %80, r3
     # (CODE)  : (00 06 01 01) d=4
     ld %0x00060101, r5
-    # (INDEX) : debut[= ld + live + sti + sti] (93 - 20[= 5 + 5 + 5 + 5] + 4)
+    # (INDEX) : debut[=ld + live + sti + sti] (93 - 20[=5 + 5 + 5 + 5] + 4)
     ld %77, r6
     ld %0, r16
     zjmp %:code
@@ -78,5 +78,5 @@ code:
     sti r2, r3, r16
     sti r5, r6, r16
     ld %0, r16
-    # distance = taille code + zjmp[=61 + 2[=decalage interne]]
+    # distance[=93] = taille code[=30] + zjmp[=61 + 2[=decalage interne]]
     zjmp %63
