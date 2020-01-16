@@ -1,6 +1,6 @@
-.name "4 fork"
+.name "Ken"
 
-.comment "yolo"
+.comment "omae wa mou shindeiru"
 
 sti r1,%:genf1,%1
 ld %0,r16
