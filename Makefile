@@ -30,7 +30,7 @@ RESET = \033[0m
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(ASM_NAME) $(VM_NAME) 
+$(NAME): $(ASM_NAME) $(VM_NAME) 
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 
 $(ASM_NAME):
