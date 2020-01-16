@@ -67,25 +67,32 @@ void	ncurses_manage_pause(t_all *all)
 
 void	ncurses_manage_max_speed(t_all *all, char c)
 {
+	int	diff;
+
+	diff = 0;
 	if (c == NC_KEY_Q)
 	{
 		if (all->max_cycle_by_sec > 11)
-			all->max_cycle_by_sec -= 10;
+			diff = -10;
 	}
 	else if (c == NC_KEY_W)
 	{
 		if (all->max_cycle_by_sec > 2)
-			all->max_cycle_by_sec -= 1;
+			diff = -1;
 	}
 	else if (c == NC_KEY_E)
-		all->max_cycle_by_sec += 1;
+		diff = 1;
 	else if (c == NC_KEY_R)
-		all->max_cycle_by_sec += 10;
+		diff = 10;
+	all->max_cycle_by_sec += diff;
+	all->wait_time += diff;
+	if (diff)
+		ncurses_print_info(all);
 }
 
 void	ncurses_event_handler(t_all *all)
 {
-	char	c;
+	int		c;
 
 	while (1)
 	{
@@ -94,14 +101,14 @@ void	ncurses_event_handler(t_all *all)
 		if (c == NC_KEY_SPACE)
 			ncurses_manage_pause(all);
 		else if (c == NC_KEY_ENTER && all->nc_paused)
+		{
+			all->wait_time = 0;
 			break ;
+		}
 		else
 			ncurses_manage_max_speed(all, c);
-		if (c)
-			ncurses_print_info(all);
 		if (!all->nc_paused)
 			break ;
-		usleep(500);
 		c = '\0';
 	}
 }

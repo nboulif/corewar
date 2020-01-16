@@ -31,15 +31,32 @@ void		simple_hexdump(t_all *all, int bytes_per_line)
 	ft_printf("\n");
 }
 
+void		config_hmap(t_all *all, unsigned int hmap[MEM_SIZE],
+	unsigned int flag)
+{
+	t_process	*pr;
+
+	pr = all->stack_proc;
+	while (1)
+	{
+		hmap[pr->pc] = ((unsigned int)pr->origin_champ->index_player + 1) &
+			flag;
+		if (!(pr = pr->next))
+			break ;
+	}
+}
+
 void		ncurses_print_map_square(t_all *all)
 {
-	int		proc;
-	int		i;
+	int					proc;
+	int					i;
+	static unsigned int	hmap[MEM_SIZE];
 
+	config_hmap(all, hmap, 0xFFFFFFFF);
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
-		proc = is_a_process(all, i);
+		proc = hmap[i];
 		if (proc)
 		{
 			attron(COLOR_PAIR(69 + g_ncurse_color[proc]));
@@ -53,6 +70,7 @@ void		ncurses_print_map_square(t_all *all)
 			attroff(COLOR_PAIR(100 + all->map.color_in_map[i]));
 		}
 	}
+	config_hmap(all, hmap, 0x00000000);
 }
 
 void		ncurses_print_screen(t_all *all)
@@ -61,8 +79,18 @@ void		ncurses_print_screen(t_all *all)
 	ncurses_print_player_info(all);
 	ncurses_print_map_square(all);
 	refresh();
-	ncurses_event_handler(all);
-	usleep((1000 * 1000) / all->max_cycle_by_sec);
+	all->wait_time = (1000000) / all->max_cycle_by_sec;
+	while (1)
+	{
+		ncurses_event_handler(all);
+		if (all->wait_time > 0)
+		{
+			usleep(all->wait_time < 5000 ? all->wait_time : 5000);
+			all->wait_time -= 5000;
+		}
+		else
+			break ;
+	}
 }
 
 void		init_ncurses(void)

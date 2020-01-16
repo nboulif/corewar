@@ -177,7 +177,7 @@ struct						s_all
 	int						nb_check;
 	int						max;
 	int						total_cycle;
-
+	int						wait_time;
 	int						max_cycle_by_sec;
 	int						nc_paused;
 };
@@ -197,7 +197,6 @@ extern int					g_ncurse_color[256];
 
 void						init_all(t_all *all);
 void						set_indexes(t_all *all);
-int							is_a_process(t_all *all, int pc);
 int							calcul_new_pc_idx(int pc, int deplacement);
 int							calcul_new_pc(int pc, int deplacement);
 void						config_flags_and_flags_syn(void);
