@@ -59,7 +59,7 @@ void	init_all(t_all *all)
 	all->total_cycle = 0;
 }
 
-void		set_indexes(t_all *all)
+void	set_indexes(t_all *all)
 {
 	size_t	i;
 	int		min_ind;
